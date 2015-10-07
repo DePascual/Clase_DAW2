@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>MUSE HARDBIKES, como comprar</title>
+</head>
+
+<body>
+    <label for="nombre" id="labelNombre">Nombre:</label>
+    <label for="obligatorio" style="color:Red">*</label>
+    <input type="text" id="txtNombre"  />
+
+    <br>
+    <label for="apellidos" id="labelApellidos">Apellidos:</label>
+    <input type="text" id="txtApellidos" />
+
+    <br>
+    <label for="email" id="labelEmail">E-mail:</label>
+    <label for="obligatorio" style="color:Red">*</label>
+    <input type="text" id="txtEmail" />
+
+    <br>
+    <label for="telefono" id="labelTelefono">Telefono:</label>
+    <input type="text" id="txtTelefono" />
+
+    <br>
+    <label for="modelo" id="labelModelo">Modelo de tu interes:</label>
+    <label for="obligatorio" style="color:Red">*</label>
+    <select id="modelo">
+        <option>Muse Aedea 6650b</option>
+        <option>Muse Kleio 6650b F.S.</option>
+        <option>Muse Rhodia 29er</option>
+        <option>Muse Aedea Superfly 650b</option>
+        <option selected="selected">Selecciona tu modelo</option>
+    </select>
+
+    <br>
+    <label for="acabado" id="labelAcabado">Acabado de tu interes:</label>
+    <label for="obligatorio" style="color:Red">*</label>
+    <select id="acabado">
+        <option>Equipacion tipo V1</option>
+        <option>Equipacion tipo V2</option>
+        <option>Equipacion tipo V3</option>
+        <option>Equipacion personalizada gama alta</option>
+        <option>Equipacion personalizada gama media</option>
+        <option>Equipacion personalizada gama baja</option>
+        <option selected="selected">Selecciona equipacion</option>
+    </select>
+
+    <br>
+    <label for="comentarios" id="labelComentarios">Comentarios, preguntas...</label>
+    <textarea type="textarea" id="comentarios" rows="4" cols="50">Tienes dudas? Escribe cualquier consulta aqui</textarea>
+
+    <br>
+    <label for="verificacion" id="labelVerificacion">Introduzca codigo de verificacion</label>
+    <label for="obligatorio" style="color:Red">*</label>
+    <label for="captcha" id="labelCatcha"></label>
+    <input type="text" id="txtCaptcha" />
+
+    <br>
+    <input type="button" id="btnEnviar" value="Enviar" />
+    <input type="button" id="btnResetear" value="Resetear Formulario" />
+
+    <script>
+        function CajaTexto() {
+            this.validado = false
+            this.contenido = ""
+        }
+
+        CajaTexto.prototype.validar = function(id) {
+            var patron = "";
+            switch (id) {
+                case "txtNombre":
+                    //patron = "^[A-Za-záéíóúñ]{2,}([\s][A-Za-záéíóúñ]{2,})+$";
+                    patron = "[A-Z a-z]{3,}";
+                    break;
+                case "txtApellidos":
+                    patron = /^[A-Za-záéíóúñ]{2,}([\s][A-Za-záéíóúñ]{2,})+$/;
+                    break;
+                case "txtEmail":
+                    patron = /^([\da-z_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
+                    break;
+                case "txtTelefono":
+                    patron = /^\+?\d{1,3}?[- .]?\(?(?:\d{2,3})\)?[- .]?\d\d\d[- .]?\d\d\d\d$/;
+                    break;
+            }
+            var expRegular = new RegExp(patron);
+            
+            //expRegular.test(this.contenido)==true ? this.validado=true : this.validado=false;
+
+            if (expRegular.test(this.contenido) == true) {
+                this.validado = true;
+            }
+            else {
+                this.validado = false;
+            }
+
+        }
+
+        function validaCajasTexto() {
+            Array.prototype.slice.call(document.getElementsByTagName("input"), 0).forEach(function(el, pos, ar) {
+                if (el.getAttribute("type") == "text") {
+                    var nuevaCaja = new CajaTexto(el.getAttribute("id"));
+                    nuevaCaja.contenido = el.value;
+                    nuevaCaja.validar(el.getAttribute("id"));
+                    //window.alert("El elemento " + el.getAttribute("id") + " tiene en valor de: " + nuevaCaja.validado)
+                    if(nuevaCaja.validado == false){
+                        el.style.borderColor = "red";
+                    }
+                }
+            })
+        }
+        
+
+
+        /*Array.prototype.slice.call(document.getElementsByTagName("input"), 0).forEach(function(el, pos, ar) {
+            if (el.getAttribute("type") == "text") {
+                el.addEventListener("blur", validaCajasTexto, false);
+            }
+
+        });*/
+
+
+
+        /*document.getElementById("btnEnviar").addEventListener("click", function() {
+             Array.prototype.slice.call(document.getElementsByTagName("input"), 0).forEach(function(el, pos, ar) {
+                 if (el.getAttribute("type") == "text") {
+                     switch (el.getAttribute("id")){
+                         case "txtNombre":
+                            var mapNombre = new CajaTexto();
+                            mapNombre.validado = mapNombre.validar(txtNombre);
+                            if(mapNombre.validado != true){
+                                window.alert("Campo " + el.getAttribute("id") + " incorrecto");
+                            }else{
+                                window.alert("Campo " + el.getAttribute("id") + "OK!!!");
+                            }
+                     }
+                 }
+             })
+            
+            
+        },false);*/
+
+
+
+        /*var cajNombre = document.getElementById("txtNombre");
+        var mapNombre = new CajaTexto();
+        mapNombre.validado = mapNombre.validar(cajNombre.getAttribute("id"));*/
+
+        function reset() {
+            Array.prototype.slice.call(document.getElementsByTagName("input"), 0).forEach(function(el, pos, ar) {
+                if (el.getAttribute("type") == "text") {
+                    window.alert("Borrando el elemento: " + el.getAttribute("id"));
+                    el.value = "";
+                }
+            })
+
+            document.getElementById("modelo").value = "Selecciona tu modelo";
+            document.getElementById("acabado").value = "Selecciona equipacion";
+            document.getElementById("comentarios").value = "Tienes dudas? Escribe cualquier consulta aqui";
+
+        };
+
+        document.getElementById("btnResetear").addEventListener("click", reset, false);
+        document.getElementById("btnEnviar").addEventListener("click", validaCajasTexto, false);
+        document.getElementsByTagName("input").addEventListener("blur", validaCajasTexto, false);
+        
+    </script>
+</body>
+
+</html>

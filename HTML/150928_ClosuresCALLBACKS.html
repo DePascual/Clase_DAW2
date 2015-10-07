@@ -1,0 +1,18 @@
+<html>
+    <head></head>
+    <body>
+        <input type="button" id="boton" value="voyyy..."/> 
+        <script>
+            var posX=0;
+            var boton=document.getElementById("boton")
+            
+            function move(){
+                boton.style.position="relative"
+                boton.style.left=posX + "px";
+                posX++;
+            }
+            setInterval(move,3000);
+        </script>
+    </body>
+</html>
+        

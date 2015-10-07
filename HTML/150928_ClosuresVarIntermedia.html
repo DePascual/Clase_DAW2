@@ -1,0 +1,21 @@
+<html>
+    <head></head>
+    <body>
+        <input type="button" id="boton" value="PULSAME"/> 
+        <script>
+            function bind (objeto,contexto){
+                return function(){
+                    return objeto[contexto].call(objeto,arguments)
+                }
+            }
+            var ObjetoBoton = {
+                clickeado:false, 
+                click:function(){
+                    console.log("El estado del boton es: " + this.clickeado);
+                }
+            }
+            //document.getElementsByTagName("input")[0].addEventListener("click", bind(ObjetoBoton, "click"), false)
+            document.getElementsByTagName("input")[0].addEventListener("click", ObjetoBoton.click.bind(ObjetoBoton), false)
+        </script>
+    </body>
+</html>

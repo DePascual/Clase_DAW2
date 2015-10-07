@@ -1,0 +1,34 @@
+<html>
+    <head>
+        
+    </head>
+    <body>
+        <form>
+            
+        </form>
+        <form>
+            <label>Usuario:</label>
+            <input type="text" id="Usuario" name="Usuario"/>
+            <br>
+            <label>Password:</label>
+            <input type="text" id="Password" name="Password"/>
+            <br>
+            <input type="button" id="iniciar" value="Iniciar Sesion"/>
+            <input type="button" id="registrar" value="Registrate"></input>
+        </form>
+        
+        <script>
+            var objetoTextBox={
+                                vaciotxtBox:false,
+                                vacio:function(){
+                                    if(document.getElementsByTagName("type")[0].value == ""){
+                                        vaciotxtBox:true;
+                                        
+                                        var error = document.createElement("label");
+                                    }
+                                }
+                                
+            }
+        </script>
+    </body>
+</html>

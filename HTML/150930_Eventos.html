@@ -1,0 +1,24 @@
+<html>
+<head></head>
+<body>
+	<p id="parrafo1">Parrafo primero, pulsame...</p>
+	<p id="parrafo2">Parrafo segundo, pulsame...</p>
+
+	<script>
+		var objetoManejador={
+					handleEvent:function(ev){
+							window.alert("has pulsado: " + ev.target.id)
+								}
+					}
+
+		document.getElementById("parrafo1").addEventListener("click", objetoManejador, false);
+		
+		document.getElementById("parrafo2").addEventListener("click", function(e){
+									window.alert("has pulsado el parrafo: " + e.target.id)
+								})
+	</script>
+
+
+
+</body>
+</html>

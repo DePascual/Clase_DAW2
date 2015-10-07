@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>PAGINA REGISTRO</title>
+</head>
+
+<body>
+    <label for="nombre">Nombre</label>
+    <input type="text" id="txtNombre" />
+    <br>
+    <input type="checkbox" id="checking" value="NOCoincide" />Check!! Si datos de facturacion no coinciden con datos personales
+    <br>
+    <input type="button" id="Aceptar" value="Aceptar" />
+
+    <script>
+        //var Acepta=document.getElementById("Aceptar")
+        var Acepta=document.getElementsByTagName("label")
+        
+        Acepta.addEventListener("click", function(e) {
+            window.alert("has pulsado: " + e.target.id)
+        })
+    </script>
+</body>
+
+</html>

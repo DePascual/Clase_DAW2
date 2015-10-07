@@ -1,0 +1,31 @@
+<html>
+
+<head></head>
+
+<body>
+    <input type="button" id="boton0" value="Boton 0"></input>
+    <input type="button" id="boton1" value="Boton 1"></input>
+    <input type="button" id="boton2" value="Boton 2"></input>
+    <script>
+        var botones = document.getElementsByTagName("input");
+        for (var a = 0; a < botones.length; a++) {
+            botones[a].addEventListener("click", (function(p) {
+                    return function() {
+                        alert("has pulsado boton: " + p);
+                    }
+                })(a),
+                false);
+        }
+    </script>
+
+</body>
+
+</html>
+
+
+
+
+<!-->En el array hay 3 elementos, lo recorro con un bucle haciendo referencia a ellos. Hago una función para sacar la info del boton y optimizar informacion En realidad es una fun interna, que pertenece a una externa.El evento clic, es el puntero que apunta
+a la función.Por lo que las variables no se destruyen, no cogen los valores que tu crees, si no que coje el valor de cuando ha terminado la función externa, es decir, el valor 3 Simplemente pasandole el valor a la función se quedaría el valor grabado
+en la función... para ello están las funciones INMEDIATAS
+< /-->
