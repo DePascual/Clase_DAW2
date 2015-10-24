@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Libreria>
+<Libro categoria="Informatica">
+<Titulo>Programacion C#</Titulo>
+<Autor>Manuel García</Autor>
+<ISBN>8491050272</ISBN>
+</Libro>
+<Libro categoria="Derecho">
+<Titulo>Derecho Penal</Titulo>
+<Autor>Teresa Rodriguez</Autor>
+<ISBN>8467033444</ISBN> 
+</Libro>
+<Libro categoria="Gastronomia">
+<Titulo>Cocina con Arguiñano</Titulo>
+<Autor>Carlos Arguiñano</Autor>
+<ISBN>8448136934</ISBN>
+</Libro>
+<Libro categoria="Novela">
+<Titulo>El quijote</Titulo>
+<Autor>Miguel de Cervantes</Autor>
+<ISBN>8467041927</ISBN>
+</Libro>
+</Libreria>

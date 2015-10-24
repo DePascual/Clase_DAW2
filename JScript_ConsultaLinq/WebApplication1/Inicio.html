@@ -1,0 +1,105 @@
+﻿
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <style type="text/css">
+        .auto-style1 {
+            width: 261px;
+        }
+    </style>
+</head>
+<body>
+
+
+    <form id="form1">
+        <div>
+            <table>
+                <tr>
+                    <td class="auto-style1">
+                        <label>Búsqueda Libros:</label>
+
+                    </td>
+                    <td>
+                        <input type="text" id="txtBox_Buscador" />
+                    </td>
+                    <td>
+                        <input type="button" id="btn_Buscar" value="Buscar" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="auto-style1">
+                        <input type="radio" name="opciones" id="RadioButton_Titulo" value="Titulo">Titulo
+                        <input type="radio" name="opciones" id="RadioButton_ISBN" value="ISBN">Isbn
+                        <input type="radio" name="opciones" id="RadioButton_Autor" value="Autor">Autor
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </form>
+
+    <div id="resultado"></div>
+    <script>
+
+        var petAjax = new XMLHttpRequest;
+        var xmlDOC;
+        var radioButtonCheckeado;
+        var filtro;
+        
+
+        document.getElementById("btn_Buscar").addEventListener("click", hacerPeticionAjax, false);
+
+
+        function hacerPeticionAjax() {
+            petAjax.onreadystatechange = function () {
+                if (petAjax.readyState == 4 && petAjax.status == 200) {
+                    xmlDOC = petAjax.responseXML;
+                }
+            }
+
+            radioButtonSeleccionado();
+            filtro = radioButtonCheckeado;
+           
+
+            petAjax.open("GET", 'http://localhost:1763/Peticion.aspx?filtro=' + filtro + '&valor=' + document.getElementById("txtBox_Buscador"), true);
+            /*------------------para POST-----------------------------------------
+             petAjax.open("POST", 'http://localhost:1763/Peticion.aspx', true);
+             petAjax.setRequestHeader("Content-Type", "application/www-url")
+             var filtro = "filtro='Titulo=kakakakak'"  se construiria a partir del resultado de la caja de texto
+             petAjax.send(filtro);
+             */
+            petAjax.send();
+
+
+            var nodoLibro = xmlDOC.getElementsByTagName("Libro");
+            var filas = "<table border='1' style='border-collapse:collapse'><tr><th>Titulo</th><th>Autor</th></tr>"
+            Array.prototype.slice.call(nodoLibro, 0).forEach(function (libro, pos, arr) {
+                filas += "<tr><td>" +
+                        unLibro.childNodes[1].childNodes[0].nodeValue +
+                        "</td><td>" +
+                        unLibro.childNodes[3].childNodes[0].nodeValue +
+                        "</td><td>" +
+                        unLibro.childNodes[5].childNodes[0].nodeValue +
+                        "</td></tr></table>"
+            });
+            filas += "</table>"
+            document.getElementById("resultado").innerHTML = filas;
+
+        }
+
+        function radioButtonSeleccionado() {
+            Array.prototype.slice.call(document.getElementsByTagName("input"), 0).forEach(function (el, pos, ar) {
+                if (el.getAttribute("type") == "radio" && el.checked) {
+                    return radioButtonCheckeado = el.id
+                }
+            })
+
+        }
+
+    </script>
+
+</body>
+</html>
