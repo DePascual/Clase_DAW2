@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <table>
+        <tr>
+            <td>
+                <label>Login:</label>
+            </td>
+            <td>
+                <input type="text" id="cajaLog" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Password:</label>
+            </td>
+            <td>
+                <input type="text" id="cajaPass" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <p id="pRespuesta" ></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="registro.html" id="LinkRegistro">Registrate</a>
+            </td>
+            <td>
+                <input type="button" id="BotonAcceso" value="Acceso" />
+            </td>
+        </tr>
+    </table>
+
+    <script>
+        var petAJAX = new XMLHttpRequest();
+        document.getElementById("BotonAcceso").addEventListener("click", hacerPeticionAJAX, true);
+
+        function hacerPeticionAJAX() {
+            var usuJSON = {
+                "Login":document.getElementById("cajaLog").value,
+                "Password":document.getElementById("cajaPass").value
+            }
+
+            petAJAX.onreadystatechange = function () {
+                if (petAjax.readyState == 4 && petAjax.status == 200) {
+                    var respuesta = JSON.parse(petAJAX.responseText);
+
+                    if (respuesta.codigo == 0) {
+                        alert("OK, welcome");
+                    } else {
+                        document.getElementById("pRespuesta").value = respuesta.mensaje;
+                    }
+                }
+
+                petAJAX.open("POST", "http://localhost:1763/compruebaUsuario.aspx", true);
+                petAJAX.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                petAJAX.send("dato=" + usuJSON);
+            }
+        }
+    </script>
+
+
+</body>
+</html>
