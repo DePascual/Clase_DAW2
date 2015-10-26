@@ -39,31 +39,36 @@
     </table>
 
     <script>
+        
+
+        
         var petAJAX = new XMLHttpRequest();
-        document.getElementById("BotonAcceso").addEventListener("click", hacerPeticionAJAX, true);
 
         function hacerPeticionAJAX() {
             var usuJSON = {
-                "Login":document.getElementById("cajaLog").value,
-                "Password":document.getElementById("cajaPass").value
-            }
+                "Login": document.getElementById("cajaLog").value,
+                "Password": document.getElementById("cajaPass").value
+            };
 
-            petAJAX.onreadystatechange = function () {
-                if (petAjax.readyState == 4 && petAjax.status == 200) {
+            petAJAX.onreadystatechange = function() {
+                if (petAJAX.readyState == 4 && petAJAX.status == 200) {
                     var respuesta = JSON.parse(petAJAX.responseText);
 
                     if (respuesta.codigo == 0) {
                         alert("OK, welcome");
                     } else {
-                        document.getElementById("pRespuesta").value = respuesta.mensaje;
+                        document.getElementById("pRespuesta").textContent = respuesta.mensaje;
+                        //window.location(pagina de registro)
                     }
                 }
-
-                petAJAX.open("POST", "http://localhost:1763/compruebaUsuario.aspx", true);
-                petAJAX.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                petAJAX.send("dato=" + usuJSON);
             }
-        }
+
+                petAJAX.open("POST", "http://localhost:1846/Servidor.aspx", true);
+                petAJAX.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                petAJAX.send("dato=" + JSON.stringify(usuJSON));
+            }
+        
+        document.getElementById("BotonAcceso").addEventListener("click", hacerPeticionAJAX, false);
     </script>
 
 
