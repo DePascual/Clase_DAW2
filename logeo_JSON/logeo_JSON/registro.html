@@ -1,0 +1,120 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Pagina registro</title>
+	<meta charset="utf-8" />
+</head>
+<body>
+    <h3>PÁGINA DE REGISTRO</h3>
+    <hr />
+    <br />
+    <table style="margin-bottom:5px; ">
+        <tr>
+            <td>
+                <label>Nombre:</label>
+            </td>
+            <td>
+                <input type="text" id="cajaNombre" />
+            </td>
+            <td>
+                <label>Login:</label>
+            </td>
+            <td>
+                <input type="text" id="cajaLogin" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Apellido:</label>
+            </td>
+            <td>
+                <input type="text" id="cajaApellido" />
+            </td>
+            <td>
+                <label>Password:</label>
+            </td>
+            <td>
+                <input type="text" id="cajaPassword" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Direccion:</label>
+            </td>
+            <td>
+                <input type="text" id="cajaDireccion" />
+            </td>
+            <td>
+                <label>C.P.:</label>
+            </td>
+            <td>
+                <input type="text" id="cajaCP" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Provincia:</label>
+            </td>
+            <td>
+                <input type="text" id="cajaProvincia" />
+            </td>
+            <td>
+                <label>NIF:</label>
+            </td>
+            <td>
+                <input type="text" id="cajaNIF" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" style="text-align:center">
+                <br />
+                <input type="button" id="botonRegistrar" value="REGISTRAR"/>
+            </td>
+        </tr>
+    </table>
+
+    <script>
+
+
+        //-------------------PETICIÓN AJAX------------------------
+        var petAJAX = new XMLHttpRequest();
+        function hacerPeticionAJAX() {
+
+            var usuJSON = {
+                "Nombre": document.getElementById("cajaNombre").value,
+                "Apellido": document.getElementById("cajaApellido").value,
+                "Direccion": document.getElementById("cajaDireccion").value,
+                "NIF": document.getElementById("cajaNIF").value,
+                "CP": document.getElementById("cajaCP").value,
+                "Provincia": document.getElementById("cajaProvincia").value,
+                "Login": document.getElementById("cajaLogin").value,
+                "Password": document.getElementById("cajaPassword").value
+            };
+
+            petAJAX.onreadystatechange = function () {
+                if (petAJAX.readyState == 4 && petAJAX.status == 200) {
+                    var respuesta = JSON.parse(petAJAX.responseText);
+
+                    if (respuesta.codigo == 0) {
+                        alert("OK, welcome");
+                    } else {
+                        //document.getElementById("pRespuesta").textContent = respuesta.mensaje;
+                        alert("Usuario no encontrado. Redirigiendo a página de registro. . . . . ")
+                        window.location.replace("http://localhost:1846/registro.html");
+                    }
+                }
+            }
+
+            petAJAX.open("POST", "http://localhost:1846/Servidor.aspx", true);
+            petAJAX.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            petAJAX.send("datosRegistro=" + JSON.stringify(usuJSON));
+        }
+
+        document.getElementById("botonRegistrar").addEventListener("click", hacerPeticionAJAX, false);
+    </script>
+
+
+
+</body>
+</html>

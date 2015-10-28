@@ -101,11 +101,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="login.html" />
+    <Content Include="registro.html" />
     <Content Include="Servidor.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Code\modelo\DatosPeticionCliente.cs" />
+    <Compile Include="App_Code\modelo\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Servidor.aspx.cs">
       <DependentUpon>Servidor.aspx</DependentUpon>

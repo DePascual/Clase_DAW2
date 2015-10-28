@@ -12,9 +12,17 @@ namespace logeo_JSON
 {
     public partial class Servidor : System.Web.UI.Page
     {
+        private StreamWriter __escritorFichero;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             DatosPeticionCliente recibidos = new JavaScriptSerializer().Deserialize<DatosPeticionCliente>(this.Request.Params["dato"]);
+            Usuario usuarioRecibido = new JavaScriptSerializer().Deserialize<Usuario>(this.Request.Params["datosRegistro"]);
+
+            __escritorFichero = new StreamWriter(new FileStream(this.Server.MapPath("ficheros/registros.txt"), FileMode.Append, FileAccess.Write));
+
+            
+
 
             Boolean encontrado = (from unalinea in new StreamReader(this.Server.MapPath("ficheros/usuarios.txt")).ReadToEnd().Split(new char[] { '\r', '\n' }).Where(una => una.Length > 0)
                                   let campoUsu = unalinea.Split(new char[] { ':' })[0].ToString()

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title></title>
+    <title>Pagina Login</title>
     <meta charset="utf-8" />
 </head>
 <body>
@@ -25,7 +25,7 @@
         </tr>
         <tr>
             <td colspan="2">
-                <p id="pRespuesta" ></p>
+                <p id="pRespuesta"></p>
             </td>
         </tr>
         <tr>
@@ -39,36 +39,80 @@
     </table>
 
     <script>
-        
+        //-------------------VALIDADCIÓN DE LOS TEXTBOX------------------------
+            Array.prototype.slice.call(document.getElementsByTagName("input"), 0).forEach(function (el, pos, ar) {
+                var numero;
+                if (el.getAttribute("type") == "text") {
+                    switch (el.id) {
+                        case "cajaLog":
+                            numero = 12;
+                            break;
+                        case "cajaPass":
+                            numero = 10;
+                            break;
+                    }
 
-        
+                    el.addEventListener("blur", (function (a, b) {
+                        return function () {
+                            var textControl = a,
+                                maxLength = b;
+                            if (textControl.value.length >= maxLength || textControl.value.length == 0) {
+                                //textControl.value = textControl.value.substring(0, maxLength);
+                                textControl.style.borderColor = "red";
+                                textControl.style.backgroundColor = "#D0D0D0";
+                                textControl.value = "Campo incorrecto";
+                                return false;
+                            }
+                            else {
+                                el.style.borderColor = "black";
+                                el.style.backgroundColor = "white";
+                                return true;
+                            }
+                        }
+                    })(el, numero), false);
+
+                    el.addEventListener("click", (function (a) {
+                        return function () {
+                            var textControl = a;
+                            //alert("click en " + el.id);
+                            textControl.style.borderColor = "black";
+                            textControl.style.backgroundColor = "white";
+                            textControl.value = "";
+                        }                      
+                    })(el), false);
+                }
+            });
+
+        //-------------------PETICIÓN AJAX------------------------
         var petAJAX = new XMLHttpRequest();
-
         function hacerPeticionAJAX() {
+
             var usuJSON = {
                 "Login": document.getElementById("cajaLog").value,
                 "Password": document.getElementById("cajaPass").value
             };
 
-            petAJAX.onreadystatechange = function() {
+            petAJAX.onreadystatechange = function () {
                 if (petAJAX.readyState == 4 && petAJAX.status == 200) {
                     var respuesta = JSON.parse(petAJAX.responseText);
 
                     if (respuesta.codigo == 0) {
                         alert("OK, welcome");
                     } else {
-                        document.getElementById("pRespuesta").textContent = respuesta.mensaje;
-                        //window.location(pagina de registro)
+                        //document.getElementById("pRespuesta").textContent = respuesta.mensaje;
+                        alert("Usuario no encontrado. Redirigiendo a página de registro. . . . . ")
+                        window.location.replace("http://localhost:1846/registro.html");
                     }
                 }
             }
 
-                petAJAX.open("POST", "http://localhost:1846/Servidor.aspx", true);
-                petAJAX.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                petAJAX.send("dato=" + JSON.stringify(usuJSON));
-            }
-        
+            petAJAX.open("POST", "http://localhost:1846/Servidor.aspx", true);
+            petAJAX.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            petAJAX.send("dato=" + JSON.stringify(usuJSON));
+        }
+
         document.getElementById("BotonAcceso").addEventListener("click", hacerPeticionAJAX, false);
+       
     </script>
 
 
