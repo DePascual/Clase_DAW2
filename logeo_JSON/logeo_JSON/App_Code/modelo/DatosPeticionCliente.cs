@@ -16,7 +16,16 @@ namespace logeo_JSON.App_Code.modelo
             get { return this.__Login; }
             set
             {
-                this.__Login = value;
+                if (__Login != null && __Login.Length <= 10)
+                {
+                    this.__Login = value;
+                }
+                else
+                {
+                    this.__Login = null;
+                }
+
+               
             }
         }
 
