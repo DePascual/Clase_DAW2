@@ -95,8 +95,9 @@
                     var respuesta = JSON.parse(petAJAX.responseText);
 
                     if (respuesta.codigo == 0) {
-                        alert("OK, welcome");
+                        alert("El usuario ha sido guardado con exito");
                     } else {
+                        alert("ERROR. El usuario no ha sido guarado");
                     }
                 }
             }

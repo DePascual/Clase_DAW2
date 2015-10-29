@@ -1,2 +1,4 @@
 ka:a:a:a:a:a:a:a
 l:l:l:l:l:l:l:ll
+p:p:p:p:p:p:p:p
+B:B:B:B:B:B:B:B

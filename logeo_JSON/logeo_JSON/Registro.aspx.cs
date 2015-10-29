@@ -19,33 +19,44 @@ namespace logeo_JSON
         protected void Page_Load(object sender, EventArgs e)
         {
             Usuario usuarioRecibido = new JavaScriptSerializer().Deserialize<Usuario>(this.Request.Params["datosRegistro"]);
-            
-                        
-            __escritorFichero_Registro = new StreamWriter(new FileStream( this.Server.MapPath("ficheros/registros.txt"), FileMode.Append, FileAccess.Write));
-            __escritorFichero_Usuarios = new StreamWriter(new FileStream(this.Server.MapPath("ficheros/usuarios.txt"), FileMode.Append, FileAccess.Write));
+            string respuesta = "";
 
-            string cadena_a_guardar_Registro = usuarioRecibido.Nombre + ":"
-                                            + usuarioRecibido.Apellido + ":"
-                                            + usuarioRecibido.Direccion + ":"
-                                            + usuarioRecibido.NIF + ":"
-                                            + usuarioRecibido.CP + ":"
-                                            + usuarioRecibido.Provincia + ":"
-                                            + usuarioRecibido.Login + ":"
-                                            + usuarioRecibido.Password ;
+            try {
 
-            __escritorFichero_Registro.WriteLine(cadena_a_guardar_Registro);
-            __escritorFichero_Registro.Flush();
-            __escritorFichero_Registro.Close();
+                __escritorFichero_Registro = new StreamWriter(new FileStream(this.Server.MapPath("ficheros/registros.txt"), FileMode.Append, FileAccess.Write));
+                __escritorFichero_Usuarios = new StreamWriter(new FileStream(this.Server.MapPath("ficheros/usuarios.txt"), FileMode.Append, FileAccess.Write));
 
-            string cadena_a_guardar_Usuarios = usuarioRecibido.Login + ":"
-                                           + usuarioRecibido.Password;
+                string cadena_a_guardar_Registro = usuarioRecibido.Nombre + ":"
+                                                + usuarioRecibido.Apellido + ":"
+                                                + usuarioRecibido.Direccion + ":"
+                                                + usuarioRecibido.NIF + ":"
+                                                + usuarioRecibido.CP + ":"
+                                                + usuarioRecibido.Provincia + ":"
+                                                + usuarioRecibido.Login + ":"
+                                                + usuarioRecibido.Password;
 
-            __escritorFichero_Usuarios.WriteLine(cadena_a_guardar_Usuarios);
-            __escritorFichero_Usuarios.Flush();
-            __escritorFichero_Usuarios.Close();
+                __escritorFichero_Registro.WriteLine(cadena_a_guardar_Registro);
+                __escritorFichero_Registro.Flush();
+                __escritorFichero_Registro.Close();
 
+                string cadena_a_guardar_Usuarios = usuarioRecibido.Login + ":"
+                                               + usuarioRecibido.Password;
 
+                __escritorFichero_Usuarios.WriteLine(cadena_a_guardar_Usuarios);
+                __escritorFichero_Usuarios.Flush();
+                __escritorFichero_Usuarios.Close();
 
+                respuesta = "{\"codigo\":0,\"mensaje\":\"usuario guardado en fichero correctamente\"}";
+            }
+            catch (Exception ex)
+            {
+                respuesta = "{\"codigo\":1,\"mensaje\":\"el usuario no ha sido grabado en fichero\"}";
+            }
+
+            this.Response.ContentType = "application/json";
+            this.Response.Write(respuesta);
+            this.Response.Flush();
+            this.Response.End();
 
         }
     }
