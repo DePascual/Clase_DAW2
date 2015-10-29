@@ -39,51 +39,7 @@
     </table>
 
     <script>
-        //-------------------VALIDADCIÓN DE LOS TEXTBOX------------------------
-            Array.prototype.slice.call(document.getElementsByTagName("input"), 0).forEach(function (el, pos, ar) {
-                var numero;
-                if (el.getAttribute("type") == "text") {
-                    switch (el.id) {
-                        case "cajaLog":
-                            numero = 12;
-                            break;
-                        case "cajaPass":
-                            numero = 10;
-                            break;
-                    }
 
-                    el.addEventListener("blur", (function (a, b) {
-                        return function () {
-                            var textControl = a,
-                                maxLength = b;
-                            if (textControl.value.length >= maxLength || textControl.value.length == 0) {
-                                //textControl.value = textControl.value.substring(0, maxLength);
-                                textControl.style.borderColor = "red";
-                                textControl.style.backgroundColor = "#D0D0D0";
-                                textControl.value = "Campo incorrecto";
-                                return false;
-                            }
-                            else {
-                                el.style.borderColor = "black";
-                                el.style.backgroundColor = "white";
-                                return true;
-                            }
-                        }
-                    })(el, numero), false);
-
-                    el.addEventListener("click", (function (a) {
-                        return function () {
-                            var textControl = a;
-                            //alert("click en " + el.id);
-                            textControl.style.borderColor = "black";
-                            textControl.style.backgroundColor = "white";
-                            textControl.value = "";
-                        }                      
-                    })(el), false);
-                }
-            });
-
-        //-------------------PETICIÓN AJAX------------------------
         var petAJAX = new XMLHttpRequest();
         function hacerPeticionAJAX() {
 

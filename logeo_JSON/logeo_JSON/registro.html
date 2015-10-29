@@ -76,12 +76,10 @@
 
     <script>
 
-
-        //-------------------PETICIÓN AJAX------------------------
         var petAJAX = new XMLHttpRequest();
         function hacerPeticionAJAX() {
 
-            var usuJSON = {
+            var usuRegJSON = {
                 "Nombre": document.getElementById("cajaNombre").value,
                 "Apellido": document.getElementById("cajaApellido").value,
                 "Direccion": document.getElementById("cajaDireccion").value,
@@ -99,16 +97,13 @@
                     if (respuesta.codigo == 0) {
                         alert("OK, welcome");
                     } else {
-                        //document.getElementById("pRespuesta").textContent = respuesta.mensaje;
-                        alert("Usuario no encontrado. Redirigiendo a página de registro. . . . . ")
-                        window.location.replace("http://localhost:1846/registro.html");
                     }
                 }
             }
 
-            petAJAX.open("POST", "http://localhost:1846/Servidor.aspx", true);
+            petAJAX.open("POST", "http://localhost:1846/Registro.aspx", true);
             petAJAX.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            petAJAX.send("datosRegistro=" + JSON.stringify(usuJSON));
+            petAJAX.send("datosRegistro=" + JSON.stringify(usuRegJSON));
         }
 
         document.getElementById("botonRegistrar").addEventListener("click", hacerPeticionAJAX, false);

@@ -7,117 +7,117 @@ namespace logeo_JSON.App_Code.modelo
 {
     public class Usuario
     {
-        private string __nombreUsuario;
-        private string __apellidoUsuario;
-        private string __direccionUsuario;
-        private string __NIFUsuario;
-        private string __CPUsuario;
-        private string __provinciaUsuario;
+        private string __Nombre;
+        private string __Apellido;
+        private string __Direccion;
+        private string __NIF;
+        private string __CP;
+        private string __Provincia;
 
-        private string __loginUsuario;
-        private string __passwordUsuario;
+        private string __Login;
+        private string __Password;
 
-        public string NombreUsuario
+        public string Nombre
         {
             get
             {
-                return __nombreUsuario;
+                return __Nombre;
             }
 
             set
             {
-                __nombreUsuario = value;
+                __Nombre = value;
             }
         }
 
-        public string ApellidoUsuario
+        public string Apellido
         {
             get
             {
-                return __apellidoUsuario;
+                return __Apellido;
             }
 
             set
             {
-                __apellidoUsuario = value;
+                __Apellido = value;
             }
         }
 
-        public string DireccionUsuario
+        public string Direccion
         {
             get
             {
-                return __direccionUsuario;
+                return __Direccion;
             }
 
             set
             {
-                __direccionUsuario = value;
+                __Direccion = value;
             }
         }
 
-        public string NIFUsuario
+        public string NIF
         {
             get
             {
-                return __NIFUsuario;
+                return __NIF;
             }
 
             set
             {
-                __NIFUsuario = value;
+                __NIF = value;
             }
         }
 
-        public string CPUsuario
+        public string CP
         {
             get
             {
-                return __CPUsuario;
+                return __CP;
             }
 
             set
             {
-                __CPUsuario = value;
+                __CP = value;
             }
         }
 
-        public string ProvinciaUsuario
+        public string Provincia
         {
             get
             {
-                return __provinciaUsuario;
+                return __Provincia;
             }
 
             set
             {
-                __provinciaUsuario = value;
+                __Provincia = value;
             }
         }
 
-        public string LoginUsuario
+        public string Login
         {
             get
             {
-                return __loginUsuario;
+                return __Login;
             }
 
             set
             {
-                __loginUsuario = value;
+                __Login = value;
             }
         }
 
-        public string PasswordUsuario
+        public string Password
         {
             get
             {
-                return __passwordUsuario;
+                return __Password;
             }
 
             set
             {
-                __passwordUsuario = value;
+                __Password = value;
             }
         }
     }
