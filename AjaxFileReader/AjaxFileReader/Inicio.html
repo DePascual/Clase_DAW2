@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+	<meta charset="utf-8" />
+</head>
+<body>
+    <input type="file" accept="image/*" id="selector"/>
+    <div id="respuestaServer"></div>
+    <script>
+        var petAjax = new XMLHttpRequest();
+
+        function hacerPeticionAjax(){
+            var fichero = document.getElementById("selector").files[0];
+            var lector = new FileReader(fichero);
+            var Datos = new FormData();
+            Datos.append("fichero", lector); //agrego de forma individual todos los objetos que yo quiera mandar al servidor
+
+            petAjax.onreadystatechange = function () {
+                if(petAjax.readyState == 4 && petAjax.status==200){
+                    var respuesta = JSON.parse(this.responseText);
+                    //respuesta objeto JSON: {"codigo":0, "mensaje":"...."}
+                    if (respuesta.codigo == 0) {
+                        document.getElementById("respuestaServer").appendChild(document.createTextNode(respuesta.mensaje));
+                    }
+                }
+            }
+            petAjax.open('POST', 'http://localhost:2125/Upload.aspx', true);
+            petAjax.setRequestHeader("Content-Type", "multipart/form-data")
+            petAjax.send(Datos);
+        }
+        
+        
+        document.getElementById("selector").addEventListener("change", hacerPeticionAjax, false);
+
+
+
+    </script>
+</body>
+</html>
