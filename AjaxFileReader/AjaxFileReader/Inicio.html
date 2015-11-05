@@ -1,40 +1,121 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
-	<meta charset="utf-8" />
+    <meta charset="utf-8" />
 </head>
 <body>
-    <input type="file" accept="image/*" id="selector"/>
+    <table style="margin-bottom:5px; ">
+        <tr>
+            <td>
+                <label>Nombre:</label>
+            </td>
+            <td>
+                <input type="text" id="cajaNombre" />
+            </td>
+            <td>
+                <label>Login:</label>
+            </td>
+            <td>
+                <input type="text" id="cajaLogin" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Apellido:</label>
+            </td>
+            <td>
+                <input type="text" id="cajaApellido" />
+            </td>
+            <td>
+                <label>Password:</label>
+            </td>
+            <td>
+                <input type="text" id="cajaPassword" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Direccion:</label>
+            </td>
+            <td>
+                <input type="text" id="cajaDireccion" />
+            </td>
+            <td>
+                <label>C.P.:</label>
+            </td>
+            <td>
+                <input type="text" id="cajaCP" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Provincia:</label>
+            </td>
+            <td>
+                <input type="text" id="cajaProvincia" />
+            </td>
+            <td>
+                <label>NIF:</label>
+            </td>
+            <td>
+                <input type="text" id="cajaNIF" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" style="text-align:center">
+                <br />
+                <input type="button" id="botonRegistrar" value="REGISTRAR" />
+            </td>
+            <td>
+                <input type="file" accept="image/*" id="selector" />
+            </td>
+        </tr>
+    </table>
     <div id="respuestaServer"></div>
     <script>
         var petAjax = new XMLHttpRequest();
+        var fichero;
 
-        function hacerPeticionAjax(){
-            var fichero = document.getElementById("selector").files[0];
-            var lector = new FileReader(fichero);
+        function hacerPeticionAjax() {
+            //JSON.stringfy convierte el objeto json a texto plano directamente
+            var usuJSON = JSON.stringify({
+                "Nombre": document.getElementById("cajaNombre").value,
+                "Apellido": document.getElementById("cajaApellido").value,
+                "Direccion": document.getElementById("cajaDireccion").value,
+                "NIF": document.getElementById("cajaNIF").value,
+                "CP": document.getElementById("cajaCP").value,
+                "Provincia": document.getElementById("cajaProvincia").value,
+                "Login": document.getElementById("cajaLogin").value,
+                "Password": document.getElementById("cajaPassword").value
+            });
+
             var Datos = new FormData();
-            Datos.append("fichero", lector); //agrego de forma individual todos los objetos que yo quiera mandar al servidor
+            //mando objeto json y la imagen que el usuario ha seleccionado
+            Datos.append("usuario", usuJSON);
+            Datos.append("fichero", fichero);
 
             petAjax.onreadystatechange = function () {
-                if(petAjax.readyState == 4 && petAjax.status==200){
+                if (petAjax.readyState == 4 && petAjax.status == 200) {
                     var respuesta = JSON.parse(this.responseText);
-                    //respuesta objeto JSON: {"codigo":0, "mensaje":"...."}
+
                     if (respuesta.codigo == 0) {
+                        document.getElementById("respuestaServer").appendChild(document.createTextNode(respuesta.mensaje));
+                    } else if (respuesta.codigo == 1) {
                         document.getElementById("respuestaServer").appendChild(document.createTextNode(respuesta.mensaje));
                     }
                 }
             }
             petAjax.open('POST', 'http://localhost:2125/Upload.aspx', true);
-            petAjax.setRequestHeader("Content-Type", "multipart/form-data")
+            //petAjax.setRequestHeader("Content-Type", "multipart/form-data")
             petAjax.send(Datos);
         }
-        
-        
-        document.getElementById("selector").addEventListener("change", hacerPeticionAjax, false);
+        document.getElementById("botonRegistrar").addEventListener("click", hacerPeticionAjax, false);
 
-
+        document.getElementById("selector").addEventListener("change", function () {
+            fichero = document.getElementById("selector").files[0];
+        }, false);
 
     </script>
 </body>
