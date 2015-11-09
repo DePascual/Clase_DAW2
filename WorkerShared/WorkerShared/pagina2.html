@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+	<meta charset="utf-8" />
+</head>
+<body>
+    <div id="moviendose">
+        <p>Esto es un párrafo..............</p>
+    </div>
+    <div id="resultado"></div>
+    <script>
+        var miHilo = new SharedWorker("miWorker.js");
+        miHilo.port.addEventListener("message", function (e) {
+            document.getElementById("resultado").appendChild(document.createTextNode(e.data));
+        }, false)
+        miHilo.port.start();
+        miHilo.port.postMessage("datosJSON2.json");
+    </script>
+</body>
+</html>
