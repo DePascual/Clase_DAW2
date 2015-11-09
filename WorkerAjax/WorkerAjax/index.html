@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <div id="moviendose">
+        <label id="etiquetaInquieta">me muevo...</label>
+    </div>
+    <div id="resultado"></div>
+    <script>
+        //lanzar worker que genere un FileReader para leer un fichero
+        var etiqueta = document.getElementById("moviendose");
+        etiqueta.style.position = "relative";
+        var posx = 0;
+        function moverCaja() {
+
+            etiqueta.style.left = posx + 'px';
+            posx++;
+        }
+
+        window.setInterval(moverCaja, 20);
+
+        var miHilo = new Worker("miWorker.js");
+        miHilo.addEventListener("message", function (ev) {
+            document.getElementById("resultado").appendChild(document.createTextNode(ev.data));
+        }, false);
+        miHilo.postMessage("urlDatos.json");
+    </script>
+</body>
+</html>
