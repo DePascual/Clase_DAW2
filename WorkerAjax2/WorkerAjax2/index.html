@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <div id="formulario">
+        <h3>PÁGINA DE REGISTRO</h3>
+        <hr />
+        <br />
+        <table style="margin-bottom:5px; ">
+            <tr>
+                <td>
+                    <label>Nombre:</label>
+                </td>
+                <td>
+                    <input type="text" id="cajaNombre" />
+                </td>
+                <td>
+                    <label>Login:</label>
+                </td>
+                <td>
+                    <input type="text" id="cajaLogin" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Apellido:</label>
+                </td>
+                <td>
+                    <input type="text" id="cajaApellido" />
+                </td>
+                <td>
+                    <label>Password:</label>
+                </td>
+                <td>
+                    <input type="text" id="cajaPassword" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Direccion:</label>
+                </td>
+                <td>
+                    <input type="text" id="cajaDireccion" />
+                </td>
+                <td>
+                    <label>C.P.:</label>
+                </td>
+                <td>
+                    <input type="text" id="cajaCP" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Provincia:</label>
+                </td>
+                <td>
+                    <input type="text" id="cajaProvincia" />
+                </td>
+                <td>
+                    <label>NIF:</label>
+                </td>
+                <td>
+                    <input type="text" id="cajaNIF" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" style="text-align:center">
+                    <br />
+                    <input type="button" id="botonRegistrar" value="REGISTRAR" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="resultado"></div>
+
+    <script>
+        var miHilo = new Worker("miWorker.js");
+        miHilo.addEventListener("message", function (ev) {
+            document.getElementById("resultado").appendChild(document.createTextNode(ev.data));
+        }, false);
+
+        miHilo.postMessage("datosLectura.txt");
+    </script>
+
+</body>
+</html>
