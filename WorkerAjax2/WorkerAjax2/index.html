@@ -68,9 +68,13 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="4" style="text-align:center">
+                <td colspan="2" style="text-align:center">
                     <br />
                     <input type="button" id="botonRegistrar" value="REGISTRAR" />
+                </td>
+                <td colspan="2" style="text-align:center">
+                    <br />
+                    <input type="file" id="selector" accept="text/*" />
                 </td>
             </tr>
         </table>
@@ -78,12 +82,18 @@
     <div id="resultado"></div>
 
     <script>
-        var miHilo = new Worker("miWorker.js");
-        miHilo.addEventListener("message", function (ev) {
-            document.getElementById("resultado").appendChild(document.createTextNode(ev.data));
+        document.getElementById("selector").addEventListener("change", function (ev) {
+            var fichero = ev.target.files[0];
+
+            var miHilo = new Worker("miWorker.js");
+            miHilo.addEventListener("message", function (e) {
+                document.getElementById("resultado").appendChild(document.createTextNode(e.data));
+            }, false);
+
+            miHilo.postMessage(fichero);
+
         }, false);
 
-        miHilo.postMessage("datosLectura.txt");
     </script>
 
 </body>
