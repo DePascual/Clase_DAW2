@@ -1,0 +1,234 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <meta charset="utf-8" />
+    <title>MUSE HARDBIKES, como comprar</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <td>
+                <label for="nombre" id="labelNombre">Nombre:</label>
+                <label for="obligatorio" style="color:Red">*</label>
+            </td>
+            <td>
+                <input type="text" id="txtNombre" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="apellidos" id="labelApellidos">Apellidos:</label>
+            </td>
+            <td>
+                <input type="text" id="txtApellidos" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="email" id="labelEmail">E-mail:</label>
+                <label for="obligatorio" style="color:Red">*</label>
+            </td>
+            <td>
+                <input type="text" id="txtEmail" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="telefono" id="labelTelefono">Telefono:</label>
+            </td>
+            <td>
+                <input type="text" id="txtTelefono" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="modelo" id="labelModelo">Modelo de tu interes:</label>
+                <label for="obligatorio" style="color:Red">*</label>
+            </td>
+            <td>
+                <select id="modelo">
+                    <option>Muse Aedea 6650b</option>
+                    <option>Muse Kleio 6650b F.S.</option>
+                    <option>Muse Rhodia 29er</option>
+                    <option>Muse Aedea Superfly 650b</option>
+                    <option selected="selected">Selecciona tu modelo</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="acabado" id="labelAcabado">Acabado de tu interes:</label>
+                <label for="obligatorio" style="color:Red">*</label>
+            </td>
+            <td>
+                <select id="acabado">
+                    <option>Equipacion tipo V1</option>
+                    <option>Equipacion tipo V2</option>
+                    <option>Equipacion tipo V3</option>
+                    <option>Equipacion personalizada gama alta</option>
+                    <option>Equipacion personalizada gama media</option>
+                    <option>Equipacion personalizada gama baja</option>
+                    <option selected="selected">Selecciona equipacion</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <label for="comentarios" id="labelComentarios">Comentarios, preguntas...</label>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">              
+                <textarea type="textarea" id="comentarios" rows="4" cols="50">Tienes dudas? Escribe cualquier consulta aqui</textarea>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <label for="verificacion" id="labelVerificacion">Introduzca codigo de verificacion</label>
+                <label for="obligatorio" style="color:Red">*</label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="captcha" id="labelCaptcha"></label>
+            </td>
+            <td>
+                <input type="text" id="txtCaptcha" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="button" id="btnEnviar" value="Enviar" />
+            </td>
+            <td>
+                <input type="button" id="btnResetear" value="Resetear Formulario" />
+            </td>
+        </tr>
+    </table>
+
+    <script>
+
+        var contadorTrue = 0;
+
+        function CajaTexto() {
+            this.validado = false
+            this.contenido = ""
+        }
+
+        CajaTexto.prototype.validar = function (id) {
+            var patron = "";
+            var numero = "";
+            var indicador = "";
+
+            switch (id) {
+                case "txtNombre":
+                    patron = "[A-Z a-z]{3,}";
+                    numero = 15;
+                    break;
+                case "txtApellidos":
+                    patron = "[A-Z a-z]{3,}";
+                    numero = 20;
+                    break;
+                case "txtEmail":
+                    patron = /^([\da-z_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
+                    numero = 50;
+                    break;
+                case "txtTelefono":
+                    patron = /^((\+?34([ \t|\-])?)?[9|6|7]((\d{1}([ \t|\-])?[0-9]{3})|(\d{2}([ \t|\-])?[0-9]{2}))([ \t|\-])?[0-9]{2}([ \t|\-])?[0-9]{2})$/;
+                    numero = 10;
+                    break;
+                case "txtCaptcha":
+                    var captcha = document.getElementById("labelCaptcha").innerHTML;
+                    var txtCaptcha = document.getElementById("txtCaptcha").value;
+                    captcha == txtCaptcha ? indicador = 1 : indicador = 0;
+                    break;
+            }
+
+            if (id == "txtCaptcha") {
+                indicador == 1 ? this.validado = true : this.validado = false;
+            } else {
+                var expRegular = new RegExp(patron);
+                expRegular.test(this.contenido) == true && this.contenido.length < numero && this.contenido.length > 0 ? this.validado = true : this.validado = false;
+            }          
+        }
+
+        function validaCajasTexto() {
+            Array.prototype.slice.call(document.getElementsByTagName("input"), 0).forEach(function (el, pos, ar) {
+                if (el.getAttribute("type") == "text") {
+                    var nuevaCaja = new CajaTexto(el.getAttribute("id"));
+                    nuevaCaja.contenido = el.value;
+                    nuevaCaja.validar(el.getAttribute("id"));
+
+                    if (nuevaCaja.validado == false ) {
+                        el.style.borderColor = "red";
+                        el.style.backgroundColor = "#D0D0D0";
+                        el.value = "Campo incorrecto";
+                    } else {
+                        el.style.borderColor = "green";
+                        el.style.backgroundColor = "#FFFFFF";
+                        contadorTrue++;
+                    }
+                }
+            })
+            redirecciona();
+        }
+
+        function redirecciona() {
+            if (contadorTrue = 5) {
+                window.location.replace("http://localhost:1807/Bienvenida.html");
+            }         
+        }
+
+        function reset() {
+            Array.prototype.slice.call(document.getElementsByTagName("input"), 0).forEach(function (el, pos, ar) {
+                if (el.getAttribute("type") == "text") {
+                    window.alert("Borrando el elemento: " + el.getAttribute("id"));
+                    el.value = "";
+                }
+            })
+            document.getElementById("modelo").value = "Selecciona tu modelo";
+            document.getElementById("acabado").value = "Selecciona equipacion";
+            document.getElementById("comentarios").value = "Tienes dudas? Escribe cualquier consulta aqui";
+        };
+
+        function captcha() {
+            var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
+            var longitud = 6;
+            var captcha = "";
+            for (var i = 0; i < longitud; i++) {
+                var rnum = Math.floor(Math.random() * chars.length);
+                captcha += chars.substring(rnum, rnum + 1);
+            }           
+            return captcha;
+        }
+        document.getElementById("labelCaptcha").appendChild(document.createTextNode(captcha()));
+
+
+  //-----------------LLAMADAS A EVENTOS-----------------------------------------
+        document.getElementById("btnResetear").addEventListener("click", reset, false);
+        document.getElementById("btnEnviar").addEventListener("click", validaCajasTexto, false);
+        
+        //Array.prototype.slice.call(document.getElementsByTagName("input"), 0).forEach(function (el, pos, ar) {
+        //    if (el.getAttribute("type") == "text") {
+        //        document.getElementById(el.id).addEventListener("blur", validaCajasTexto, false);
+        //    }
+        //});
+
+        Array.prototype.slice.call(document.getElementsByTagName("input"), 0).forEach(function (el, pos, ar) {
+            if (el.getAttribute("type") == "text") {
+                document.getElementById(el.id).addEventListener("click", (function (a) {
+                    return function () {
+                        var textBox = a;
+                        textBox.style.borderColor = "black";
+                        textBox.style.backgroundColor = "white";
+                        textBox.value = "";
+                    }
+                })(el), false)
+            }
+        })
+                       
+    </script>
+</body>
+</html>
