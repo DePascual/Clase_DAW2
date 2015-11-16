@@ -81,17 +81,17 @@
 
             var filtro = document.getElementById("txtBox_Buscador").value == "" ? "" : haceXPath()
 
-            var nodoLibro = xmlDOC.getElementsByTagName("Libro");
-            var filas = "<table><tr><th>Titulo</th><th>Autor</th></tr>"
-            Array.prototype.slice.call(nodoLibro, 0).forEach(function (libro, pos, arr) {
-                filas += "<tr><td>" +
-                        libro.childNodes[1].childNodes[0].nodeValue +
-                        "</td><td>" +
-                         libro.childNodes[3].childNodes[0].nodeValue +
-                          "</td></tr>"
-            });
-            filas += "</table>"
-            document.getElementById("resultado").innerHTML = filas;
+            //var nodoLibro = xmlDOC.getElementsByTagName("Libro");
+            //var filas = "<table><tr><th>Titulo</th><th>Autor</th></tr>"
+            //Array.prototype.slice.call(nodoLibro, 0).forEach(function (libro, pos, arr) {
+            //    filas += "<tr><td>" +
+            //            libro.childNodes[1].childNodes[0].nodeValue +
+            //            "</td><td>" +
+            //             libro.childNodes[3].childNodes[0].nodeValue +
+            //              "</td></tr>"
+            //});
+            //filas += "</table>"
+            //document.getElementById("resultado").innerHTML = filas;
         }
 
         /*function radioButtonSeleccionado() {

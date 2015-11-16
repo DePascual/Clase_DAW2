@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Libreria>
+  <Libro categoria="Informatica">
+    <Titulo>Programacion C#</Titulo>
+    <Autor>Manuel García</Autor>
+  </Libro>
+  <Libro categoria="Derecho">
+    <Titulo>Derecho Penal</Titulo>
+    <Autor>Teresa Rodriguez</Autor>
+  </Libro>
+  <Libro categoria="Gastronomia">
+    <Titulo>Cocina con Arguiñano</Titulo>
+    <Autor>Carlos Arguiñano</Autor>
+  </Libro>
+  <Libro categoria="Novela">
+    <Titulo>El quijote</Titulo>
+    <Autor>Miguel de Cervantes</Autor>
+  </Libro>
+</Libreria>

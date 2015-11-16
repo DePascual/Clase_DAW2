@@ -75,6 +75,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ficheros\Libreria.xml" />
+    <Content Include="ficheros\Libros.txt" />
     <Content Include="Inicio.aspx" />
     <Content Include="Inicio.html" />
     <Content Include="Servidor.aspx" />
