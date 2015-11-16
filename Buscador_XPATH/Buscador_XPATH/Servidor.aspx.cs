@@ -17,7 +17,7 @@ namespace Buscador_XPATH
         {
             int campoBusqueda = 0;
             string valorBuscado = "";
-            StreamReader fichero = new StreamReader(new FileStream(this.Server.MapPath("ficheros/Libros.txt"), FileMode.Open, FileAccess.Read));
+            StreamReader fichero = new StreamReader(new FileStream(this.Server.MapPath("ficheros/Libreria.txt"), FileMode.Open, FileAccess.Read));
             foreach (string clave in this.Request.QueryString.AllKeys)
             {
                 switch (clave)
