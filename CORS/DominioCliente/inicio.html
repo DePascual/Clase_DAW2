@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+	<meta charset="utf-8" />
+</head>
+<body>
+    <div id="resultado"></div>
+    <button id="btnPeticion">Enviar Peticion AJAX cross Domain</button>
+    <script>
+        var petAJAX;
+        function hacerPeticionAJAX() {
+            petAJAX = new XMLHttpRequest();
+            petAJAX.onreadystatechange = function () {
+                if (petAJAX.readyState == 4 && petAJAX.status == 200) {
+                    document.getElementById("resultado").appendChild(document.createTextNode(petAJAX.responseText));
+                }
+            };
+            petAJAX.open("GET", "http://localhost:2556/servicio.aspx?cliente=admin", true);
+            petAJAX.send();
+        }
+        document.getElementById("btnPeticion").addEventListener("click", hacerPeticionAJAX, false);       
+    </script>
+</body>
+</html>
