@@ -111,6 +111,8 @@
     <script>
 
         var contadorTrue = 0;
+        var contadorYA = 0;
+        var validados = new Array();
 
         function CajaTexto() {
             this.validado = false
@@ -168,14 +170,37 @@
                     } else {
                         el.style.borderColor = "green";
                         el.style.backgroundColor = "#FFFFFF";
-                        contadorTrue++;
+                        validados.push(el.id);
                     }
                 }
             })
-            redirecciona();
+
+            Array.prototype.slice.call(document.getElementsByTagName("select"), 0).forEach(function (el, pos, ar) {
+                var listadoOpcion = el.childNodes;
+
+                for (var i = 0; i < listadoOpcion.length; i++) {
+                    if (listadoOpcion[i].localName == "option") {
+                        if (listadoOpcion[i].attributes[0] != null) {
+                            if (listadoOpcion[i].attributes[0].value == "selected") {
+                                window.alert("opcion por defecto!!");
+                            }
+                        }
+                        
+                    }
+                }
+
+            });
+
+            redirecciona(validados);
         }
 
-        function redirecciona() {
+        function redirecciona(validados) {
+            for (var nombre in validados) {
+                if (validados[nombre] == "txtNombre" || validados[nombre] == "txtEmail" || validados[nombre] == "txtCaptcha") {
+                    contadorTrue++;
+                }
+            }
+
             if (contadorTrue = 5) {
                 window.location.replace("http://localhost:1807/Bienvenida.html");
             }         
@@ -206,28 +231,77 @@
         document.getElementById("labelCaptcha").appendChild(document.createTextNode(captcha()));
 
 
+        function validaYA(ev) {
+            //window.alert("voy a validar " + ev.target.id);
+            var caja = document.getElementById(ev.target.id);
+
+            var nuevaCaja = new CajaTexto(ev.target.id);
+            nuevaCaja.contenido = ev.target.value;
+            nuevaCaja.validar(ev.target.id);
+
+            if (nuevaCaja.validado == false) {
+                caja.style.borderColor = "red";
+                caja.style.borderStyle = "solid";
+                caja.style.backgroundColor = "#D0D0D0";
+            } else {
+                caja.style.borderColor = "green";
+                caja.style.borderStyle = "solid";
+                caja.style.backgroundColor = "#FFFFFF";
+                contadorYA++;
+            }
+         
+        }
+
+        function cambiaStyle(ev) {
+            var caja = document.getElementById(ev.target.id);
+
+            if (ev.target.style.borderColor == "red") {
+                ev.target.style.borderColor = "";
+                ev.target.style.borderStyle = "solid";
+                ev.target.style.backgroundColor = "white";
+            }
+        }
+
   //-----------------LLAMADAS A EVENTOS-----------------------------------------
         document.getElementById("btnResetear").addEventListener("click", reset, false);
         document.getElementById("btnEnviar").addEventListener("click", validaCajasTexto, false);
+
+
+        //var inputs = document.getElementsByTagName("input");
+        //var textBox;
+        //for (var i = 0; i < inputs.length; i++) {
+        //    if (inputs[i].type == "text") {
+        //        input[i].addEventListener("blur", validaYA, false);
+        //    }
+        //}
         
+        document.getElementById("txtNombre").addEventListener("blur", validaYA, false);
+        document.getElementById("txtApellidos").addEventListener("blur", validaYA, false);
+        document.getElementById("txtEmail").addEventListener("blur", validaYA, false);
+        document.getElementById("txtTelefono").addEventListener("blur", validaYA, false);
+        document.getElementById("txtCaptcha").addEventListener("blur", validaYA, false);
+
+        document.getElementById("txtNombre").addEventListener("focus", cambiaStyle, false);
+        document.getElementById("txtApellidos").addEventListener("focus", cambiaStyle, false);
+        document.getElementById("txtEmail").addEventListener("focus", cambiaStyle, false);
+        document.getElementById("txtTelefono").addEventListener("focus", cambiaStyle, false);
+        document.getElementById("txtCaptcha").addEventListener("focus", cambiaStyle, false);
+
         //Array.prototype.slice.call(document.getElementsByTagName("input"), 0).forEach(function (el, pos, ar) {
         //    if (el.getAttribute("type") == "text") {
-        //        document.getElementById(el.id).addEventListener("blur", validaCajasTexto, false);
+        //        document.getElementById(el.id).addEventListener("click", (function (a) {
+        //            return function () {
+        //                var textBox = a;
+        //                textBox = new CajaTexto(a.id);
+        //                if (textBox.validado == false) {
+        //                    textBox.style.borderColor = "";
+        //                    textBox.style.borderStyle = "solid";
+        //                    textBox.style.backgroundColor = "white";
+        //                }
+        //            }
+        //        })(el), false)
         //    }
-        //});
-
-        Array.prototype.slice.call(document.getElementsByTagName("input"), 0).forEach(function (el, pos, ar) {
-            if (el.getAttribute("type") == "text") {
-                document.getElementById(el.id).addEventListener("click", (function (a) {
-                    return function () {
-                        var textBox = a;
-                        textBox.style.borderColor = "black";
-                        textBox.style.backgroundColor = "white";
-                        textBox.value = "";
-                    }
-                })(el), false)
-            }
-        })
+        //})
                        
     </script>
 </body>
