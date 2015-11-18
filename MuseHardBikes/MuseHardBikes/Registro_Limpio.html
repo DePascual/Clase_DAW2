@@ -179,13 +179,8 @@
                 var listadoOpcion = el.childNodes;
 
                 for (var i = 0; i < listadoOpcion.length; i++) {
-                    if (listadoOpcion[i].localName == "option") {
-                        if (listadoOpcion[i].attributes[0] != null) {
-                            if (listadoOpcion[i].attributes[0].value == "selected") {
-                                window.alert("opcion por defecto!!");
-                            }
-                        }
-                        
+                    if (listadoOpcion[i].selected == true && listadoOpcion[i].defaultSelected == false) {
+                        validados.push(el.id);
                     }
                 }
 
@@ -196,14 +191,16 @@
 
         function redirecciona(validados) {
             for (var nombre in validados) {
-                if (validados[nombre] == "txtNombre" || validados[nombre] == "txtEmail" || validados[nombre] == "txtCaptcha") {
+                if (validados[nombre] == "txtNombre" || validados[nombre] == "txtEmail" || validados[nombre] == "txtCaptcha" || validados[nombre] == "modelo" || validados[nombre] == "acabado") {
                     contadorTrue++;
                 }
             }
 
-            if (contadorTrue = 5) {
+            if (contadorTrue == 5) {
                 window.location.replace("http://localhost:1807/Bienvenida.html");
-            }         
+            } else {
+                window.alert("Revisaaa")
+            }
         }
 
         function reset() {
@@ -232,7 +229,6 @@
 
 
         function validaYA(ev) {
-            //window.alert("voy a validar " + ev.target.id);
             var caja = document.getElementById(ev.target.id);
 
             var nuevaCaja = new CajaTexto(ev.target.id);
