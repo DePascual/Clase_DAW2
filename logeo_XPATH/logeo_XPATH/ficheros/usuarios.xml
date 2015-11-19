@@ -1,0 +1,11 @@
+﻿<usuarios>
+  <usuario>
+    <login>a</login>
+    <password>a</password>
+  </usuario>
+  <usuario>
+    <login>b</login>
+    <password>b</password>
+  </usuario>
+</usuarios>
+ 
