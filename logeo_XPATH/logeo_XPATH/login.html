@@ -59,12 +59,12 @@
                     if (petAjax.responseXML) {
                         XMLDoc = petAjax.responseXML;
                         cargarDatos(XMLDoc);
+
+                    } else {
+                        var parseadorStringXml = new DOMParser();
+                        XMLDoc = parseadorStringXml.parseFromString(petAjax.responseText, "text/xml");
+                        cargarDatos(XMLDoc);
                     }
-                    //} else {
-                    //    var parseadorStringXml = new DOMParser();
-                    //    XMLDoc = parseadorStringXml.parseFromString(petAjax.responseText, "text/xml");
-                    //    cargarDatos(XMLDoc);
-                    //}
                 }
             };
 
@@ -72,39 +72,39 @@
             petAjax.setRequestHeader("Content-Type", "application/xml");
             petAjax.send();
 
-
-            //try {
-            //    petAjax = new XMLHttpRequest();
-            //} catch (e) {
-            //    ["MsXML2.XMLHTTP.6.0", "MsXML2.XMLHTTP.5.0", "MsXML2.XMLHTTP.4.0"].forEach(function (el, pos, ar) {
-            //        petAjax = new ActiveX(el);
-            //    });
-            //}
-
-            //petAjax = new XMLHttpRequest();
-            //petAjax.onreadystatechange = function () {
-            //    if (petAjax.readyState == 4 && petAjax.status == 200) {
-            //        if (petAjax.responseXML) { //si la respuesta de la petición viene en formato XML, cargo XMLDoc con ello
-            //            cargarDatos(petAjax.responseXML);
-            //        } else { //si la respuesta falla o está mal formada, vendrá como String, con DOMParser().parseFromString convierto la respuesta a tipo XML manualmente
-            //            var parseadorStringXml = new DOMParser();
-            //            cargarDatos(parseadorStringXml.parseFromString(petAjax.responseText, "text/xml"));
-            //        }
-            //    }
-            //};
-            //petAjax.open("GET", 'http://localhost:2037/Servidor.aspx', true);
-            //petAjax.setRequestHeader("Content-Type", "application/xml");
-            //petAjax.send(null); //no el mando nada, quiero cargar en XMLDoc, todo el doc XML
-
-            //petAjax.setRequestHeader("Content-Type", "application/xml")
-            //var user = "login=" + document.getElementById("textLogin").value + "$pass=" + document.getElementById("textPass").value;
-            //petAjax.send(user);
         }
+        //try {
+        //    petAjax = new XMLHttpRequest();
+        //} catch (e) {
+        //    ["MsXML2.XMLHTTP.6.0", "MsXML2.XMLHTTP.5.0", "MsXML2.XMLHTTP.4.0"].forEach(function (el, pos, ar) {
+        //        petAjax = new ActiveX(el);
+        //    });
+        //}
+
+        //petAjax = new XMLHttpRequest();
+        //petAjax.onreadystatechange = function () {
+        //    if (petAjax.readyState == 4 && petAjax.status == 200) {
+        //        if (petAjax.responseXML) { //si la respuesta de la petición viene en formato XML, cargo XMLDoc con ello
+        //            cargarDatos(petAjax.responseXML);
+        //        } else { //si la respuesta falla o está mal formada, vendrá como String, con DOMParser().parseFromString convierto la respuesta a tipo XML manualmente
+        //            var parseadorStringXml = new DOMParser();
+        //            cargarDatos(parseadorStringXml.parseFromString(petAjax.responseText, "text/xml"));
+        //        }
+        //    }
+        //};
+        //petAjax.open("GET", 'http://localhost:2037/Servidor.aspx', true);
+        //petAjax.setRequestHeader("Content-Type", "application/xml");
+        //petAjax.send(null); //no el mando nada, quiero cargar en XMLDoc, todo el doc XML
+
+        //petAjax.setRequestHeader("Content-Type", "application/xml")
+        //var user = "login=" + document.getElementById("textLogin").value + "$pass=" + document.getElementById("textPass").value;
+        //petAjax.send(user);
+
 
         function cargarDatos(XMLDoc) {
-            var listaUsers = document.evaluate("usuario[login='" + document.getElementById("textLogin").value + "'and password='" + document.getElementById("textPass").value + "']", usuario, null, XPathResult.ANY_TYPE, null);
+            var listaUsers = document.evaluate("usuario[login='" + document.getElementById("textLogin").value + "'and password='" + document.getElementById("textPass").value + "']", XMLDoc, null, XPathResult.BOOLEAN_TYPE, null);
 
-            if (listaUsers == true) {
+            if (listaUsers.booleanValue == true) {
                 window.alert("El usuario existe!!");
             } else {
                 window.alert("ERROR....no existe ese usuario");
