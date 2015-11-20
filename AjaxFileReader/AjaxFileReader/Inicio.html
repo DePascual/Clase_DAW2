@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿ <!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -74,6 +74,7 @@
         </tr>
     </table>
     <div id="respuestaServer"></div>
+    <div id="resultado"></div>
     <script>
         var petAjax = new XMLHttpRequest();
         var fichero;
@@ -115,6 +116,19 @@
 
         document.getElementById("selector").addEventListener("change", function () {
             fichero = document.getElementById("selector").files[0];
+
+            Array.prototype.slice.call(document.getElementById("resultado").childNodes).forEach(function (el, pos, ar) {
+                if (el != null) {
+                    document.getElementById("resultado").removeChild(el);
+                }
+            })
+            
+            var imagen = document.createElement("img");
+            imagen.setAttribute("src", URL.createObjectURL(fichero));
+            imagen.setAttribute("height", "60px");
+            imagen.setAttribute("width", "40px");
+            document.getElementById("resultado").appendChild(imagen);
+            URL.revokeObjectURL(fichero);
         }, false);
 
     </script>
