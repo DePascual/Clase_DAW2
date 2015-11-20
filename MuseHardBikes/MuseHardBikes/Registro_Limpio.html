@@ -14,7 +14,7 @@
                 <label for="obligatorio" style="color:Red">*</label>
             </td>
             <td>
-                <input type="text" id="txtNombre" />
+                <input type="text" id="txtNombre" name="obli" />
             </td>
         </tr>
         <tr>
@@ -31,7 +31,7 @@
                 <label for="obligatorio" style="color:Red">*</label>
             </td>
             <td>
-                <input type="text" id="txtEmail" />
+                <input type="text" id="txtEmail" name="obli" />
             </td>
         </tr>
         <tr>
@@ -48,7 +48,7 @@
                 <label for="obligatorio" style="color:Red">*</label>
             </td>
             <td>
-                <select id="modelo">
+                <select id="modelo" name="obli">
                     <option>Muse Aedea 6650b</option>
                     <option>Muse Kleio 6650b F.S.</option>
                     <option>Muse Rhodia 29er</option>
@@ -63,7 +63,7 @@
                 <label for="obligatorio" style="color:Red">*</label>
             </td>
             <td>
-                <select id="acabado">
+                <select id="acabado" name="obli">
                     <option>Equipacion tipo V1</option>
                     <option>Equipacion tipo V2</option>
                     <option>Equipacion tipo V3</option>
@@ -80,7 +80,7 @@
             </td>
         </tr>
         <tr>
-            <td colspan="2">              
+            <td colspan="2">
                 <textarea type="textarea" id="comentarios" rows="4" cols="50">Tienes dudas? Escribe cualquier consulta aqui</textarea>
             </td>
         </tr>
@@ -95,7 +95,7 @@
                 <label for="captcha" id="labelCaptcha"></label>
             </td>
             <td>
-                <input type="text" id="txtCaptcha" />
+                <input type="text" id="txtCaptcha" name="obli" />
             </td>
         </tr>
         <tr>
@@ -112,11 +112,16 @@
 
         var contadorTrue = 0;
         var contadorYA = 0;
-        var validados = new Array();
+
 
         function CajaTexto() {
             this.validado = false
             this.contenido = ""
+        }
+
+        function SelectOption() {
+            this.validado = false
+            this.contenido = "";
         }
 
         CajaTexto.prototype.validar = function (id) {
@@ -153,55 +158,116 @@
             } else {
                 var expRegular = new RegExp(patron);
                 expRegular.test(this.contenido) == true && this.contenido.length < numero && this.contenido.length > 0 ? this.validado = true : this.validado = false;
-            }          
+            }
         }
 
-        function validaCajasTexto() {
-            Array.prototype.slice.call(document.getElementsByTagName("input"), 0).forEach(function (el, pos, ar) {
-                if (el.getAttribute("type") == "text") {
-                    var nuevaCaja = new CajaTexto(el.getAttribute("id"));
-                    nuevaCaja.contenido = el.value;
-                    nuevaCaja.validar(el.getAttribute("id"));
+        SelectOption.prototype.validar = function (id, texto) {
+            var seleccion = document.getElementById(id);
 
-                    if (nuevaCaja.validado == false ) {
+            switch (id) {
+                case "modelo":
+                    texto == "Selecciona tu modelo" ? this.validado = false : this.validado = true;
+                    break;
+                case "acabado":
+                    texto == "Selecciona equipacion" ? this.validado = false : this.validado = true;
+                    break;
+            }
+        }
+
+        //function validaCajasTexto() {
+        //    Array.prototype.slice.call(document.getElementsByTagName("input"), 0).forEach(function (el, pos, ar) {
+        //        if (el.getAttribute("type") == "text") {
+        //            var nuevaCaja = new CajaTexto(el.getAttribute("id"));
+        //            nuevaCaja.contenido = el.value;
+        //            nuevaCaja.validar(el.getAttribute("id"));
+        //            if (nuevaCaja.validado == false ) {
+        //                el.style.borderColor = "red";
+        //                el.style.backgroundColor = "#D0D0D0";
+        //            } else {
+        //                el.style.borderColor = "green";
+        //                el.style.backgroundColor = "#FFFFFF";
+        //                //if (validados.indexOf(el.id) == -1) {
+        //                //    validados.push(el.id);
+        //                //}
+        //            }
+        //        }
+        //    })
+        //    Array.prototype.slice.call(document.getElementsByTagName("select"), 0).forEach(function (el, pos, ar) {
+        //        var nuevoSelect = new SelectOption(el.getAttribute("id"));
+        //        nuevoSelect.contenido = el.value;
+        //        nuevoSelect.validar(el.getAttribute("id"), nuevoSelect.contenido);
+        //        if (nuevoSelect.validado == false) {
+        //            el.style.borderColor = "red";
+        //        }
+        //        //var listadoOpcion = el.childNodes;
+        //        //for (var i = 0; i < listadoOpcion.length; i++) {
+        //        //    if (listadoOpcion[i].selected == true && listadoOpcion[i].defaultSelected == false) {
+        //        //        nuevoSelect.validado = true;
+        //        //    } else {
+        //        //        nuevoSelect.validado = false;
+        //        //    }
+        //        //}
+        //    });
+        //    //redirecciona(validados);
+        //    obligatorios();
+        //}
+
+        function obligatorios() {
+            var validados = new Array();
+
+            Array.prototype.slice.call(document.getElementsByName("obli"), 0).forEach(function (el, pos, ar) {
+                if (el.type.contains("text")) {
+                    var cajaObligaroria = new CajaTexto(el.getAttribute("id"));
+                    cajaObligaroria.contenido = el.value;
+                    cajaObligaroria.validar(el.getAttribute("id"));
+                    validados.push(cajaObligaroria.validado);
+
+                    if (cajaObligaroria.validado == false) {
                         el.style.borderColor = "red";
                         el.style.backgroundColor = "#D0D0D0";
-                        el.value = "Campo incorrecto";
                     } else {
                         el.style.borderColor = "green";
                         el.style.backgroundColor = "#FFFFFF";
-                        validados.push(el.id);
+                    }
+
+                } else if (el.type.contains("select")) {
+                    var selectOptionObligatorio = new SelectOption(el.getAttribute("id"));
+                    selectOptionObligatorio.contenido = el.value;
+                    selectOptionObligatorio.validar(el.getAttribute("id"), selectOptionObligatorio.contenido);
+                    validados.push(selectOptionObligatorio.validado);
+
+                    if (selectOptionObligatorio.validado == false) {
+                        el.style.borderColor = "red";
+                        el.style.backgroundColor = "#D0D0D0";
+                    } else {
+                        el.style.borderColor = "green";
+                        el.style.backgroundColor = "#FFFFFF";
                     }
                 }
-            })
-
-            Array.prototype.slice.call(document.getElementsByTagName("select"), 0).forEach(function (el, pos, ar) {
-                var listadoOpcion = el.childNodes;
-
-                for (var i = 0; i < listadoOpcion.length; i++) {
-                    if (listadoOpcion[i].selected == true && listadoOpcion[i].defaultSelected == false) {
-                        validados.push(el.id);
-                    }
-                }
-
             });
 
-            redirecciona(validados);
-        }
-
-        function redirecciona(validados) {
-            for (var nombre in validados) {
-                if (validados[nombre] == "txtNombre" || validados[nombre] == "txtEmail" || validados[nombre] == "txtCaptcha" || validados[nombre] == "modelo" || validados[nombre] == "acabado") {
-                    contadorTrue++;
-                }
-            }
-
-            if (contadorTrue == 5) {
-                window.location.replace("http://localhost:1807/Bienvenida.html");
+            var validacion = validados.some(el => el == false);
+            if (validacion == true) {
+                window.alert("Hay algun obligatorio que no está validado");
             } else {
-                window.alert("Revisaaa")
+                window.alert("Correcto, PASAS!!");
             }
         }
+
+        //function redirecciona(validados) {
+        //    contadorTrue = 0;
+        //    for (var nombre in validados) {
+        //        if (validados[nombre] == "txtNombre" || validados[nombre] == "txtEmail" || validados[nombre] == "txtCaptcha" || validados[nombre] == "modelo" || validados[nombre] == "acabado") {
+        //            contadorTrue++;
+        //        }
+        //    }
+        //    if (contadorTrue == 5) {
+        //        window.location.replace("http://localhost:1807/Bienvenida.html");
+        //    } else {
+        //        validados = new Array();
+        //        window.alert("Revisaaa")
+        //    }
+        //}
 
         function reset() {
             Array.prototype.slice.call(document.getElementsByTagName("input"), 0).forEach(function (el, pos, ar) {
@@ -222,7 +288,7 @@
             for (var i = 0; i < longitud; i++) {
                 var rnum = Math.floor(Math.random() * chars.length);
                 captcha += chars.substring(rnum, rnum + 1);
-            }           
+            }
             return captcha;
         }
         document.getElementById("labelCaptcha").appendChild(document.createTextNode(captcha()));
@@ -245,7 +311,7 @@
                 caja.style.backgroundColor = "#FFFFFF";
                 contadorYA++;
             }
-         
+
         }
 
         function cambiaStyle(ev) {
@@ -258,9 +324,9 @@
             }
         }
 
-  //-----------------LLAMADAS A EVENTOS-----------------------------------------
+        //-----------------LLAMADAS A EVENTOS-----------------------------------------
         document.getElementById("btnResetear").addEventListener("click", reset, false);
-        document.getElementById("btnEnviar").addEventListener("click", validaCajasTexto, false);
+        document.getElementById("btnEnviar").addEventListener("click", obligatorios, false);
 
 
         //var inputs = document.getElementsByTagName("input");
@@ -270,7 +336,7 @@
         //        input[i].addEventListener("blur", validaYA, false);
         //    }
         //}
-        
+
         document.getElementById("txtNombre").addEventListener("blur", validaYA, false);
         document.getElementById("txtApellidos").addEventListener("blur", validaYA, false);
         document.getElementById("txtEmail").addEventListener("blur", validaYA, false);
@@ -298,7 +364,7 @@
         //        })(el), false)
         //    }
         //})
-                       
+
     </script>
 </body>
 </html>
