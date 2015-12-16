@@ -109,6 +109,20 @@
     </form>
     <script>
 
+
+        jQuery.fn.miPlugin = function (args) {
+            var cajaTexto = {
+                validado : false,
+                contenido : ""
+            }
+
+            jQuery.extend(cajaTexto, args);
+
+            this.each(function () {
+
+            })
+        }
+
         function CajaTexto() {
             this.validado = false
             this.contenido = ""
@@ -135,12 +149,6 @@
 
         miCajaTexto = null;
 
-        $.fn.validarCajaTexto = function () {
-            var caja = new CajaTexto(this);
-            caja.validar(id);
-            miCajaTexto = caja;
-            return caja;
-        }
 
        
 
