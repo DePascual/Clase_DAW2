@@ -4,6 +4,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>PÁGINA LOGEO MERCADONA</title>
     <style>
+        body {
+            font-family: Calibri;
+        }
+
         .tablaLogin {
             background-color: #ffad33;
             border: #cc5100 1px solid;
@@ -22,57 +26,55 @@
             font-weight: bold;
         }
 
-        .error {
-            border: 2px solid #cc0000;
+        #formLogin .error {
+            color: red;
+        }
+
+        #formLogin .valid {
+            color: #008000;
         }
     </style>
-    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="\Scripts\jquery-2.1.4.js"></script>
+    <script src="\Scripts\jquery.validate.js"></script>
 </head>
-<body style="font-family:Calibri">
-    <form id="form1">
-        <div id="cabecera">
-            <table style="width: 100%">
-                <tr>
-                    <td>
-                        <img src="\imagenes\cabeceraLogin.PNG" alt="" />
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div id="contenido">
-            <table style="width:100%">
-                <tr>
-                    <td>
-                        <a style="color:black; font-weight:bold" href="Vista_Registro.html">Registrarse como cliente </a>
-                    </td>
-                    <td rowspan="3">
+<body>
+
+    <div id="cabecera">
+        <table style="width: 100%">
+            <tr>
+                <td>
+                    <img src="\imagenes\cabeceraLogin.PNG" alt="" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="contenido">
+        <table style="width:100%">
+            <tr>
+                <td>
+                    <a style="color:black; font-weight:bold" href="Vista_Registro.html">Registrarse como cliente </a>
+                </td>
+                <td rowspan="3">
+                    <form id="formLogin">
                         <table class="tablaLogin">
                             <tr>
-                                <td colspan="2">
-                                    <!--Validation Sumary-->
-                                </td>
+                                <td colspan="2"></td>
                             </tr>
                             <tr>
-                                <td style="">
-                                    Email/Usuario de acceso:
+                                <td>
+                                    <label for="textBoxUsuario">Email/Usuario de acceso:<span>(Campo obligatorio)</span></label>
                                 </td>
                                 <td>
-                                    <!--
-                                    <asp:RequiredFieldValidator ID="RequiredFieldValidatorLogin"  ErrorMessage="Debe introducir su Usuario de acceso" ControlToValidate="textBoxUsuario" ForeColor="Red" ValidateRequestMode="Disabled" Display="None"></asp:RequiredFieldValidator>
-                                    <asp:RegularExpressionValidator ID="RegularExpressionVMail"  ControlToValidate="textBoxUsuario" ErrorMessage="El email debe tener un formato correcto" ForeColor="Red" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" ValidateRequestMode="Disabled" Display="None"></asp:RegularExpressionValidator>
-                                    -->
-                                    <input class="required" id="textBoxUsuario" type="text" />
+                                    <input id="textBoxUsuario" name="textBoxUsuario" type="email" />
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    Contraseña:
+                                    <label for="textBoxPass">Contraseña:<span>(Campo obligatorio)</span></label>
+
                                 </td>
                                 <td>
-                                    <!--
-                                    <asp:RequiredFieldValidator ID="RequiredFieldValidatorPass"  ErrorMessage="Debe introducir una contraseña" ControlToValidate="textBoxPass" ForeColor="Red" ValidateRequestMode="Disabled" Display="None"></asp:RequiredFieldValidator>
-                                    -->
-                                    <input class="required" id="textBoxPass" type="password" />
+                                    <input id="textBoxPass" name="textBoxPass" type="password" />
                                 </td>
                             </tr>
                             <tr>
@@ -81,114 +83,89 @@
                             <tr>
                                 <td></td>
                                 <td style="text-align:right">
-                                    <input class="botones" id="buttonEntrar" type="button" value="Entrar" />
+                                    <input class="botones" id="buttonEntrar" name="buttonEntrar" type="button" value="Entrar" />
                                 </td>
                             </tr>
                             <tr>
                                 <td></td>
                                 <td style="text-align:right">
-                                    <input class="botones" id="buttonPassOlvidada" type="button" value="¿Ha olvidado el usuario la contraseña?" />
+                                    <input class="botones" id="buttonPassOlvidada" name="buttonPassOlvidada" type="button" value="¿Ha olvidado el usuario la contraseña?" />
                                 </td>
                             </tr>
                         </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td>
 
-                        <a style="color:black; font-weight:bold" href="Vista_Registro.html">Cliente registrado</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <a style="color:black; font-weight:bold" href="Vista_Registro.html">Condiciones generales de compra </a>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </form>
+                    <a style="color:black; font-weight:bold" href="Vista_Registro.html">Cliente registrado</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a style="color:black; font-weight:bold" href="Vista_Registro.html">Condiciones generales de compra </a>
+                </td>
+            </tr>
+        </table>
+    </div>
+
     <script>
+        var form = $("#formLogin");
 
+        form.validate({
+            debug: true,
+            success: function (label) {
+                label.addClass("valid").text("Ok!")
+            },
+            onkeyup: false,
 
-        jQuery.fn.miPlugin = function (args) {
-            var cajaTexto = {
-                validado : false,
-                contenido : ""
-            }
-
-            jQuery.extend(cajaTexto, args);
-
-            this.each(function () {
-
-            })
-        }
-
-        function CajaTexto() {
-            this.validado = false
-            this.contenido = ""
-        }
-
-        CajaTexto.prototype.validar = function (id) {
-            var patron = "";
-            var numero = "";
-
-            switch (id) {
-                case "textBoxUsuario":
-                    patron = /^([\da-z_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
-                    numero = 50;
-                    break;
-                case "textBoxPass":
-                    patron = "[A-Z a-z]{3,}";
-                    numero = 8;
-                    break;
-            }
-
-            var expRegular = new RegExp(patron);
-            expRegular.test(this.contenido) == true && this.contenido.length < numero && this.contenido.length > 0 ? this.validado = true : this.validado = false;
-        }
-
-        miCajaTexto = null;
-
-
-       
-
-        $("#buttonEntrar").click(function () {
-            $(".required").each(function () {
-                window.alert("El id del elemento es: " + $(this).attr("id"));
-
-                var validados = new Array();
-
-               /* var cajaObligatoria = new CajaTexto($(this).attr("id"));
-                cajaObligatoria.contenido = $(this).val();*/
-
-                miCajaTexto = null;
-
-                $.fn.validarCajaTexto = function () {
-                    var cajaObligatoria = new CajaTexto($(this).attr("id"));
-                    cajaObligatoria.contenido = $(this).val();
-                    cajaObligatoria.validar($(this).attr("id"));
-                    miCajaTexto = cajaObligatoria;
-                    return cajaObligatoria;
+            rules: {
+                textBoxUsuario: {
+                    required: true,
+                    email: true,
+                },
+                textBoxPass: {
+                    required: true,
+                    minlength: 8,
                 }
-               
-                //cajaObligaroria.validar($(this).attr("id"));
+            },
+            messages: {
 
-                window.alert("La caja actual está validada?=>" + cajaObligatoria.validado);
+                textBoxUsuario: {
+                    required: "Campo obligatorio",
+                    email: "Formato incorrecto"
+                },
 
-                validados.push(cajaObligaroria.validado);
+                textBoxPass: {
+                    required: "Campo obligatorio",
+                    minlength: function (p, element) {
+                        return "Minimo " + p + "caracteres";
+                    }
 
-                if (cajaObligaroria.validado == false) {
-                    $(this).addClass("error");
                 }
 
-                var validacion = validados.some(el => el == false);
-                if (validacion == true) {
-                    window.alert("Hay algun obligatorio que no está validado");
-                } else {
-                    window.alert("Correcto, PASAS!!");
-                }                
+            }
+        })
+
+        $("#buttonEntrar").click(function (e) {
+            //form.valid() ? window.alert("La validacion es true?=>" + form.valid()) : window.alert("La validacion es false?=>" + form.valid())
+            e.preventDefault();
+            var usuJSON = {
+                Login : $("#textBoxUsuario").val(),
+                Password: $("#textBoxPass").val()
+            }
+
+            var json = JSON.stringify(usuJSON);
+
+            $.getJSON("http://localhost:32426/Servidor.aspx", json, function (resp) {
+                console.log(resp);
             })
         });
+
+
+
+
     </script>
 </body>
 </html>

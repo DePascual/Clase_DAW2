@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<clientes>
+  <cliente>
+    <login>
+      karol_pinilla@hotmail.com
+    </login>
+    <password>
+      12345678
+    </password>
+  </cliente>
+</clientes>
