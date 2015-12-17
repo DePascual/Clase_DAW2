@@ -55,7 +55,7 @@
                     <a style="color:black; font-weight:bold" href="Vista_Registro.html">Registrarse como cliente </a>
                 </td>
                 <td rowspan="3">
-                    <form id="formLogin">
+                    <form id="formLogin" name="formLogin">
                         <table class="tablaLogin">
                             <tr>
                                 <td colspan="2"></td>
@@ -151,15 +151,27 @@
         $("#buttonEntrar").click(function (e) {
             //form.valid() ? window.alert("La validacion es true?=>" + form.valid()) : window.alert("La validacion es false?=>" + form.valid())
             e.preventDefault();
+
             var usuJSON = {
-                Login : $("#textBoxUsuario").val(),
+                Login: $("#textBoxUsuario").val(),
                 Password: $("#textBoxPass").val()
             }
 
-            //var json = JSON.stringify(usuJSON);
+            $.ajax({
+                //Se ejecuta antes de mandar la petición
 
-            $.post("ServidorLogin.aspx", usuJSON, function (resp) {
-                console.log(resp);
+                url: '/ServidorLogin.aspx/existeUsuario',
+                type: "POST",
+                data: JSON.stringify(usuJSON),
+                contentType: "application/json: charset=utf-8",
+                dataType: "json",
+                success: function (respuesta) { //=>Lo que devuelve la petición AJAX
+                    window.alert(respuesta.d)
+                },
+
+                error: function (result) {
+                    window.alert("ERROR " + result.status + ' ' + result.statusText);
+                }
             })
         });
 

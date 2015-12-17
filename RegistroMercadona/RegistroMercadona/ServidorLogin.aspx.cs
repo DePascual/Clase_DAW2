@@ -42,10 +42,10 @@ namespace RegistroMercadona
             this.Response.End();*/
         }
 
-        [HttpPost]
-        public ActionResult existeUsuario(string usuJSON)
+        [WebMethod]
+        public static string existeUsuario(string Login, string Password)
         {
-            string login = usuJSON.Split(new char[] { ':' })[0];
+            /*string login = usuJSON.Split(new char[] { ':' })[0];
             string pass = usuJSON.Split(new char[] { ':' })[1];
 
             Boolean encontrado = (from unalinea in new StreamReader(this.Server.MapPath("ficheros/usuarios.txt")).ReadToEnd().Split(new char[] { '\r', '\n' }).Where(una => una.Length > 0)
@@ -61,10 +61,12 @@ namespace RegistroMercadona
             else
             {
                 respuesta = "{\"codigo\":1,\"mensaje\":\"no existe usuario o password\"}";
-            }
+            }*/
 
-            return Json(respuesta);
+            return  string.Format("Bienvenido al mundo AJAX {0} {1} ");
         }
+
+
 
 
 
