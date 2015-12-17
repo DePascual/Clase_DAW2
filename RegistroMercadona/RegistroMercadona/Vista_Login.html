@@ -156,9 +156,9 @@
                 Password: $("#textBoxPass").val()
             }
 
-            var json = JSON.stringify(usuJSON);
+            //var json = JSON.stringify(usuJSON);
 
-            $.getJSON("http://localhost:32426/Servidor.aspx", json, function (resp) {
+            $.post("ServidorLogin.aspx", usuJSON, function (resp) {
                 console.log(resp);
             })
         });
