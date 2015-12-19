@@ -151,7 +151,6 @@
         $("#buttonEntrar").click(function (e) {
 
             if (form.valid() == true) {
-                //form.valid() ? window.alert("La validacion es true?=>" + form.valid()) :)
                 e.preventDefault();
 
                 var usuario = {
@@ -172,8 +171,8 @@
                         if (resp.codigo == 1) {
                             window.location.replace("http://localhost:32426/Compra.aspx");
                         } else if (resp.codigo == 0) {
-                            window.location.replace("http://localhost:32426/Registro.html");
-                        }                       
+                            window.location.replace("http://localhost:32426/Vista_Registro.html");
+                        }
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         window.alert("Uppss!! Ha ocurrido un error");
@@ -183,10 +182,6 @@
                 window.alert("Revise los campos!!");
             }
         });
-
-
-
-
     </script>
 </body>
 </html>

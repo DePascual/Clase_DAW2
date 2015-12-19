@@ -1,11 +1,263 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title></title>
-	<meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>PÁGINA REGISTRO MERCADONA</title>
+    <style>
+        body {
+            font-family: Calibri;
+            background-color: #008000;
+        }
+
+        .tablaRegistro {
+            width: 100%;
+            background-color: #ffffff;
+        }
+
+        .titulo {
+            color: #008000;
+            font-size: larger;
+            font-weight: bold;
+        }
+
+        .campoObligatorio {
+            color: #660000;
+        }
+
+        .texto {
+            color: #008000;
+        }
+    </style>
+    <script src="\Scripts\jquery-2.1.4.js"></script>
+    <script src="\Scripts\jquery.validate.js"></script>
+    <meta charset="utf-8" />
 </head>
 <body>
+    <form id="formuRegistro" name="formuRegistro">
+        <div style="height: 100px"></div>
+        <div>
+            <table class="tablaRegistro">
+                <tr>
+                    <td colspan="3" style="background-color: #ffad33; height: 30px">
+                        <label for="titulo" class="titulo">FICHA DE ALTA DE CLIENTE</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <label for="campoObligatorio" class="campoObligatorio">*-Campo Obligarotio</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <!--<asp:RequiredFieldValidator ID="RequiredFieldValidatorNombre"  ErrorMessage="El Nombre es obligatorio" ControlToValidate="textBoxNombre" ForeColor="Red" ValidationGroup="alta" ValidateRequestMode="Disabled"></asp:RequiredFieldValidator>-->
+                        <label for="textBoxNombre" class="texto"><span class="campoObligatorio">*</span>-Nombre:</label>
+                        <input id="textBoxNombre" name="textBoxNombre" type="text" />
+                    </td>
+                    <td>
+                        <label for="textBoxApellido1" class="texto">-Primer Apellido:</label>
+                        <input id="textBoxApellido1" name="textBoxApellido1" type="text" />
+                    </td>
+                    <td>
+                        <label for="textBoxApellido2" class="texto">-Segundo Apellido:</label>
+                        <input id="textBoxApellido2" name="textBoxApellido2" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <!--<asp:RequiredFieldValidator ID="RequiredFieldValidatorDNI"  ErrorMessage="El Tipo de Identificación es obligatorio" ControlToValidate="DropDownDNI" ForeColor="Red" ValidationGroup="alta" ValidateRequestMode="Disabled"></asp:RequiredFieldValidator>-->
+                        <label for="tipoID" class="texto"><span class="campoObligatorio">*</span>-Tipo De Identifiacación:</label>
 
+                        <select id="selectID" name="dropDownID"></select>
+
+                        <!-- CARGA DEL SELECT=>TIPOS DE IDENTIFICACIÓN -->
+                        <script>
+                            var tiposID = ['DNI', 'Tarjeta Residente', 'Pasaporte', 'CIF']
+
+                            $.each(tiposID, function (i, value) {
+                                $('#selectID').append($("<option></option>").val(value).html(value));
+                            });
+                        </script>
+
+                    </td>
+                    <td class="auto-style1">
+                        <!--<asp:RequiredFieldValidator ID="RequiredFieldValidatorIdentificacion" ErrorMessage="La Identificación es obligatorio" ControlToValidate="textBoxIdentificacion" ForeColor="Red" ValidationGroup="alta" ValidateRequestMode="Disabled"></asp:RequiredFieldValidator>-->
+                        <label for="textBoxIdentificacion" class="texto"><span class="campoObligatorio">*</span>-Identificación:</label>
+                        <input id="textBoxIdentificacion" name="textBoxIdentificacion" type="text" />
+                    </td>
+                    <td>
+                        <input id="checkBox1RecibirInfo" name="checkBox1RecibirInfo" value="informacion" type="checkbox">Deseo recibir información comercial
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <!--<asp:RequiredFieldValidator ID="RequiredFieldValidatorEmail" ErrorMessage="El Email es obligatorio" ControlToValidate="textBoxEmail" ForeColor="Red" ValidationGroup="alta" ValidateRequestMode="Disabled"></asp:RequiredFieldValidator>
+                        <asp:RegularExpressionValidator ID="RegularExpressionVMail" ControlToValidate="textBoxEmail" ErrorMessage="El email debe tener un formato correcto" ForeColor="Red" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" ValidationGroup="alta" ValidateRequestMode="Disabled"></asp:RegularExpressionValidator>
+                        <asp:CompareValidator ID="CompareValidatorEmails" ErrorMessage="Los Emails deben ser iguales" ControlToValidate="textBoxEmail" ForeColor="Red" ControlToCompare="textBoxConfirmaEmail" ValidationGroup="alta" ValidateRequestMode="Disabled"></asp:CompareValidator>-->
+
+                        <label for="textBoxEmail" class="texto"><span class="campoObligatorio">*</span>-Email:</label>
+                        <input id="textBoxEmail" name="textBoxEmail" type="email" />
+                    </td>
+                    <td>
+                        <!--<asp:RequiredFieldValidator ID="RequiredFieldValidatorConfirmaEmail" ErrorMessage="El Email es obligatorio" ControlToValidate="textBoxEmail" ForeColor="Red" ValidationGroup="alta" ValidateRequestMode="Disabled"></asp:RequiredFieldValidator>
+                        <asp:RegularExpressionValidator ID="RegularExpressionValidatorConfirmaEmail" ControlToValidate="textBoxEmail" ErrorMessage="El email debe tener un formato correcto" ForeColor="Red" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" ValidationGroup="alta" ValidateRequestMode="Disabled"></asp:RegularExpressionValidator>-->
+
+                        <label for="textBoxConfirmaEmail" class="texto"><span class="campoObligatorio">*</span>-Confirmación Email:</label>
+                        <input id="textBoxConfirmaEmail" name="textBoxConfirmaEmail" type="email" />
+
+                    </td>
+                    <td>
+                        <!--<asp:RequiredFieldValidator ID="RequiredFieldValidatorDia" ErrorMessage="El dia es obligatorio" ControlToValidate="DropDownListDia" ForeColor="Red" ValidationGroup="alta" ValidateRequestMode="Disabled"></asp:RequiredFieldValidator>
+                        <asp:RequiredFieldValidator ID="RequiredFieldValidatorMes" ErrorMessage="El mes es obligatorio" ControlToValidate="DropDownListMes" ForeColor="Red" ValidationGroup="alta" ValidateRequestMode="Disabled"></asp:RequiredFieldValidator>
+                        <asp:RequiredFieldValidator ID="RequiredFieldValidatorAnyo" ErrorMessage="El año es obligatorio" ControlToValidate="DropDownListAnyo" ForeColor="Red" ValidationGroup="alta" ValidateRequestMode="Disabled"></asp:RequiredFieldValidator>-->
+
+                        <label for="fechaNacimiento" class="texto"><span class="campoObligatorio">*</span>-Fecha de nacimiento:</label>
+
+                        <select id="selectDia" name="selectDia"></select>
+                        <select id="selectMes" name="selectMes"></select>
+                        <select id="selectAnyo" name="selectAnyo"></select>
+
+                        <!-- CARGA DE LOS SELECT=>FECHA DE NACIMIENTO -->
+                        <script>
+                            //Meses
+                            var mesesYDias = [
+                                {
+                                    mes: "Enero",
+                                    dias: 31
+                                },
+                                {
+                                    mes: "Febrero",
+                                    dias: 28
+                                },
+                                {
+                                    mes: "Marzo",
+                                    dias: 31
+                                },
+                                {
+                                    mes: "Abril",
+                                    dias: 30
+                                },
+                                {
+                                    mes: "Mayo",
+                                    dias: 30
+                                },
+                                {
+                                    mes: "Junio",
+                                    dias: 30
+                                },
+                                {
+                                    mes: "Julio",
+                                    dias: 31
+                                },
+                                {
+                                    mes: "Agosto",
+                                    dias: 31
+                                },
+                                {
+                                    mes: "Septiembre",
+                                    dias: 30
+                                },
+                                {
+                                    mes: "Octubre",
+                                    dias: 31
+                                },
+                                {
+                                    mes: "Noviembre",
+                                    dias: 30
+                                },
+                                {
+                                    mes: "Diciembre",
+                                    dias: 31
+                                },
+
+                            ];
+
+                            $.each(mesesYDias, function (i, value) {
+                                $('#selectMes').append($("<option></option>").val(value.mes).html(value.mes));                               
+                            });
+
+                            $('#selectMes').change(function () {
+                                var mesSelect = $("#selectMes option:selected").text();                               
+                                $('#selectDia').empty();
+                                $.each(mesesYDias, function (i, value) {
+                                    if (value.mes == mesSelect) {
+                                        var dias = value.dias;
+
+                                        for (var j = 1; j <= dias; j++) {
+                                            $('#selectDia').append($("<option></option>").val(j).html(j));
+                                        }
+                                    }
+                                });
+                            })
+
+                            for (var k = new Date().getFullYear(); k > 1900; k--) {
+                                $('#selectAnyo').append($("<option></option>").val(k).html(k));
+                            }
+
+                        </script>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <!-- ESTÁ HECHO HASTA AQUI!! -->
+                        <asp:RequiredFieldValidator ID="RequiredFieldValidatorPass" ErrorMessage="La contraseña es obligatoria" ControlToValidate="textBoxPass" ForeColor="Red" ValidationGroup="alta" ValidateRequestMode="Disabled"></asp:RequiredFieldValidator>
+                        <asp:CompareValidator ID="CompareValidatorPass" ErrorMessage="Las contraseñas deben ser iguales" ControlToValidate="textBoxPass" ForeColor="Red" ControlToCompare="textBoxConfPass" ValidationGroup="alta" ValidateRequestMode="Disabled"></asp:CompareValidator>
+                        <p style="color: #008000">*-Contraseña:</p>
+                        <asp:TextBox ID="textBoxPass" Font-Names="Calibri" Font-Size="Medium" TextMode="Password"></asp:TextBox>
+                    </td>
+                    <td class="auto-style1">
+                        <asp:RequiredFieldValidator ID="RequiredFieldValidatorConfPass" ErrorMessage="La contraseña es obligatoria" ControlToValidate="textBoxEmail" ForeColor="Red" ValidationGroup="alta" ValidateRequestMode="Disabled"></asp:RequiredFieldValidator>
+                        <p style="color: #008000">*-Confirmación Contraseña:</p>
+                        <asp:TextBox ID="textBoxConfPass" Font-Names="Calibri" Font-Size="Medium" TextMode="Password"></asp:TextBox>
+                    </td>
+                </tr>
+                <tr style="background-color: #ffffcc">
+                    <td>
+                        <p style="color: #008000">*-Direcciones:</p>
+                    </td>
+                    <td>
+                        <asp:RequiredFieldValidator ID="RequiredFieldValidatorDirecciones" ErrorMessage="Al menos debe existir una direccion" ControlToValidate="DropDownListDirecciones" ForeColor="Red" ValidationGroup="alta" ValidateRequestMode="Disabled"></asp:RequiredFieldValidator>
+                        <asp:DropDownList ID="DropDownListDirecciones" Height="22px" Width="410px"></asp:DropDownList>
+                    </td>
+                    <td>
+                        <asp:Button ID="buttonAltaD" Text="Alta" BorderColor="Green" BorderWidth="2px" Font-Bold="True" ForeColor="Green" />
+                        <asp:Label ID="Label1" Text=""></asp:Label>
+                        <asp:Button ID="buttonModificarD" Text="Modificar" BorderColor="Green" BorderWidth="2px" Font-Bold="True" ForeColor="Green" />
+                        <asp:Label ID="Label2" Text=""></asp:Label>
+                        <asp:Button ID="buttonBajaD" Text="Baja" BorderColor="Green" BorderWidth="2px" Font-Bold="True" ForeColor="Green" />
+                    </td>
+                </tr>
+                <tr style="background-color: #ffffcc">
+                    <td>
+                        <p style="color: #008000">*-Teléfonos:</p>
+                    </td>
+                    <td>
+                        <asp:RequiredFieldValidator ID="RequiredFieldValidatorTelefonos" ErrorMessage="Al menos debe existir un teléfono" ControlToValidate="DropDownListTelefonos" ForeColor="Red" ValidationGroup="alta" ValidateRequestMode="Disabled"></asp:RequiredFieldValidator>
+                        <asp:DropDownList ID="DropDownListTelefonos" Height="16px" Width="418px"></asp:DropDownList>
+                    </td>
+                    <td>
+                        <asp:Button ID="buttonAltaT" Text="Alta" BorderColor="Green" BorderWidth="2px" Font-Bold="True" ForeColor="Green" />
+                        <asp:Label ID="Label3" Text=""></asp:Label>
+                        <asp:Button ID="buttonModificarT" Text="Modificar" BorderColor="Green" BorderWidth="2px" Font-Bold="True" ForeColor="Green" />
+                        <asp:Label ID="Label4" Text=""></asp:Label>
+                        <asp:Button ID="buttonBajaT" Text="Baja" BorderColor="Green" BorderWidth="2px" Font-Bold="True" ForeColor="Green" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p style="color: #008000">En caso de falta de producto:</p>
+                        <asp:DropDownList ID="DropDownListFaltaProduct" Height="16px" Width="234px"></asp:DropDownList>
+                    </td>
+                    <td>
+                        <asp:Button ID="buttonEnviarAlta" Text="Enviar Alta" BorderColor="Green" BorderWidth="2px" Font-Bold="True" ForeColor="Green" ValidationGroup="alta" />
+                        <asp:Label ID="Label5" Text=""></asp:Label>
+                        <asp:Button ID="buttonCerrar" Text="Cerrar" BorderColor="Green" BorderWidth="2px" Font-Bold="True" ForeColor="Green" />
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+        <%--<asp:TextBox ID="seguimientoTextBox" Height="200px" TextMode="MultiLine" Width="634px"></asp:TextBox>--%>
+    </form>
 </body>
 </html>
