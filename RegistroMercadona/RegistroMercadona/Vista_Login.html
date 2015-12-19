@@ -149,30 +149,39 @@
         })
 
         $("#buttonEntrar").click(function (e) {
-            //form.valid() ? window.alert("La validacion es true?=>" + form.valid()) : window.alert("La validacion es false?=>" + form.valid())
-            e.preventDefault();
 
-            var usuJSON = {
-                Login: $("#textBoxUsuario").val(),
-                Password: $("#textBoxPass").val()
-            }
+            if (form.valid() == true) {
+                //form.valid() ? window.alert("La validacion es true?=>" + form.valid()) :)
+                e.preventDefault();
 
-            $.ajax({
-                //Se ejecuta antes de mandar la petición
-
-                url: '/ServidorLogin.aspx/existeUsuario',
-                type: "POST",
-                data: JSON.stringify(usuJSON),
-                contentType: "application/json: charset=utf-8",
-                dataType: "json",
-                success: function (respuesta) { //=>Lo que devuelve la petición AJAX
-                    window.alert(respuesta.d)
-                },
-
-                error: function (result) {
-                    window.alert("ERROR " + result.status + ' ' + result.statusText);
+                var usuario = {
+                    Login: $("#textBoxUsuario").val(),
+                    Password: $("#textBoxPass").val()
                 }
-            })
+
+                var stringUsuJSON = JSON.stringify(usuario);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Servidor.asmx/respuesta',
+                    data: "{'usuario':" + stringUsuJSON + "}",
+                    contentType: 'application/json; utf-8',
+                    dataType: 'json',
+                    success: function (respuesta) {
+                        var resp = JSON.parse(respuesta.d);
+                        if (resp.codigo == 1) {
+                            window.location.replace("http://localhost:32426/Compra.aspx");
+                        } else if (resp.codigo == 0) {
+                            window.location.replace("http://localhost:32426/Registro.html");
+                        }                       
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        window.alert("Uppss!! Ha ocurrido un error");
+                    }
+                });
+            } else {
+                window.alert("Revise los campos!!");
+            }
         });
 
 
