@@ -14,6 +14,12 @@
             background-color: #ffffff;
         }
 
+        .tablaDirecciones .tablaTelefonos {
+            width: 100%;
+            background-color: #ffffff;
+            padding: 20px;
+        }
+
         .titulo {
             color: #008000;
             font-size: larger;
@@ -46,6 +52,9 @@
     <script src="\Scripts\combodate.js"></script>
     <script src="\Scripts\moment.js"></script>
     <script src="\Scripts\moment-with-locales.js"></script>
+    <script src="\Scripts\jquery.magnific-popup.js"></script>
+    <script src="\Scripts\zepto.min.js"></script>
+    <link href="Content/magnific-popup.css" rel="stylesheet" />
     <meta charset="utf-8" />
 </head>
 <body>
@@ -112,22 +121,28 @@
                     </td>
                     <td>
                         <label for="fechaNacimiento" class="texto"><span class="campoObligatorio">*</span>-Fecha de nacimiento:</label>
-                        <input id="date" data-format="DD-MM-YYYY" data-template="D MMMMs YYYY" name="date" type="text">
+                        <input id="fechaNacimientoInput" data-format="DD-MM-YYYY" data-template="D MMMM YYYY" name="date" type="text">
                         <script>
                             moment.locale('es');
                             $(function () {
-                                $('#date').combodate({                                    
+                                $('#fechaNacimientoInput').combodate({
                                     value: new Date(),
                                     minYear: 1900,
                                     maxYear: moment().format('YYYY')
                                 });
                             });
+
+                            //$('#fechaNacimientoInput').change(function () {
+                            //    var fecha = $('#fechaNacimientoInput').val();
+                            //    window.alert(fecha);
+                            //})
+
                         </script>
 
                         <!-- CARGA DE FECHA SIN COMBODATE -->
                         <!--<select id="selectDia" name="selectDia"></select>
                         <select id="selectMes" name="selectMes"></select>
-                        <select id="selectAnyo" name="selectAnyo"></select>                      
+                        <select id="selectAnyo" name="selectAnyo"></select>
                         <script>
                             //Meses
                             var mesesYDias = [
@@ -210,19 +225,12 @@
                 </tr>
                 <tr>
                     <td>
-
-                        <!--<asp:RequiredFieldValidator ID="RequiredFieldValidatorPass" ErrorMessage="La contraseña es obligatoria" ControlToValidate="textBoxPass" ForeColor="Red" ValidationGroup="alta" ValidateRequestMode="Disabled"></asp:RequiredFieldValidator>
-                        <asp:CompareValidator ID="CompareValidatorPass" ErrorMessage="Las contraseñas deben ser iguales" ControlToValidate="textBoxPass" ForeColor="Red" ControlToCompare="textBoxConfPass" ValidationGroup="alta" ValidateRequestMode="Disabled"></asp:CompareValidator>-->
                         <label for="textBoxPass" class="texto"><span class="campoObligatorio">*</span>-Contraseña:</label>
                         <input id="textBoxPass" name="textBoxPass" type="password" />
-
                     </td>
                     <td>
-                        <!--<asp:RequiredFieldValidator ID="RequiredFieldValidatorConfPass" ErrorMessage="La contraseña es obligatoria" ControlToValidate="textBoxEmail" ForeColor="Red" ValidationGroup="alta" ValidateRequestMode="Disabled"></asp:RequiredFieldValidator>-->
-
                         <label for="textBoxConfPass" class="texto"><span class="campoObligatorio">*</span>-Confirmación Contraseña:</label>
                         <input id="textBoxConfPass" name="textBoxConfPass" type="password" />
-
                     </td>
                 </tr>
                 <tr style="background-color: #ffffcc">
@@ -230,11 +238,11 @@
                         <label for="direcciones" class="texto"><span class="campoObligatorio">*</span>-Direcciones:</label>
                     </td>
                     <td>
-                        <!--<asp:RequiredFieldValidator ID="RequiredFieldValidatorDirecciones" ErrorMessage="Al menos debe existir una direccion" ControlToValidate="DropDownListDirecciones" ForeColor="Red" ValidationGroup="alta" ValidateRequestMode="Disabled"></asp:RequiredFieldValidator>-->
                         <select id="selectDirecciones" name="selectDirecciones"></select>
                     </td>
                     <td>
-                        <input class="botones" id="buttonAltaD" name="buttonAltaD" type="button" value="Alta" />
+                        <button class="botonAltaD" id="buttonAltaD" href="#formuDirecciones" style="border: 2px solid #008000; font: bold 15px Calibri">Alta</button>
+
                         <input class="botones" id="buttonModificarD" name="buttonModificarD" type="button" value="Modificar" />
                         <input class="botones" id="buttonBajaD" name="buttonBajaD" type="button" value="Baja" />
 
@@ -245,11 +253,11 @@
                         <label for="telefonos" class="texto"><span class="campoObligatorio">*</span>-Teléfonos:</label>
                     </td>
                     <td>
-                        <!--<asp:RequiredFieldValidator ID="RequiredFieldValidatorTelefonos" ErrorMessage="Al menos debe existir un teléfono" ControlToValidate="DropDownListTelefonos" ForeColor="Red" ValidationGroup="alta" ValidateRequestMode="Disabled"></asp:RequiredFieldValidator>-->
                         <select id="selectTelefonos" name="selectTelefonos"></select>
                     </td>
                     <td>
-                        <input class="botones" id="buttonAltaT" name="buttonAltaT" type="button" value="Alta" />
+                        <button class="botonAltaT" id="botonAltaT" href="#formuTelefonos" style="border: 2px solid #008000; font: bold 15px Calibri">Alta</button>
+
                         <input class="botones" id="buttonModificarT" name="buttonModificarT" type="button" value="Modificar" />
                         <input class="botones" id="buttonBajaT" name="buttonBajaT" type="button" value="Baja" />
                     </td>
@@ -275,232 +283,379 @@
                 </tr>
             </table>
         </div>
-        <script>
-            var form = $("#formuRegistro");
+    </form>
 
-            jQuery.validator.addMethod("lettersonly", function (value, element) {
-                return this.optional(element) || /^[a-z]+$/i.test(value);
-            }, "Solo letras");
+    <!-- <div> popUp Direcciones -->
+    <div id="formuDirecciones" class="mfp-hide white-popup-block">
+        <form id="formuDirecciones">
+            <table class="tablaDirecciones">
+                <tr>
+                    <td colspan="5" style="background-color: #ffad33; height: 30px">
+                        <label for="titulo" class="titulo">FICHA DE ALTA DIRECCIÓN DE ENTREGA</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <label for="campoObligatorio" class="campoObligatorio">*-Campo Obligarotio</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="tipoVia" class="texto">-Tipo de Vía:</label>
+                        <select id="selectVia" name="selectVia"></select>
+                        <!-- CARGA DEL SELECT=>TIPOS DE VIA -->
+                        <script>
+                            var tiposVia = ['Alameda', 'Avenida', 'Calle', 'Edificio', 'Glorieta', 'Paseo', 'Plaza', 'Via', 'Urbanización'];
+                            $.each(tiposVia, function (i, value) {
+                                $('#selectVia').append($("<option></option>").val(i).html(value));
+                            });
+                        </script>
 
-            jQuery.validator.addMethod("nifES", function (value, element) {
-                "use strict";
+                    </td>
+                    <td>
+                        <label for="textBoxNombreVia" class="texto"><span class="campoObligatorio">*</span>-Nombre Vía:</label>
+                        <input id="textBoxNombreVia" name="textBoxNombreVia" type="text" />
+                    </td>
+                    <td>
+                        <label for="textBoxNumero" class="texto">-Nº/Km:</label>
+                        <input id="textBoxNumero" name="textBoxNumero" type="text" />
+                    </td>
+                    <td>
+                        <label for="textBoxPiso" class="texto">-Piso:</label>
+                        <input id="textBoxPiso" name="textBoxPiso" type="text" />
+                    </td>
+                    <td>
+                        <label for="textBoxPuerta" class="texto">-Puerta:</label>
+                        <input id="textBoxPuerta" name="textBoxPuerta" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="textBoxLocalidad" class="texto"><span class="campoObligatorio">*</span>-Localidad:</label>
+                        <input id="textBoxLocalidad" name="textBoxLocalidad" type="text" />
+                    </td>
 
-                value = value.toUpperCase();
+                    <td>
+                        <label for="textBoxCP" class="texto">-Código Postal:</label>
+                        <input id="textBoxCP" name="textBoxCP" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <input class="botones" id="buttonAceptarD" name="buttonAceptar" type="button" value="Aceptar" />
+                        <input class="botones" id="buttonCancelarD" name="buttonCancelar" type="button" value="Cancelar" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
 
-                // Basic format test
-                if (!value.match('((^[A-Z]{1}[0-9]{7}[A-Z0-9]{1}$|^[T]{1}[A-Z0-9]{8}$)|^[0-9]{8}[A-Z]{1}$)')) {
-                    return false;
-                }
+    <script>
+        $('.botonAltaD').magnificPopup({
+            type: 'inline',
+            preloader: false,
+            modal: true
+        });
 
-                // Test NIF
-                if (/^[0-9]{8}[A-Z]{1}$/.test(value)) {
-                    return ("TRWAGMYFPDXBNJZSQVHLCKE".charAt(value.substring(8, 0) % 23) === value.charAt(8));
-                }
-                // Test specials NIF (starts with K, L or M)
-                if (/^[KLM]{1}/.test(value)) {
-                    return (value[8] === String.fromCharCode(64));
-                }
+        $.validator.addMethod("postalcodeES", function (value, element) {
+            return this.optional(element) || /^\d{5}$/.test(value);
+        }, "Formato de Código Postal incorrecto");
 
+       
+
+    </script>
+
+    <!-- <div> popUp Telefonos -->
+    <div id="formuTelefonos" class="mfp-hide white-popup-block">
+        <form id="formuTelefonos">
+            <table class="tablaTelefonos">
+                <tr>
+                    <td colspan="5" style="background-color: #ffad33; height: 30px">
+                        <label for="titulo" class="titulo">FICHA DE ALTA DE TELÉFONO</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <label for="campoObligatorio" class="campoObligatorio">*-Campo Obligarotio</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="textBoxTelefono" class="texto"><span class="campoObligatorio">*</span>-Teléfono:</label>
+                        <input id="textBoxTelefono" name="textBoxTelefono" type="text" />
+
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right">
+                        <input class="botones" id="buttonAceptarT" name="buttonAceptar" type="button" value="Aceptar" />
+                        <input class="botones" id="buttonCancelarT" name="buttonCancelar" type="button" value="Cancelar" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <script>
+        $('.botonAltaT').magnificPopup({
+            type: 'inline',
+            preloader: false,
+            modal: true
+        });
+
+        $('#buttonCancelarT').click(function (e) {
+            $.magnificPopup.close();
+        });
+    </script>
+
+
+
+    <script>
+        var form = $("#formuRegistro");
+
+        //MÉTODOS AÑADIDOS PARA VALIDACIÓN-------------------------------------------------------------------------------------
+
+        jQuery.validator.addMethod("lettersonly", function (value, element) {
+            return this.optional(element) || /^[a-z]+$/i.test(value);
+        }, "Solo letras");
+
+        jQuery.validator.addMethod("nifES", function (value, element) {
+            "use strict";
+
+            value = value.toUpperCase();
+
+            // Basic format test
+            if (!value.match('((^[A-Z]{1}[0-9]{7}[A-Z0-9]{1}$|^[T]{1}[A-Z0-9]{8}$)|^[0-9]{8}[A-Z]{1}$)')) {
                 return false;
+            }
 
-            }, "Formato de DNI/Pasaporte incorrecto");
+            // Test NIF
+            if (/^[0-9]{8}[A-Z]{1}$/.test(value)) {
+                return ("TRWAGMYFPDXBNJZSQVHLCKE".charAt(value.substring(8, 0) % 23) === value.charAt(8));
+            }
+            // Test specials NIF (starts with K, L or M)
+            if (/^[KLM]{1}/.test(value)) {
+                return (value[8] === String.fromCharCode(64));
+            }
 
+            return false;
 
-            jQuery.validator.addMethod("nieES", function (value, element) {
-                "use strict";
+        }, "Formato de DNI/Pasaporte incorrecto");
 
-                value = value.toUpperCase();
+        jQuery.validator.addMethod("nieES", function (value, element) {
+            "use strict";
 
-                // Basic format test
-                if (!value.match('((^[A-Z]{1}[0-9]{7}[A-Z0-9]{1}$|^[T]{1}[A-Z0-9]{8}$)|^[0-9]{8}[A-Z]{1}$)')) {
-                    return false;
-                }
+            value = value.toUpperCase();
 
-                // Test NIE
-                //T
-                if (/^[T]{1}/.test(value)) {
-                    return (value[8] === /^[T]{1}[A-Z0-9]{8}$/.test(value));
-                }
-
-                //XYZ
-                if (/^[XYZ]{1}/.test(value)) {
-                    return (
-                     value[8] === "TRWAGMYFPDXBNJZSQVHLCKE".charAt(
-                      value.replace('X', '0')
-                       .replace('Y', '1')
-                       .replace('Z', '2')
-                       .substring(0, 8) % 23
-                     )
-                    );
-                }
-
+            // Basic format test
+            if (!value.match('((^[A-Z]{1}[0-9]{7}[A-Z0-9]{1}$|^[T]{1}[A-Z0-9]{8}$)|^[0-9]{8}[A-Z]{1}$)')) {
                 return false;
+            }
 
-            }, "Formato de NIE incorrecto");
+            // Test NIE
+            //T
+            if (/^[T]{1}/.test(value)) {
+                return (value[8] === /^[T]{1}[A-Z0-9]{8}$/.test(value));
+            }
 
+            //XYZ
+            if (/^[XYZ]{1}/.test(value)) {
+                return (
+                 value[8] === "TRWAGMYFPDXBNJZSQVHLCKE".charAt(
+                  value.replace('X', '0')
+                   .replace('Y', '1')
+                   .replace('Z', '2')
+                   .substring(0, 8) % 23
+                 )
+                );
+            }
 
+            return false;
 
-            jQuery.validator.addMethod("cifES", function (value, element) {
-                "use strict";
+        }, "Formato de NIE incorrecto");
 
-                var sum,
-                 num = [],
-                 controlDigit;
+        jQuery.validator.addMethod("cifES", function (value, element) {
+            "use strict";
 
-                value = value.toUpperCase();
+            var sum,
+             num = [],
+             controlDigit;
 
-                // Basic format test
-                if (!value.match('((^[A-Z]{1}[0-9]{7}[A-Z0-9]{1}$|^[T]{1}[A-Z0-9]{8}$)|^[0-9]{8}[A-Z]{1}$)')) {
-                    return false;
-                }
+            value = value.toUpperCase();
 
-                for (var i = 0; i < 9; i++) {
-                    num[i] = parseInt(value.charAt(i), 10);
-                }
-
-                // Algorithm for checking CIF codes
-                sum = num[2] + num[4] + num[6];
-                for (var count = 1; count < 8; count += 2) {
-                    var tmp = (2 * num[count]).toString(),
-                     secondDigit = tmp.charAt(1);
-
-                    sum += parseInt(tmp.charAt(0), 10) + (secondDigit === '' ? 0 : parseInt(secondDigit, 10));
-                }
-
-                // CIF test
-                if (/^[ABCDEFGHJNPQRSUVW]{1}/.test(value)) {
-                    sum += '';
-                    controlDigit = 10 - parseInt(sum.charAt(sum.length - 1), 10);
-                    value += controlDigit;
-                    return (num[8].toString() === String.fromCharCode(64 + controlDigit) || num[8].toString() === value.charAt(value.length - 1));
-                }
-
+            // Basic format test
+            if (!value.match('((^[A-Z]{1}[0-9]{7}[A-Z0-9]{1}$|^[T]{1}[A-Z0-9]{8}$)|^[0-9]{8}[A-Z]{1}$)')) {
                 return false;
+            }
 
-            }, "Formato de CIF incorrecto");
+            for (var i = 0; i < 9; i++) {
+                num[i] = parseInt(value.charAt(i), 10);
+            }
 
-            jQuery.validator.addMethod("fechaNacimientoDate", function (value, element) {
-                var diaSelect = $("#selectDia option:selected").text();
-                if (diaSelect != 0) {
+            // Algorithm for checking CIF codes
+            sum = num[2] + num[4] + num[6];
+            for (var count = 1; count < 8; count += 2) {
+                var tmp = (2 * num[count]).toString(),
+                 secondDigit = tmp.charAt(1);
 
-                }
+                sum += parseInt(tmp.charAt(0), 10) + (secondDigit === '' ? 0 : parseInt(secondDigit, 10));
+            }
 
+            // CIF test
+            if (/^[ABCDEFGHJNPQRSUVW]{1}/.test(value)) {
+                sum += '';
+                controlDigit = 10 - parseInt(sum.charAt(sum.length - 1), 10);
+                value += controlDigit;
+                return (num[8].toString() === String.fromCharCode(64 + controlDigit) || num[8].toString() === value.charAt(value.length - 1));
+            }
 
-            }, "Seleccione una fecha de nacimiento correcta");
+            return false;
 
+        }, "Formato de CIF incorrecto");
 
-            form.validate({
-                debug: true,
-                success: function (label) {
-                    label.addClass("valid").text("Ok!")
+        //VALIDACIÓN-----------------------------------------------------------------------------------------------------------
+
+        form.validate({
+            debug: true,
+            success: function (label) {
+                label.addClass("valid").text("Ok!")
+            },
+            onkeyup: false,
+
+            rules: {
+                textBoxNombre: {
+                    required: true,
+                    lettersonly: true,
+                    minlength: 3,
+                    maxlength: 20,
                 },
-                onkeyup: false,
+                textBoxApellido1: {
+                    required: false,
+                    lettersonly: true,
+                    minlength: 3,
+                    maxlength: 20,
+                },
+                textBoxApellido2: {
+                    required: false,
+                    lettersonly: true,
+                    minlength: 3,
+                    maxlength: 20,
+                },
+                selectID: {
+                    required: true,
+                },
 
-                rules: {
-                    textBoxNombre: {
-                        required: true,
-                        lettersonly: true,
-                        minlength: 3,
-                        maxlength: 20,
-                    },
-                    textBoxApellido1: {
-                        required: false,
-                        lettersonly: true,
-                        minlength: 3,
-                        maxlength: 20,
-                    },
-                    textBoxApellido2: {
-                        required: false,
-                        lettersonly: true,
-                        minlength: 3,
-                        maxlength: 20,
-                    },
-                    selectID: {
-                        required: true,
-                    },
-
-                    textBoxIdentificacion: {
-                        required: true,
-                        nifES: {
-                            depends: function (element) {
-                                var idSelect = $("#selectID option:selected").text();
-                                if (idSelect == "DNI" || idSelect == "Pasaporte") {
-                                    return true;
-                                }
+                textBoxIdentificacion: {
+                    required: true,
+                    nifES: {
+                        depends: function (element) {
+                            var idSelect = $("#selectID option:selected").text();
+                            if (idSelect == "DNI" || idSelect == "Pasaporte") {
+                                return true;
                             }
-                        },
-                        nieES: {
-                            depends: function (element) {
-                                var idSelect = $("#selectID option:selected").text();
-                                if (idSelect == "Tarjeta Residente") {
-                                    return true;
-                                }
-                            }
-                        },
-
-                        cifES: {
-                            depends: function (element) {
-                                var idSelect = $("#selectID option:selected").text();
-                                if (idSelect == "CIF") {
-                                    return true;
-                                }
+                        }
+                    },
+                    nieES: {
+                        depends: function (element) {
+                            var idSelect = $("#selectID option:selected").text();
+                            if (idSelect == "Tarjeta Residente") {
+                                return true;
                             }
                         }
                     },
 
-                    textBoxEmail: {
-                        required: true,
-                        email: true
-                    },
-
-                    textBoxConfirmaEmail: {
-                        required: true,
-                        email: true,
-                        equalTo: "#textBoxEmail"
-                    },
-
-                    selectDia: {
-                        required: true
+                    cifES: {
+                        depends: function (element) {
+                            var idSelect = $("#selectID option:selected").text();
+                            if (idSelect == "CIF") {
+                                return true;
+                            }
+                        }
                     }
-
                 },
-                messages: {
 
-                    textBoxNombre: {
-                        required: "Campo obligatorio",
-                        minlength: "Minimo 3 caracteres",
-                        maxlength: "Máximo 20 caracteres"
-                    },
-                    textBoxApellido1: {
-                        minlength: "Minimo 3 caracteres",
-                        maxlength: "Máximo 20 caracteres"
-                    },
+                textBoxEmail: {
+                    required: true,
+                    email: true
+                },
 
-                    textBoxApellido2: {
-                        minlength: "Minimo 3 caracteres",
-                        maxlength: "Máximo 20 caracteres"
-                    },
-                    selectID: {
-                        required: "Campo obligatorio"
-                    },
+                textBoxConfirmaEmail: {
+                    required: true,
+                    email: true,
+                    equalTo: "#textBoxEmail"
+                },
 
-                    textBoxIdentificacion: {
-                        required: "Campo obligatorio"
-                    },
+                fechaNacimientoInput: {
+                    required: true
+                },
 
-                    textBoxEmail: {
-                        required: "Campo obligatorio",
-                        email: "Formato incorrecto",
-                    },
-                    textBoxConfirmaEmail: {
-                        required: "Campo obligatorio",
-                        email: "Formato incorrecto",
-                        equalTo: "Los emails deden ser iguales"
-                    }
+                textBoxPass: {
+                    required: true,
+                    minlength: 6
+                },
+
+                textBoxConfPass: {
+                    required: true,
+                    minlength: 6,
+                    equalTo: "#textBoxPass"
                 }
 
-            })
-        </script>
-    </form>
+            },
+            messages: {
+
+                textBoxNombre: {
+                    required: "Campo obligatorio",
+                    minlength: "Minimo 3 caracteres",
+                    maxlength: "Máximo 20 caracteres"
+                },
+                textBoxApellido1: {
+                    minlength: "Minimo 3 caracteres",
+                    maxlength: "Máximo 20 caracteres"
+                },
+
+                textBoxApellido2: {
+                    minlength: "Minimo 3 caracteres",
+                    maxlength: "Máximo 20 caracteres"
+                },
+                selectID: {
+                    required: "Campo obligatorio"
+                },
+
+                textBoxIdentificacion: {
+                    required: "Campo obligatorio"
+                },
+
+                textBoxEmail: {
+                    required: "Campo obligatorio",
+                    email: "Formato incorrecto",
+                },
+                textBoxConfirmaEmail: {
+                    required: "Campo obligatorio",
+                    email: "Formato incorrecto",
+                    equalTo: "Los emails deden ser iguales"
+                },
+
+                fechaNacimientoInput: {
+                    required: "Campo obligatorio",
+                },
+
+                textBoxPass: {
+                    required: "Campo obligatorio",
+                    minlength: "Minimo 6 caracteres",
+                },
+
+                textBoxConfPass: {
+                    required: "Campo obligatorio",
+                    minlength: "Minimo 6 caracteres",
+                    equalTo: "Las contraseñas deden ser iguales"
+                }
+            }
+
+        })
+
+    </script>
+
 </body>
 </html>
