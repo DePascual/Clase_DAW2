@@ -354,17 +354,129 @@
     </div>
 
     <script>
+        var direccionesUsuario = [];
+
         $('.botonAltaD').magnificPopup({
             type: 'inline',
             preloader: false,
             modal: true
         });
 
-        $.validator.addMethod("postalcodeES", function (value, element) {
-            return this.optional(element) || /^\d{5}$/.test(value);
-        }, "Formato de Código Postal incorrecto");
+        $('#buttonCancelarD').click(function (e) {
+            $.magnificPopup.close()
+        });
 
-       
+        $('#buttonAceptarD').click(function (e) {
+            e.preventDefault;
+            var direccion = []
+
+            if ($("#textBoxNombreVia").val() != "" && $("#textBoxLocalidad").val() != "") { //Compruebo si los campos obligatorios están rellenos
+                direccion.length = 0; //Limpio el array dirección, por si anteriormente hubiera dado de alta una direccion
+
+                var tipoVia = $("#selectVia option:selected").text();
+                direccion.push({
+                    key: "tipoVia",
+                    value: " " + tipoVia
+                });
+
+                $("#formuDirecciones").find(':text').each(function () {
+                    var elemento = this;
+                    switch (elemento.id) {
+
+
+                        case "textBoxNombreVia": {
+                            direccion.push({
+                                key: "nombreVia",
+                                value: " " + elemento.value
+                            });
+                            break;
+                        }
+
+                        case "textBoxNumero": {
+                            if (elemento.value != "") {
+                                direccion.push({
+                                    key: "numero",
+                                    value: " " + elemento.value
+                                });
+                            }
+                            break;
+                        }
+
+                        case "textBoxPiso": {
+                            if (elemento.value != "") {
+                                direccion.push({
+                                    key: "piso",
+                                    value: " " + elemento.value
+                                });
+                            }
+                            break;
+                        }
+                        case "textBoxPuerta": {
+                            if (elemento.value != "") {
+                                direccion.push({
+                                    key: "puerta",
+                                    value: " " + elemento.value
+                                });
+                            }
+                            break;
+                        }
+
+                        case "textBoxLocalidad": {
+                            direccion.push({
+                                key: "localidad",
+                                value: " " + elemento.value
+                            });
+                            break;
+                        }
+
+                        case "textBoxCP": {
+                            if (elemento.value != "") {
+                                direccion.push({
+                                    key: "CP",
+                                    value: " " + elemento.value
+                                });
+                            }
+                            break;
+                        }
+                    }
+                });
+
+                direccionesUsuario.push(direccion);
+
+                //COMPROBACIÓN DE LOS ARRAYS DE DIRECCIONES
+
+                //$.each(direccionesUsuario, function (index, value) {
+                //    var dir = "";
+                //    $.each(value, function (i, val) {
+                //        if (i != 0) {
+                //            dir += val.value;
+                //        }
+                //    });
+                //    window.alert("Direccion numero: " + index + "=>" + dir);
+                //});
+
+            } else {
+                window.alert("Los campos obligatorios deben ser rellenados");
+            }
+
+            var dir = "";
+            $.each(direccionesUsuario, function (index, value) {               
+                $.each(value, function (i, val) {
+                    dir = "";
+                    if (i != 0) {
+                        dir += val.value;
+                    }
+                });
+                window.alert("Direccion numero: " + index + "=>" + dir);
+            });
+
+            $('#selectDirecciones').append($("<option></option>").val(dir).html(dir));
+
+            $.magnificPopup.close();
+        });
+
+
+
 
     </script>
 
