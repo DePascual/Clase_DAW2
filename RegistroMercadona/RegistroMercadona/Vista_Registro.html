@@ -245,7 +245,7 @@
 
                         <button class="botonModificarD" id="buttonModificarD" name="buttonModificarD" href="#formuDirecciones" style="border: 2px solid #008000; font: bold 15px Calibri">Modificar</button>
 
-                        <input class="botones" id="buttonBajaD" name="buttonBajaD" type="button" value="Baja" />
+                        <button class="botonBajaD" id="buttonBajaD" name="buttonBajaD" href="#formuDirecciones" style="border: 2px solid #008000; font: bold 15px Calibri">Baja</button>
 
                     </td>
                 </tr>
@@ -353,9 +353,10 @@
             </table>
         </form>
     </div>
+    <!-- FUNCIONES PROPIAS: reset() y cargaArray() -->
     <script>
-        $.fn.reset = function () {
-            $("#formuDirecciones").find(':text').each(function () {
+        $.fn.reset = function (formu) {
+            formu.find(':text').each(function () {
                 var elemento = this;
                 elemento.value = "";
             });
@@ -442,15 +443,23 @@
     </script>
     <script>
         var direccionesUsuario = [];
+       
+        $('.botonAltaD').click(function () {
+            var formu = $('#formuDirecciones');
+            formu.reset(formu);
+        });
 
         $('.botonAltaD').magnificPopup({
             type: 'inline',
             preloader: false,
-            modal: true
+            modal: true,
+            midClick: true,
+            focus: '#textBoxNombreVia'
         });
 
         $('.botonModificarD').click(function () {
-            $('#formuDirecciones').reset();
+            var formu = $('#formuDirecciones');
+            formu.reset(formu);
             var direccionSeleccionada = $("#selectDirecciones option:selected").text();
 
             var dir = "";
@@ -462,8 +471,7 @@
 
                 if (dir == direccionSeleccionada) {
                     direccionesUsuario.splice(index, 1);
-                    window.alert("Borrado");
-                } 
+                }
             });
         })
 
@@ -471,9 +479,35 @@
             type: 'inline',
             preloader: false,
             modal: true,
-            midClick: true
+            midClick: true,
+            focus: '#textBoxNombreVia'
         });
 
+        $('.botonBajaD').click(function () {         
+            var direccionSeleccionada = $("#selectDirecciones option:selected").text();
+
+            var dir = "";
+            $.each(direccionesUsuario, function (index, value) {
+                dir = "";
+                $.each(value, function (i, val) {
+                    dir += val.value;
+                });
+
+                if (dir == direccionSeleccionada) {
+                    direccionesUsuario.splice(index, 1);
+                }
+
+                $('#selectDirecciones')[0].options.length = 0;
+                var dir;
+                $.each(direccionesUsuario, function (index, value) {
+                    dir = "";
+                    $.each(value, function (i, val) {
+                        dir += val.value;
+                    });
+                    $('#selectDirecciones').append($("<option></option>").val(dir).html(dir));
+                });
+            })
+        });
 
         $('#buttonCancelarD').click(function (e) {
             $.magnificPopup.close()
@@ -492,25 +526,10 @@
                 $.each(value, function (i, val) {
                     dir += val.value;
                 });
-                //window.alert("Direccion numero: " + index + "=>" + dir);
                 $('#selectDirecciones').append($("<option></option>").val(dir).html(dir));
             });
 
-            
-
             $.magnificPopup.close();
-
-            //COMPROBACIÓN DE LOS ARRAYS DE DIRECCIONES
-
-            //$.each(direccionesUsuario, function (index, value) {
-            //    var dir = "";
-            //    $.each(value, function (i, val) {
-            //        if (i != 0) {
-            //            dir += val.value;
-            //        }
-            //    });
-            //    window.alert("Direccion numero: " + index + "=>" + dir);
-            //});
 
         });
 
