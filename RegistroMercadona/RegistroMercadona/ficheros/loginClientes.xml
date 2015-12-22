@@ -1,7 +1,38 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <clientes>
-<cliente>
-<login>karol_pinilla@hotmail.com</login>
-<password>12345678</password>
-</cliente>
+  <cliente>
+    <nombre>carolina</nombre>
+    <apellido1>pascual</apellido1>
+    <apellido2>jimenez</apellido2>
+    <tipoID>DNI</tipoID>
+    <ID>09047693e</ID>
+    <login>carol@gmail.com</login>
+    <fechaNacimiento>22-12-2015</fechaNacimiento>
+    <password>12345678</password>
+    <direcciones>
+      <direccion>Alameda fd ds d d ds ds</direccion>
+      <direccion>Glorieta fd ds d d ds ds</direccion>
+    </direcciones>
+    <telefonos>
+      <telefono>918819256_S</telefono>
+    </telefonos>
+    <faltaProd>Sustituir por similar</faltaProd>
+  </cliente>
+  <cliente>
+    <nombre>juan</nombre>
+    <apellido1>juan</apellido1>
+    <apellido2>juanito</apellido2>
+    <tipoID>DNI</tipoID>
+    <ID>08963349l</ID>
+    <login>juan@gmail.com</login>
+    <fechaNacimiento>22-12-2015</fechaNacimiento>
+    <password>12345678</password>
+    <direcciones>
+      <direccion>Alameda fd sdfds fdsf dsf sfd sdf</direccion>
+    </direcciones>
+    <telefonos>
+      <telefono>918802242_S</telefono>
+    </telefonos>
+    <faltaProd>Sustituir por similar</faltaProd>
+  </cliente>
 </clientes>

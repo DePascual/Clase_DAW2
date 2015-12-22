@@ -5,10 +5,11 @@ using System.Web;
 
 namespace RegistroMercadona.App_Code.modelos
 {
-    public class respuestaLogin
+    public class respuesta
     {
         private string _codigo;
         private string _texto;
+        private string _vista;
 
         public string codigo
         {
@@ -22,7 +23,11 @@ namespace RegistroMercadona.App_Code.modelos
             set { _texto = value; }
         }
 
-
-        public respuestaLogin() { }
+        public string vista
+        {
+            get { return _vista; }
+            set { _vista = value; }
+        }
+        public respuesta() { }
     }
 }

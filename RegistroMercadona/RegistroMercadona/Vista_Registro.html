@@ -376,7 +376,7 @@
                 var tipoVia = $("#selectVia option:selected").text();
                 direccion.push({
                     key: "tipoVia",
-                    value: " " + tipoVia
+                    value: tipoVia
                 });
 
                 $("#formuDirecciones").find(':text').each(function () {
@@ -432,7 +432,7 @@
                             if (elemento.value != "") {
                                 direccion.push({
                                     key: "CP",
-                                    value: " " + elemento.value
+                                    value: " " + elemento.value + ":"
                                 });
                             }
                             break;
@@ -449,7 +449,7 @@
                     $.each(value, function (i, val) {                      
                             dir += val.value;
                     });
-                    window.alert("Direccion numero: " + index + "=>" + dir);
+                    //window.alert("Direccion numero: " + index + "=>" + dir);
                 });
 
                 $('#selectDirecciones').append($("<option></option>").val(dir).html(dir));
@@ -535,7 +535,7 @@
 
                 telefono.push({
                     telefono: $('#textBoxTelefono').val(),
-                    habitual: checkHabitual
+                    habitual: checkHabitual + ":"
                 });
 
                 telefonosUsuario.push(telefono);
@@ -546,7 +546,7 @@
                     $.each(value, function (i, val) {
                         telef = val.telefono;
                     });
-                    window.alert("Telefono numero: " + index + "=>" + telef);
+                    //window.alert("Telefono numero: " + index + "=>" + telef);
                 });
 
                 $('#selectTelefonos').append($("<option></option>").val(telef).html(telef));
@@ -820,9 +820,62 @@
         });
 
         $('#buttonEnviarAlta').click(function (e) {
+
             if (form.valid() == true) {
                 e.preventDefault();
                 window.alert("Formulario OK!!");
+
+                var direccionesUsuarioString = "";
+                $.each(direccionesUsuario, function (index, value) {
+                    $.each(value, function (i, val) {
+                        direccionesUsuarioString += val.value;
+                    });
+                });
+
+                var telefonosUsuarioString = "";
+                $.each(telefonosUsuario, function (index, value) {
+                    $.each(value, function (i, val) {
+                        telefonosUsuarioString += val.telefono + "_" + val.habitual;
+                    });
+                });
+
+                var usuario = {
+                    Nombre: $('#textBoxNombre').val(),
+                    Apellido1 : $('#textBoxApellido1').val(),
+                    Apellido2: $('#textBoxApellido2').val(),
+                    TipoID: $("#selectID option:selected").text(),
+                    ID: $('#textBoxIdentificacion').val(),
+                    Login: $('#textBoxEmail').val(),
+                    FechaNacimiento: $('#fechaNacimientoInput').val(),
+                    Password: $('#textBoxPass').val(),
+                    Direcciones: direccionesUsuarioString,
+                    Telefonos: telefonosUsuarioString,
+                    FaltaProd: $("#selectFaltaProd option:selected").text()
+                }
+
+                var stringNuevoUsuJSON = JSON.stringify(usuario);
+                window.alert(stringNuevoUsuJSON);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Servidor.asmx/respuestaNuevoUsuario',
+                    data: "{'usuario':" + stringNuevoUsuJSON + "}",
+                    contentType: 'application/json; utf-8',
+                    dataType: 'json',
+                    success: function (respuesta) {
+                        var resp = JSON.parse(respuesta.d);
+                        window.alert("Respuesta del servidor => " + respuesta.d);
+                        //if (resp.codigo == 1) {
+                        //    window.location.replace("http://localhost:32426/Compra.aspx");
+                        //} else if (resp.codigo == 0) {
+                        //    window.location.replace("http://localhost:32426/Vista_Registro.html");
+                        //}
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        window.alert("Uppss!! Ha ocurrido un error");
+                    }
+                });
+
             } else {
                 window.alert("Revise los campos!!");
             }
