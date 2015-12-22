@@ -383,7 +383,6 @@
                     var elemento = this;
                     switch (elemento.id) {
 
-
                         case "textBoxNombreVia": {
                             direccion.push({
                                 key: "nombreVia",
@@ -443,6 +442,20 @@
 
                 direccionesUsuario.push(direccion);
 
+                //ASí METO LA NUEVA DIRECCIÓN EN EL FORMULARIO DE REGISTRO
+                var dir;
+                $.each(direccionesUsuario, function (index, value) {
+                    dir = "";
+                    $.each(value, function (i, val) {                      
+                            dir += val.value;
+                    });
+                    window.alert("Direccion numero: " + index + "=>" + dir);
+                });
+
+                $('#selectDirecciones').append($("<option></option>").val(dir).html(dir));
+
+                $.magnificPopup.close();
+
                 //COMPROBACIÓN DE LOS ARRAYS DE DIRECCIONES
 
                 //$.each(direccionesUsuario, function (index, value) {
@@ -459,24 +472,8 @@
                 window.alert("Los campos obligatorios deben ser rellenados");
             }
 
-            var dir = "";
-            $.each(direccionesUsuario, function (index, value) {               
-                $.each(value, function (i, val) {
-                    dir = "";
-                    if (i != 0) {
-                        dir += val.value;
-                    }
-                });
-                window.alert("Direccion numero: " + index + "=>" + dir);
-            });
 
-            $('#selectDirecciones').append($("<option></option>").val(dir).html(dir));
-
-            $.magnificPopup.close();
         });
-
-
-
 
     </script>
 
@@ -497,8 +494,12 @@
                 <tr>
                     <td>
                         <label for="textBoxTelefono" class="texto"><span class="campoObligatorio">*</span>-Teléfono:</label>
-                        <input id="textBoxTelefono" name="textBoxTelefono" type="text" />
-
+                        <input id="textBoxTelefono" name="textBoxTelefono" type="text" pattern="[0-9]{9}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input id="checkTelefHabitual" name="checkTelefHabitual" type="checkbox" />¿Es teléfono habitual?
                     </td>
                 </tr>
                 <tr>
@@ -511,6 +512,8 @@
         </form>
     </div>
     <script>
+        var telefonosUsuario = [];
+
         $('.botonAltaT').magnificPopup({
             type: 'inline',
             preloader: false,
@@ -519,6 +522,40 @@
 
         $('#buttonCancelarT').click(function (e) {
             $.magnificPopup.close();
+        });
+
+        $('#buttonAceptarT').click(function (e) {
+            e.preventDefault;
+            var telefono = []
+
+            if ($('#textBoxTelefono').val() != "") {
+                telefono.length = 0;
+                var checkHabitual = "";
+                $("#checkTelefHabitual").is(':checked') == true ? checkHabitual = "S" : checkHabitual = "N";
+
+                telefono.push({
+                    telefono: $('#textBoxTelefono').val(),
+                    habitual: checkHabitual
+                });
+
+                telefonosUsuario.push(telefono);
+
+                var telef;
+                $.each(telefonosUsuario, function (index, value) {
+                    telef = "";
+                    $.each(value, function (i, val) {
+                        telef = val.telefono;
+                    });
+                    window.alert("Telefono numero: " + index + "=>" + telef);
+                });
+
+                $('#selectTelefonos').append($("<option></option>").val(telef).html(telef));
+
+                $.magnificPopup.close();
+
+            } else {
+                window.alert("El campo obligatorio debe ser rellenado");
+            }
         });
     </script>
 
@@ -712,7 +749,15 @@
                     required: true,
                     minlength: 6,
                     equalTo: "#textBoxPass"
-                }
+                },
+
+                selectDirecciones: {
+                    required: true,
+                },
+
+                selectTelefonos: {
+                    required: true,
+                },
 
             },
             messages: {
@@ -762,10 +807,26 @@
                     required: "Campo obligatorio",
                     minlength: "Minimo 6 caracteres",
                     equalTo: "Las contraseñas deden ser iguales"
+                },
+                selectDirecciones: {
+                    required: "Campo obligatorio"
+                },
+
+                selectTelefonos: {
+                    required: "Campo obligatorio"
                 }
             }
 
-        })
+        });
+
+        $('#buttonEnviarAlta').click(function (e) {
+            if (form.valid() == true) {
+                e.preventDefault();
+                window.alert("Formulario OK!!");
+            } else {
+                window.alert("Revise los campos!!");
+            }
+        });
 
     </script>
 
