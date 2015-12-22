@@ -34,6 +34,11 @@
             color: #008000;
         }
 
+        .textoPop {
+            color: #004d00;
+            font: bold 15px Calibri;
+        }
+
         .botones {
             border: 2px solid #008000;
             font: bold 15px Calibri;
@@ -131,11 +136,6 @@
                                     maxYear: moment().format('YYYY')
                                 });
                             });
-
-                            //$('#fechaNacimientoInput').change(function () {
-                            //    var fecha = $('#fechaNacimientoInput').val();
-                            //    window.alert(fecha);
-                            //})
 
                         </script>
 
@@ -243,7 +243,8 @@
                     <td>
                         <button class="botonAltaD" id="buttonAltaD" href="#formuDirecciones" style="border: 2px solid #008000; font: bold 15px Calibri">Alta</button>
 
-                        <input class="botones" id="buttonModificarD" name="buttonModificarD" type="button" value="Modificar" />
+                        <button class="botonModificarD" id="buttonModificarD" name="buttonModificarD" href="#formuDirecciones" style="border: 2px solid #008000; font: bold 15px Calibri">Modificar</button>
+
                         <input class="botones" id="buttonBajaD" name="buttonBajaD" type="button" value="Baja" />
 
                     </td>
@@ -352,22 +353,15 @@
             </table>
         </form>
     </div>
-
     <script>
-        var direccionesUsuario = [];
+        $.fn.reset = function () {
+            $("#formuDirecciones").find(':text').each(function () {
+                var elemento = this;
+                elemento.value = "";
+            });
+        };
 
-        $('.botonAltaD').magnificPopup({
-            type: 'inline',
-            preloader: false,
-            modal: true
-        });
-
-        $('#buttonCancelarD').click(function (e) {
-            $.magnificPopup.close()
-        });
-
-        $('#buttonAceptarD').click(function (e) {
-            e.preventDefault;
+        $.fn.cargaArray = function () {
             var direccion = []
 
             if ($("#textBoxNombreVia").val() != "" && $("#textBoxLocalidad").val() != "") { //Compruebo si los campos obligatorios están rellenos
@@ -439,39 +433,84 @@
                         }
                     }
                 });
-
-                direccionesUsuario.push(direccion);
-
-                //ASí METO LA NUEVA DIRECCIÓN EN EL FORMULARIO DE REGISTRO
-                var dir;
-                $.each(direccionesUsuario, function (index, value) {
-                    dir = "";
-                    $.each(value, function (i, val) {                      
-                            dir += val.value;
-                    });
-                    //window.alert("Direccion numero: " + index + "=>" + dir);
-                });
-
-                $('#selectDirecciones').append($("<option></option>").val(dir).html(dir));
-
-                $.magnificPopup.close();
-
-                //COMPROBACIÓN DE LOS ARRAYS DE DIRECCIONES
-
-                //$.each(direccionesUsuario, function (index, value) {
-                //    var dir = "";
-                //    $.each(value, function (i, val) {
-                //        if (i != 0) {
-                //            dir += val.value;
-                //        }
-                //    });
-                //    window.alert("Direccion numero: " + index + "=>" + dir);
-                //});
-
             } else {
                 window.alert("Los campos obligatorios deben ser rellenados");
             }
 
+            return direccion;
+        }
+    </script>
+    <script>
+        var direccionesUsuario = [];
+
+        $('.botonAltaD').magnificPopup({
+            type: 'inline',
+            preloader: false,
+            modal: true
+        });
+
+        $('.botonModificarD').click(function () {
+            $('#formuDirecciones').reset();
+            var direccionSeleccionada = $("#selectDirecciones option:selected").text();
+
+            var dir = "";
+            $.each(direccionesUsuario, function (index, value) {
+                dir = "";
+                $.each(value, function (i, val) {
+                    dir += val.value;
+                });
+
+                if (dir == direccionSeleccionada) {
+                    direccionesUsuario.splice(index, 1);
+                    window.alert("Borrado");
+                } 
+            });
+        })
+
+        $('.botonModificarD').magnificPopup({
+            type: 'inline',
+            preloader: false,
+            modal: true,
+            midClick: true
+        });
+
+
+        $('#buttonCancelarD').click(function (e) {
+            $.magnificPopup.close()
+        });
+
+        $('#buttonAceptarD').click(function (e) {
+            e.preventDefault;
+            $('#selectDirecciones')[0].options.length = 0;
+
+            direccionesUsuario.push($('#formuDirecciones').cargaArray());
+
+            //ASí METO LA NUEVA DIRECCIÓN EN EL FORMULARIO DE REGISTRO
+            var dir;
+            $.each(direccionesUsuario, function (index, value) {
+                dir = "";
+                $.each(value, function (i, val) {
+                    dir += val.value;
+                });
+                //window.alert("Direccion numero: " + index + "=>" + dir);
+                $('#selectDirecciones').append($("<option></option>").val(dir).html(dir));
+            });
+
+            
+
+            $.magnificPopup.close();
+
+            //COMPROBACIÓN DE LOS ARRAYS DE DIRECCIONES
+
+            //$.each(direccionesUsuario, function (index, value) {
+            //    var dir = "";
+            //    $.each(value, function (i, val) {
+            //        if (i != 0) {
+            //            dir += val.value;
+            //        }
+            //    });
+            //    window.alert("Direccion numero: " + index + "=>" + dir);
+            //});
 
         });
 
@@ -841,7 +880,7 @@
 
                 var usuario = {
                     Nombre: $('#textBoxNombre').val(),
-                    Apellido1 : $('#textBoxApellido1').val(),
+                    Apellido1: $('#textBoxApellido1').val(),
                     Apellido2: $('#textBoxApellido2').val(),
                     TipoID: $("#selectID option:selected").text(),
                     ID: $('#textBoxIdentificacion').val(),
