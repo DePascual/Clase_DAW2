@@ -28,7 +28,7 @@ namespace RegistroMercadona
             XmlDocument miDocumentoXML = new XmlDocument();
             miDocumentoXML.Load(HttpContext.Current.Request.MapPath("~/ficheros/loginClientes.xml"));
             XmlNodeList miNodoList = miDocumentoXML.SelectNodes("//cliente[login='" + usuario.Login + "' and password='" + usuario.Password + "']");
-            //boolean(//cliente[login='karol_pinilla@hotmail.com' and password='12345678']) => true
+            //BUSQUEDA XPATH DE EJEMPLO => boolean(//cliente[login='karol_pinilla@hotmail.com' and password='123456']) => true
 
             if (miNodoList.Count == 1)
             {
@@ -53,6 +53,7 @@ namespace RegistroMercadona
             XmlDocument miDocumentoXML = new XmlDocument();
             miDocumentoXML.Load(HttpContext.Current.Request.MapPath("~/ficheros/loginClientes.xml"));
 
+            //Creo los elementos
             XmlElement clienteNuevo = miDocumentoXML.CreateElement("cliente");
             XmlElement nombre = miDocumentoXML.CreateElement("nombre");
             XmlElement apellido1 = miDocumentoXML.CreateElement("apellido1");
@@ -66,6 +67,7 @@ namespace RegistroMercadona
             XmlElement telefonos = miDocumentoXML.CreateElement("telefonos");           
             XmlElement faltaProd = miDocumentoXML.CreateElement("faltaProd");
 
+            //Le añado el texto
             nombre.InnerText = usuario.Nombre;
             apellido1.InnerText = usuario.Apellido1;
             apellido2.InnerText = usuario.Apellido2;
@@ -76,6 +78,7 @@ namespace RegistroMercadona
             password.InnerText = usuario.Password;
             faltaProd.InnerText = usuario.FaltaProd;
 
+            //Los coloco en la parte del DOM de la que quiero que cuelguen
             clienteNuevo.AppendChild(nombre);
             clienteNuevo.AppendChild(apellido1);
             clienteNuevo.AppendChild(apellido2);
@@ -88,6 +91,7 @@ namespace RegistroMercadona
             clienteNuevo.AppendChild(telefonos);
             clienteNuevo.AppendChild(faltaProd);
 
+            //Casos especiales => direcciones y telefonos
             List<string> direccionesList = usuario.Direcciones.Split(new char[] { ':' }).ToList();
             foreach (string dir in direccionesList)
             {
@@ -97,7 +101,6 @@ namespace RegistroMercadona
                     direccion.InnerText = dir;
                     direcciones.AppendChild(direccion);
                 }
-
             };
 
             List<string> telefonosList = usuario.Telefonos.Split(new char[] { ':' }).ToList();
@@ -111,8 +114,11 @@ namespace RegistroMercadona
                 }
             };
 
+            //Coloco el nuevo nodo en el documento XML
             miDocumentoXML.DocumentElement.AppendChild(clienteNuevo);
 
+            //Cuardo el documento XML
+            //Entre try/catch porque me interesa tratar la excepción como respuesta negativa por parte del servidor
             try {
                 miDocumentoXML.Save(HttpContext.Current.Request.MapPath("~/ficheros/loginClientes.xml"));
 

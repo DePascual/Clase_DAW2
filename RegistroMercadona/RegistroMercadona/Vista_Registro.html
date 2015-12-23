@@ -242,11 +242,8 @@
                     </td>
                     <td>
                         <button class="botonAltaD" id="buttonAltaD" href="#formuDirecciones" style="border: 2px solid #008000; font: bold 15px Calibri">Alta</button>
-
                         <button class="botonModificarD" id="buttonModificarD" name="buttonModificarD" href="#formuDirecciones" style="border: 2px solid #008000; font: bold 15px Calibri">Modificar</button>
-
                         <button class="botonBajaD" id="buttonBajaD" name="buttonBajaD" href="#formuDirecciones" style="border: 2px solid #008000; font: bold 15px Calibri">Baja</button>
-
                     </td>
                 </tr>
                 <tr style="background-color: #ffffcc">
@@ -258,9 +255,8 @@
                     </td>
                     <td>
                         <button class="botonAltaT" id="botonAltaT" href="#formuTelefonos" style="border: 2px solid #008000; font: bold 15px Calibri">Alta</button>
-
-                        <input class="botones" id="buttonModificarT" name="buttonModificarT" type="button" value="Modificar" />
-                        <input class="botones" id="buttonBajaT" name="buttonBajaT" type="button" value="Baja" />
+                        <button class="botonModificarT" id="botonModificarT" href="#formuTelefonos" style="border: 2px solid #008000; font: bold 15px Calibri">Modificar</button>
+                        <button class="botonBajaT" id="botonBajaT" href="#formuTelefonos" style="border: 2px solid #008000; font: bold 15px Calibri">Baja</button>
                     </td>
                 </tr>
                 <tr>
@@ -439,11 +435,11 @@
             }
 
             return direccion;
-        }
+        };
     </script>
     <script>
         var direccionesUsuario = [];
-       
+
         $('.botonAltaD').click(function () {
             var formu = $('#formuDirecciones');
             formu.reset(formu);
@@ -483,7 +479,7 @@
             focus: '#textBoxNombreVia'
         });
 
-        $('.botonBajaD').click(function () {         
+        $('.botonBajaD').click(function () {
             var direccionSeleccionada = $("#selectDirecciones option:selected").text();
 
             var dir = "";
@@ -572,10 +568,69 @@
     <script>
         var telefonosUsuario = [];
 
+        $('.botonAltaT').click(function () {
+            var formu = $('#formuTelefonos');
+            formu.reset(formu);
+        });
+
         $('.botonAltaT').magnificPopup({
             type: 'inline',
             preloader: false,
-            modal: true
+            modal: true,
+            midClick: true,
+            focus: '#textBoxTelefono'
+        });
+
+        $('.botonModificarT').click(function () {
+            var formu = $('#formuTelefonos');
+            formu.reset(formu);
+            var telefonoSeleccionado = $("#selectTelefonos option:selected").text();
+
+            var telef;
+            $.each(telefonosUsuario, function (index, value) {
+                telef = "";
+                $.each(value, function (i, val) {
+                    telef = val.telefono;
+                });
+
+                if (telef == telefonoSeleccionado) {
+                    telefonosUsuario.splice(index, 1);
+                }
+            });
+        })
+
+        $('.botonModificarT').magnificPopup({
+            type: 'inline',
+            preloader: false,
+            modal: true,
+            midClick: true,
+            focus: '#textBoxTelefono'
+        });
+
+        $('.botonBajaT').click(function () {
+            var telefonoSeleccionado = $("#selectTelefonos option:selected").text();
+
+            var telef;
+            $.each(telefonosUsuario, function (index, value) {
+                telef = "";
+                $.each(value, function (i, val) {
+                    telef = val.telefono;
+                });
+
+                if (telef == telefonoSeleccionado) {
+                    telefonosUsuario.splice(index, 1);
+                }
+
+                $('#selectTelefonos')[0].options.length = 0;
+                var telef;
+                $.each(telefonosUsuario, function (index, value) {
+                    telef = "";
+                    $.each(value, function (i, val) {
+                        telef = val.telefono;
+                    });
+                    $('#selectTelefonos').append($("<option></option>").val(telef).html(telef));
+                });
+            })
         });
 
         $('#buttonCancelarT').click(function (e) {
@@ -584,6 +639,8 @@
 
         $('#buttonAceptarT').click(function (e) {
             e.preventDefault;
+            $('#selectTelefonos')[0].options.length = 0;
+
             var telefono = []
 
             if ($('#textBoxTelefono').val() != "") {
@@ -604,11 +661,8 @@
                     $.each(value, function (i, val) {
                         telef = val.telefono;
                     });
-                    //window.alert("Telefono numero: " + index + "=>" + telef);
+                    $('#selectTelefonos').append($("<option></option>").val(telef).html(telef));
                 });
-
-                $('#selectTelefonos').append($("<option></option>").val(telef).html(telef));
-
                 $.magnificPopup.close();
 
             } else {
@@ -625,7 +679,7 @@
         //MÉTODOS AÑADIDOS PARA VALIDACIÓN-------------------------------------------------------------------------------------
 
         jQuery.validator.addMethod("lettersonly", function (value, element) {
-            return this.optional(element) || /^[a-z]+$/i.test(value);
+            return this.optional(element) || /^[a-zá-ú\s]+$/i.test(value);
         }, "Solo letras");
 
         jQuery.validator.addMethod("nifES", function (value, element) {
@@ -881,7 +935,6 @@
 
             if (form.valid() == true) {
                 e.preventDefault();
-                window.alert("Formulario OK!!");
 
                 var direccionesUsuarioString = "";
                 $.each(direccionesUsuario, function (index, value) {
@@ -912,7 +965,6 @@
                 }
 
                 var stringNuevoUsuJSON = JSON.stringify(usuario);
-                window.alert(stringNuevoUsuJSON);
 
                 $.ajax({
                     type: 'POST',
@@ -923,11 +975,6 @@
                     success: function (respuesta) {
                         var resp = JSON.parse(respuesta.d);
                         window.alert("Respuesta del servidor => " + respuesta.d);
-                        //if (resp.codigo == 1) {
-                        //    window.location.replace("http://localhost:32426/Compra.aspx");
-                        //} else if (resp.codigo == 0) {
-                        //    window.location.replace("http://localhost:32426/Vista_Registro.html");
-                        //}
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         window.alert("Uppss!! Ha ocurrido un error");

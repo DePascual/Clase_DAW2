@@ -1,38 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <clientes>
   <cliente>
-    <nombre>carolina</nombre>
-    <apellido1>pascual</apellido1>
-    <apellido2>jimenez</apellido2>
+    <nombre>Carolina</nombre>
+    <apellido1>de Pascual</apellido1>
+    <apellido2>Jiménez</apellido2>
     <tipoID>DNI</tipoID>
-    <ID>09047693e</ID>
-    <login>carol@gmail.com</login>
-    <fechaNacimiento>22-12-2015</fechaNacimiento>
-    <password>12345678</password>
+    <ID>09047693E</ID>
+    <login>karol_pinilla@hotmail.com</login>
+    <fechaNacimiento>25-09-1989</fechaNacimiento>
+    <password>123456</password>
     <direcciones>
-      <direccion>Alameda fd ds d d ds ds</direccion>
-      <direccion>Glorieta fd ds d d ds ds</direccion>
+      <direccion>Calle Menéndez de Avilés 1 3 B Alcalá de Henares Madrid</direccion>
+      <direccion>Calle La Plaza 1 1 Pinilla de Jadraque</direccion>
     </direcciones>
     <telefonos>
-      <telefono>918819256_S</telefono>
+      <telefono>659246981_S</telefono>
+      <telefono>918819256_N</telefono>
     </telefonos>
-    <faltaProd>Sustituir por similar</faltaProd>
-  </cliente>
-  <cliente>
-    <nombre>juan</nombre>
-    <apellido1>juan</apellido1>
-    <apellido2>juanito</apellido2>
-    <tipoID>DNI</tipoID>
-    <ID>08963349l</ID>
-    <login>juan@gmail.com</login>
-    <fechaNacimiento>22-12-2015</fechaNacimiento>
-    <password>12345678</password>
-    <direcciones>
-      <direccion>Alameda fd sdfds fdsf dsf sfd sdf</direccion>
-    </direcciones>
-    <telefonos>
-      <telefono>918802242_S</telefono>
-    </telefonos>
-    <faltaProd>Sustituir por similar</faltaProd>
+    <faltaProd>No servir</faltaProd>
   </cliente>
 </clientes>
