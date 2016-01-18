@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>REGISTRO</title>
+    <meta charset="utf-8" />
+    <script src="\Scripts\jquery-2.2.0.min.js"></script>
+    <script src="\Scripts\jquery.indexeddb.js"></script>
+    <script src="\Scripts\IndexedDBShim.min.js"></script>
+</head>
+<body>
+    <center>
+        <table id="formularioRegistro">
+            <tr>
+                <td>Nombre</td>
+                <td><input id='textBoxNombre' type='text' placeholder='Nombre' /></td>
+            </tr>
+            <tr>
+                <td>Apellidos</td>
+                <td><input id='textBoxApellidos' type='text' placeholder='Apellidos' /></td>
+            </tr>
+            <tr>
+                <td>NIF</td>
+                <td><input id='textBoxNIF' type='text' placeholder='NIF' /></td>
+            </tr>
+            <tr>
+                <td>Login</td>
+                <td><input id='textBoxLogin' type='text' placeholder='Login' /></td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td><input id='textBoxPassword' type='text' placeholder='Password' /></td>
+            </tr>
+            <tr>
+                <td>Direccion</td>
+                <td><input id='textBoxDireccion' type='text' placeholder='Direccion' /></td>
+            </tr>
+            <tr>
+                <td>Localidad</td>
+                <td><input id='textBoxLocalidad' type='text' placeholder='Localidad' /></td>
+            </tr>
+            <tr>
+                <td>Provincia</td>
+                <td><input id='textBoxProvincia' type='text' placeholder='Provincia' /></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input id="buttonRegistrar" type="button" name="buttonRegistrar" value="Registrar" /></td>
+            </tr>
+        </table>
+    </center>
+    <script>
+        $.fn.agregarATabla = function (formulario, data) {
+            formulario.find(':text').each(function () {
+                var param = this;
+                data.transaction("usuario", "readwrite").objectStore("usuario").add(param.value);
+            });
+        };
+
+        $("#buttonRegistrar").click(function (ev) {
+            $.indexedDB("miDataBase", {
+                schema: {
+                    "1": function (transaction) {
+                        var tablaUsuarios = transaction.createObjectStore("tablaUsuarios",
+                            {
+                                'keyPath': 'NIF', 'autoIncrement': false
+                            });
+                        tablaUsuarios.createIndex("NOMBRE");
+                        tablaUsuarios.createIndex("APELLIDOS");
+                        tablaUsuarios.createIndex("NIF");
+                        tablaUsuarios.createIndex("LOGIN");
+                        //PORQUE FALTA PASSWORD???.....
+                        tablaUsuarios.createIndex("DIRECCION");
+                        tablaUsuarios.createIndex("LOCALIDAD");
+                        tablaUsuarios.createIndex("PROVINCIA");
+                    }
+                }
+            }).done(function (data) {
+                var formulario = $("#formularioRegistro");
+                formulario.agregarATabla(formulario, data);
+            })
+        })
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>LOGIN</title>
+	<meta charset="utf-8" />
+    <script src="\Scripts\jquery-2.2.0.min.js"></script>
+    <script src="\Scripts\jquery.indexeddb.js"></script>
+</head>
+<body>
+    <center>
+        <table>
+            <tr>
+                <td>Login</td>
+                <td><input id='textBoxLogin' type='text' placeholder='Login' /></td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td><input id='textBoxPass' type='text' placeholder='Password'/></td>
+            </tr>
+            <tr>
+                <td><input id='buttonEntrar' name='buttonEntrar' type='button' value='Entrar' /></td>
+                <td><input id='buttonRegistrar' name='buttonRegistrar' type='button' value='Registrar' /></td>
+            </tr>
+        </table>
+    </center>
+    <script>
+        $("#buttonRegistrar").click(function (ev) {
+            window.location.replace("http://localhost:1966/registro.html");
+        });
+
+        $("#buttonEntrar").click(function (ev) {
+
+        });
+    </script>
+</body>
+</html>
