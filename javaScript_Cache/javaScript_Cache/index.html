@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html manifest="miEjemplo.manifest">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+	<meta charset="utf-8" />
+</head>
+<body>
+    <div>
+        <h2>PÁGINA AÑADIDA EN LA CACHE</h2>
+        <p>Esta página está en la caché </p>
+        <script>
+            var estadoCache = window.applicationCache.status;
+            alert(estadoCache);
+
+            window.addEventListener("load", function () {
+                window.applicationCache.update(); //nada mas cargar la página se actualizará la caché
+            })
+            window.applicationCache.addEventListener("update", function () {
+                alert('...estás lanzando una actualización de la caché...')
+            })
+            window.applicationCache.addEventListener("noupdate", function () {
+                alert('...ninguna actualización...')
+            })
+
+           
+        </script>
+    </div>
+</body>
+</html>
