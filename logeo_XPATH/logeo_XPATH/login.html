@@ -45,13 +45,21 @@
         //function crearPeticionAJAX() {
         //    petAjax = new XMLHttpRequest();
         //    petAjax.open("POST", 'http://localhost:2037/Servidor.aspx', true);
-        //    petAjax.onreadystatechange = controlPeticion();
+        //    petAjax.onreadystatechange = controlPeticion;
         //    petAjax.setRequestHeader("Content-Type", "application/xml");
         //    petAjax.send(null);
         //}
 
         function peticionAjax() {
-            petAjax = new XMLHttpRequest();
+            //petAjax = new XMLHttpRequest();
+
+            try {
+                petAjax = new XMLHttpRequest();
+            } catch (e) {
+                ["MsXML2.XMLHTTP.6.0", "MsXML2.XMLHTTP.5.0", "MsXML2.XMLHTTP.4.0"].forEach(function (el, pos, ar) {
+                    petAjax = new ActiveX(el);
+                });
+            }
 
             petAjax.onreadystatechange = function () {
 
@@ -60,26 +68,19 @@
                         XMLDoc = petAjax.responseXML;
                         cargarDatos(XMLDoc);
 
-                    } else {
+                    }else {
                         var parseadorStringXml = new DOMParser();
-                        XMLDoc = parseadorStringXml.parseFromString(petAjax.responseText, "text/xml");
-                        cargarDatos(XMLDoc);
+                        cargarDatos(parseadorStringXml.parseFromString(petAjax.responseText, "text/xml"));
                     }
                 }
             };
 
-            petAjax.open("GET", "http://localhost:2037/Servidor.aspx?", true);
-            petAjax.setRequestHeader("Content-Type", "application/xml");
-            petAjax.send();
+            petAjax.open('GET', 'http://localhost:2037/Servidor.aspx?login=' + document.getElementById("textLogin").value , true);
+            //petAjax.setRequestHeader("Content-Type", "application/xml");
+            petAjax.send(null);
 
         }
-        //try {
-        //    petAjax = new XMLHttpRequest();
-        //} catch (e) {
-        //    ["MsXML2.XMLHTTP.6.0", "MsXML2.XMLHTTP.5.0", "MsXML2.XMLHTTP.4.0"].forEach(function (el, pos, ar) {
-        //        petAjax = new ActiveX(el);
-        //    });
-        //}
+     
 
         //petAjax = new XMLHttpRequest();
         //petAjax.onreadystatechange = function () {
@@ -95,16 +96,15 @@
         //petAjax.open("GET", 'http://localhost:2037/Servidor.aspx', true);
         //petAjax.setRequestHeader("Content-Type", "application/xml");
         //petAjax.send(null); //no el mando nada, quiero cargar en XMLDoc, todo el doc XML
-
         //petAjax.setRequestHeader("Content-Type", "application/xml")
         //var user = "login=" + document.getElementById("textLogin").value + "$pass=" + document.getElementById("textPass").value;
         //petAjax.send(user);
 
 
         function cargarDatos(XMLDoc) {
-            var listaUsers = document.evaluate("usuario[login='" + document.getElementById("textLogin").value + "'and password='" + document.getElementById("textPass").value + "']", XMLDoc, null, XPathResult.BOOLEAN_TYPE, null);
+            var listaUsers = XMLDoc.evaluate("count(//usuario[login='" + document.getElementById("textLogin").value + "'and password='" + document.getElementById("textPass").value + "'])", XMLDoc, null, XPathResult.NUMBER_TYPE, null);
 
-            if (listaUsers.booleanValue == true) {
+            if (listaUsers.numberValue == 1) {
                 window.alert("El usuario existe!!");
             } else {
                 window.alert("ERROR....no existe ese usuario");

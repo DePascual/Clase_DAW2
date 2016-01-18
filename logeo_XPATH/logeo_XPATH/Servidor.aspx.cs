@@ -13,7 +13,7 @@ namespace logeo_XPATH
         protected void Page_Load(object sender, EventArgs e)
         {
             //string user = (string)this.Request.Params["user"];
-            string criterio = (string)this.Request.QueryString["usuario"];
+            string criterio = (string)this.Request.QueryString["login"];
 
             XmlDocument miDocumentoXML = new XmlDocument();
             miDocumentoXML.Load(Server.MapPath("ficheros/usuarios.xml"));
