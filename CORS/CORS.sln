@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CORS", "CORS\CORS.csproj", "{7208F178-C265-433D-A164-F7E2D88BDF93}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DominioCliente", "DominioCliente\DominioCliente.csproj", "{4BEF6AFE-FF80-4A6F-A4DC-D43CC57D937B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7208F178-C265-433D-A164-F7E2D88BDF93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7208F178-C265-433D-A164-F7E2D88BDF93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7208F178-C265-433D-A164-F7E2D88BDF93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7208F178-C265-433D-A164-F7E2D88BDF93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BEF6AFE-FF80-4A6F-A4DC-D43CC57D937B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BEF6AFE-FF80-4A6F-A4DC-D43CC57D937B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BEF6AFE-FF80-4A6F-A4DC-D43CC57D937B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BEF6AFE-FF80-4A6F-A4DC-D43CC57D937B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

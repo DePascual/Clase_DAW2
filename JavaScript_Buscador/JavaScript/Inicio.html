@@ -1,0 +1,66 @@
+﻿
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <style type="text/css">
+        .auto-style1 {
+            width: 261px;
+        }
+    </style>
+</head>
+<body>
+
+
+    <form id="form1">
+        <div>
+            <table>
+                <tr>
+                    <td class="auto-style1">
+                        <label>Búsqueda Libros:</label>
+
+                    </td>
+                    <td>
+                        <input type="text" id="txtBox_Buscador" />
+                    </td>
+                    <td>
+                        <input type="button" id="btn_Buscar" value="Buscar" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="auto-style1">
+                        <input type="radio" name="opciones" id="RadioButton_Titulo" value="Titulo">Titulo
+                        <input type="radio" name="opciones" id="RadioButton_ISBN" value="ISBN">Isbn
+                        <input type="radio" name="opciones" id="RadioButton_Autor" value="Autor">Autor
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </form>
+
+    <div id="resultado"></div>
+    <script>
+        var petAjax;
+        function HacerPeticionAjax() {
+            petAjax = new window.XMLHttpRequest();
+            petAjax.onreadystatechange = function () {
+                if (petAjax.readyState == 4 && petAjax.status == 200) {
+                    document.getElementById("resultado").appendChild(document.createTextNode(petAjax.responseText));
+                }
+            }
+            var url = "http://localhost:1763/Servidor.aspx?" +
+            Array.prototype.slice.call(document.getElementsByName("opciones"), 0).find(function (el, pos, arr) { if (el.checked == true) { return el } }).id.replace("RadioButton_", "") +
+            "=" +
+            document.getElementById("txtBox_Buscador").value;
+            petAjax.open("GET", url, true);
+            petAjax.send(null);
+        }
+        document.getElementById("btn_Buscar").addEventListener("click", HacerPeticionAjax, false);
+       
+    </script>
+
+</body>
+</html>

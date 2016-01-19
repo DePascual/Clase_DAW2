@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+	<meta charset="utf-8" />
+</head>
+<body>
+    <table>
+        <tr>
+            <td>
+                <label>Login:</label>
+            </td>
+            <td>
+                <input type="text" id="textLogin" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Password:</label>
+            </td>
+            <td>
+                <input type="text" id="textPass" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <p id="pRespuesta"></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="registro.html" id="LinkRegistro">Registrate</a>
+            </td>
+            <td>
+                <input type="button" id="buttonAcceso" value="Acceso" />
+            </td>
+        </tr>
+    </table>
+    <script>
+        function cargarXML(dname) {
+            if (window.XMLHttpRequest) {
+                xhttp = new XMLHttpRequest();
+            }
+            else {
+                xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xhttp.open("GET", dname, false);
+            try { xhttp.responseType = "msxml-document" } catch (err) { } // Helping IE
+            xhttp.send("");
+            return xhttp;
+        }
+
+
+
+        document.getElementById("buttonAcceso").addEventListener("click", cargarXML, false);
+    </script>
+</body>
+
+</html>

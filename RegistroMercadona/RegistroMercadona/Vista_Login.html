@@ -1,0 +1,190 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>PÁGINA LOGEO MERCADONA</title>
+    <style>
+        body {
+            font-family: Calibri;
+        }
+
+        .tablaLogin {
+            background-color: #ffad33;
+            border: #cc5100 1px solid;
+            border-collapse: collapse;
+            margin: 1px;
+            width: 50%;        
+        }
+
+        .required {
+            height: 16px;
+            width: 90%;
+        }
+
+        .botones {
+            border: 2px solid #008000;
+            font: bold 15px Calibri;
+        }
+
+        #formLogin .error {
+            color: red;
+        }
+
+        #formLogin .valid {
+            color: #008000;
+        }
+    </style>
+    <script src="\Scripts\jquery-2.1.4.js"></script>
+    <script src="\Scripts\jquery.validate.js"></script>
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="cabecera">
+        <table style="width: 100%">
+            <tr>
+                <td>
+                    <img src="\imagenes\cabeceraLogin.PNG" alt="" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="contenido">
+        <table style="width:100%">
+            <tr>
+                <td>
+                    <a style="color:black; font-weight:bold" href="Vista_Registro.html" class="btn-link">Registrarse como cliente </a>
+                </td>
+                <td rowspan="3">
+                    <form id="formLogin" name="formLogin" role="form">
+                        <div class="form-group">
+                            <table class="tablaLogin">
+                                <tr>
+                                    <td colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:5px">
+                                        <label for="textBoxUsuario">Email/Usuario de acceso:<span>(Campo obligatorio)</span></label>
+                                    </td>
+                                    <td style="padding:5px">
+                                        <div class="form-group has-feedback has-feedback-left">
+                                            <i class="form-control-feedback glyphicon glyphicon-envelope"></i>
+                                            <input id="textBoxUsuario" name="textBoxUsuario" type="email" class="form-control" placeholder="Email" />                                        
+                                        </div>                                  
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:5px">
+                                        <label for="textBoxPass">Contraseña:<span>(Campo obligatorio)</span></label>
+                                    </td>
+                                    <td style="padding:5px">
+                                        <div class="form-group has-feedback has-feedback-left">
+                                            <i class="form-control-feedback glyphicon glyphicon-lock"></i>
+                                            <input id="textBoxPass" name="textBoxPass" type="password" class="form-control" placeholder="Contraseña" />
+                                        </div> 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                </tr>
+
+                                <tr>
+                                    <td style="text-align:right; padding:5px" colspan="2">
+                                        <input id="buttonEntrar" name="buttonEntrar" type="button" value="Entrar" class="btn btn-success" />
+                                        <input class="btn" id="buttonPassOlvidada" name="buttonPassOlvidada" type="button" value="¿Ha olvidado el usuario la contraseña?" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td>
+
+                    <a style="color:black; font-weight:bold">Cliente registrado</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a style="color:black; font-weight:bold" href="Vista_Registro.html">Condiciones generales de compra </a>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        var form = $("#formLogin");
+
+        form.validate({
+            debug: true,
+            success: function (label) {
+                label.addClass("valid")
+            },
+            onkeyup: false,
+
+            rules: {
+                textBoxUsuario: {
+                    required: true,
+                    email: true,
+                },
+                textBoxPass: {
+                    required: true,
+                    minlength: 6,
+                }
+            },
+            messages: {
+
+                textBoxUsuario: {
+                    required: "Campo obligatorio",
+                    email: "Formato incorrecto"
+                },
+
+                textBoxPass: {
+                    required: "Campo obligatorio",
+                    minlength: function (p, element) {
+                        return "Minimo " + p + "caracteres";
+                    }
+
+                }
+
+            }
+        });
+
+        $("#buttonEntrar").click(function (e) {
+
+            if (form.valid() == true) {
+                e.preventDefault();
+
+                var usuario = {
+                    Login: $("#textBoxUsuario").val(),
+                    Password: $("#textBoxPass").val()
+                }
+
+                var stringUsuJSON = JSON.stringify(usuario);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Servidor.asmx/respuesta',
+                    data: "{'usuario':" + stringUsuJSON + "}",
+                    contentType: 'application/json; utf-8',
+                    dataType: 'json',
+                    success: function (respuesta) {
+                        var resp = JSON.parse(respuesta.d);
+                        window.alert("Respuesta del servidor => " + respuesta.d);
+                        if (resp.codigo == 1) {
+                            window.location.replace("http://localhost:32426/Vista_Registro.html");
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        window.alert("Uppss!! Ha ocurrido un error");
+                    }
+                });
+            } else {
+                window.alert("Revise los campos!!");
+            }
+        });
+    </script>
+</body>
+</html>
