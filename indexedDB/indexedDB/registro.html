@@ -24,8 +24,8 @@
                 <td><input id='textBoxNIF' type='text' placeholder='NIF' /></td>
             </tr>
             <tr>
-                <td>Login</td>
-                <td><input id='textBoxLogin' type='text' placeholder='Login' /></td>
+                <td>Email</td>
+                <td><input id='textBoxEmail' type='text' placeholder='Email' /></td>
             </tr>
             <tr>
                 <td>Password</td>
@@ -49,34 +49,34 @@
         </table>
     </center>
     <script>
-        $.fn.agregarATabla = function (formulario, data) {
-            formulario.find(':text').each(function () {
-                var param = this;
-                data.transaction("usuario", "readwrite").objectStore("usuario").add(param.value);
-            });
-        };
+        //Para borrar la base de datos en consola de Chrome => indexedDB.deleteDatabase("miDataBase")
 
         $("#buttonRegistrar").click(function (ev) {
             $.indexedDB("miDataBase", {
                 schema: {
-                    "1": function (transaction) {
+                    "3": function (transaction) {
                         var tablaUsuarios = transaction.createObjectStore("tablaUsuarios",
+                            {
+                                'keyPath': 'Email', 'autoIncrement': false
+                            });
+                        tablaUsuarios.createIndex("Mail", "Email", { unique: false });
+
+                        var tablaClientes = transaction.createObjectStore("tablaClientes",
                             {
                                 'keyPath': 'NIF', 'autoIncrement': false
                             });
-                        tablaUsuarios.createIndex("NOMBRE");
-                        tablaUsuarios.createIndex("APELLIDOS");
-                        tablaUsuarios.createIndex("NIF");
-                        tablaUsuarios.createIndex("LOGIN");
-                        //PORQUE FALTA PASSWORD???.....
-                        tablaUsuarios.createIndex("DIRECCION");
-                        tablaUsuarios.createIndex("LOCALIDAD");
-                        tablaUsuarios.createIndex("PROVINCIA");
+                        tablaClientes.createIndex("Nombre", "Nombre", { unique: false });
                     }
                 }
-            }).done(function (data) {
-                var formulario = $("#formularioRegistro");
-                formulario.agregarATabla(formulario, data);
+            }).done(function (db, even) {
+                var usuario = {
+                    "Email": $("#textBoxEmail").val(),
+                    "Password": $("#textBoxPassword").val(),
+                };
+                db.transaction("tablaUsuarios", "readwrite").objectStore("tablaUsuarios").add(usuario).onsuccess = function () {
+                    alert("Se ha insertado correctamente el usuario" + usuario.Email);
+                }
+
             })
         })
 

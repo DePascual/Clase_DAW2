@@ -6,6 +6,7 @@
 	<meta charset="utf-8" />
     <script src="\Scripts\jquery-2.2.0.min.js"></script>
     <script src="\Scripts\jquery.indexeddb.js"></script>
+    <script src="\Scripts\IndexedDBShim.min.js"></script>
 </head>
 <body>
     <center>
@@ -30,7 +31,21 @@
         });
 
         $("#buttonEntrar").click(function (ev) {
+            $.indexedDB("miDataBase").done(function (db, ev) {
 
+                var usuario = {
+                    "Email": $("#textBoxEmail").val(),
+                    "Password": $("#textBoxPassword").val(),
+                };
+                var resp = db.transaction(["tablaUsuarios"], "readonly").objectStore("tablaUsuarios").get(Email);
+                resp.onerror = function () {
+                    alert("Hay un error");
+                };
+                resp.onsuccess = function () {
+                    alert(resp.result.Password);
+                    var resultado = resp.result;
+                }
+            });
         });
     </script>
 </body>
