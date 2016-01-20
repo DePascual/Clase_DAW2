@@ -1,9 +1,9 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>LOGIN</title>
-	<meta charset="utf-8" />
+    <meta charset="utf-8" />
     <script src="\Scripts\jquery-2.2.0.min.js"></script>
     <script src="\Scripts\jquery.indexeddb.js"></script>
     <script src="\Scripts\IndexedDBShim.min.js"></script>
@@ -17,7 +17,7 @@
             </tr>
             <tr>
                 <td>Password</td>
-                <td><input id='textBoxPass' type='text' placeholder='Password'/></td>
+                <td><input id='textBoxPass' type='text' placeholder='Password' /></td>
             </tr>
             <tr>
                 <td><input id='buttonEntrar' name='buttonEntrar' type='button' value='Entrar' /></td>
@@ -31,22 +31,50 @@
         });
 
         $("#buttonEntrar").click(function (ev) {
-            $.indexedDB("miDataBase").done(function (db, ev) {
 
+        });
+
+        $.indexedDB("miDataBase").done(function (db, ev) {
+            $.indexedDB("miDataBase", {
+                schema: {
+                    "3": function (db) {
+                        var tablaUsuarios = db.createObjectStore("tablaUsuarios",
+                            {
+                                'keyPath': 'Email', 'autoIncrement': false
+                            });
+
+                        var tablaClientes = db.createObjectStore("tablaClientes",
+                            {
+                                'keyPath': 'NIF', 'autoIncrement': false
+                            });
+                        tablaClientes.createIndex("Nombre", "Nombre", { unique: false });
+                    }
+                }
+            }).done(function (db, even) {
                 var usuario = {
                     "Email": $("#textBoxEmail").val(),
                     "Password": $("#textBoxPassword").val(),
                 };
-                var resp = db.transaction(["tablaUsuarios"], "readonly").objectStore("tablaUsuarios").get(Email);
-                resp.onerror = function () {
-                    alert("Hay un error");
-                };
-                resp.onsuccess = function () {
-                    alert(resp.result.Password);
-                    var resultado = resp.result;
+                db.transaction("tablaUsuarios", "readwrite").objectStore("tablaUsuarios").add(usuario).onsuccess = function () {
+                    alert("Se ha insertado correctamente el usuario" + usuario.Email);
                 }
-            });
+
+            })
+
+            //var usuario = {
+            //    "Email": $("#textBoxEmail").val(),
+            //    "Password": $("#textBoxPassword").val(),
+            //};
+            //var resp = db.transaction(["tablaUsuarios"], "readonly").objectStore("tablaUsuarios").get(Email);
+            //resp.onerror = function () {
+            //    alert("Hay un error");
+            //};
+            //resp.onsuccess = function () {
+            //    alert(resp.result.Password);
+            //    var resultado = resp.result;
+            //}
         });
+
     </script>
 </body>
 </html>
