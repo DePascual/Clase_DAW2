@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>CARRITO DE LA COMPRA</title>
+	<meta charset="utf-8" />
+    <script src="\Scripts\jquery-2.2.0.min.js"></script>
+    <script src="\Scripts\jquery.indexeddb.js"></script>
+    <script src="\Scripts\IndexedDBShim.min.js"></script>
+</head>
+<body>    
+    <div id="cabecera"> BIENVENIDO</div>
+    <script>
+        var usu = sessionStorage.getItem("usuarioLogeado");
+        var usuario = JSON.parse(usu);
+        alert(usuario.Email);
+        if (usuario != undefined) {
+            $("#cabecera").append("<label style='color:red'> " + usuario.Email + "</label>");
+        } else {
+            alert("Hay un error!!");
+        }
+    </script>
+
+    <script>
+        $.indexedDB("miDataBase", {
+            
+        }).done(function (db, even) {
+
+        })
+
+    </script>
+
+
+</body>
+</html>

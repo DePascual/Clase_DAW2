@@ -31,50 +31,76 @@
         });
 
         $("#buttonEntrar").click(function (ev) {
+            var Email = $("#textBoxLogin").val();
+            var Password = $("#textBoxPass").val();
 
-        });
+            var usuarioLogeado = { "Email": Email, "Password": Password };
 
-        $.indexedDB("miDataBase").done(function (db, ev) {
-            $.indexedDB("miDataBase", {
-                schema: {
-                    "3": function (db) {
-                        var tablaUsuarios = db.createObjectStore("tablaUsuarios",
-                            {
-                                'keyPath': 'Email', 'autoIncrement': false
-                            });
+            $.indexedDB("miDataBase").objectStore("tablaUsuarios").get(Email).done(function (result, event) {
 
-                        var tablaClientes = db.createObjectStore("tablaClientes",
-                            {
-                                'keyPath': 'NIF', 'autoIncrement': false
-                            });
-                        tablaClientes.createIndex("Nombre", "Nombre", { unique: false });
-                    }
+                if (result == undefined) {
+                    window.alert("El usuario no existe en la BDATOS");
                 }
-            }).done(function (db, even) {
-                var usuario = {
-                    "Email": $("#textBoxEmail").val(),
-                    "Password": $("#textBoxPassword").val(),
-                };
-                db.transaction("tablaUsuarios", "readwrite").objectStore("tablaUsuarios").add(usuario).onsuccess = function () {
-                    alert("Se ha insertado correctamente el usuario" + usuario.Email);
+                else if (result.Password == Password && result.Email == Email) {
+                    window.alert("Bienvenido");
+                    sessionStorage.setItem("usuarioLogeado", JSON.stringify(usuarioLogeado));
+                    window.location.replace("http://localhost:1966/carrito.html");
+                } else {
+                    window.alert("Revise la contraseña");
                 }
-
             })
-
-            //var usuario = {
-            //    "Email": $("#textBoxEmail").val(),
-            //    "Password": $("#textBoxPassword").val(),
-            //};
-            //var resp = db.transaction(["tablaUsuarios"], "readonly").objectStore("tablaUsuarios").get(Email);
-            //resp.onerror = function () {
-            //    alert("Hay un error");
-            //};
-            //resp.onsuccess = function () {
-            //    alert(resp.result.Password);
-            //    var resultado = resp.result;
-            //}
         });
 
+        $.indexedDB("miDataBase", { 
+            schema: {
+                "4": function (db) {
+                    var tablaUsuarios = db.createObjectStore("tablaUsuarios",{
+                            'keyPath': 'Email', 'autoIncrement': false
+                        });
+
+                    var tablaClientes = db.createObjectStore("tablaClientes",
+                        {
+                            'keyPath': 'NIF', 'autoIncrement': false
+                        });
+                    tablaClientes.createIndex("Nombre", "Nombre", { unique: false });
+
+                    var tablaArticulos = db.createObjectStore("tablaArticulos", {
+                        'keyPath': 'Nombre', 'autoIncrement': false
+                    });
+
+                    var tablaPedidos = db.createObjectStore("tablaPedidos", {
+                        'keyPath': 'IDCarrito', 'autoIncrement': false
+                    })
+                }
+            }
+        }).done(function (db, even) {
+            alert("base de datos creada");
+            var articulos = [
+                {
+                    "Nombre": "Leche Desnatada Pascual",
+                    "Cantidad": "50",
+                    "Precio": "1.12"
+                },
+
+                {
+                    "Nombre": "Quinea ECO",
+                    "Cantidad": "50",
+                    "Precio": "4.95"
+                },
+
+                {
+                    "Nombre": "Masa Bri",
+                    "Cantidad": "50",
+                    "Precio": "2.30"
+                },
+
+                {
+                    "Nombre": "Zanahorias",
+                    "Cantidad": "42",
+                    "Precio": "0.23"
+                }
+            ];
+        });
     </script>
 </body>
 </html>

@@ -44,7 +44,8 @@
                 <td><input id='textBoxProvincia' type='text' placeholder='Provincia' /></td>
             </tr>
             <tr>
-                <td colspan="2"><input id="buttonRegistrar" type="button" name="buttonRegistrar" value="Registrar" /></td>
+                <td><input id="buttonRegistrar" type="button" name="buttonRegistrar" value="Registrar" /></td>
+                <td><input id="buttonLogin" type="button" name="buttonLogin" value="Logear" /></td>
             </tr>
         </table>
     </center>
@@ -52,33 +53,37 @@
         //Para borrar la base de datos en consola de Chrome => indexedDB.deleteDatabase("miDataBase")
 
         $("#buttonRegistrar").click(function (ev) {
-            $.indexedDB("miDataBase", {
-                schema: {
-                    "3": function (transaction) {
-                        var tablaUsuarios = transaction.createObjectStore("tablaUsuarios",
-                            {
-                                'keyPath': 'Email', 'autoIncrement': false
-                            });
-                        tablaUsuarios.createIndex("Mail", "Email", { unique: false });
-
-                        var tablaClientes = transaction.createObjectStore("tablaClientes",
-                            {
-                                'keyPath': 'NIF', 'autoIncrement': false
-                            });
-                        tablaClientes.createIndex("Nombre", "Nombre", { unique: false });
-                    }
-                }
-            }).done(function (db, even) {
+            $.indexedDB("miDataBase").done(function (db, even) {
                 var usuario = {
                     "Email": $("#textBoxEmail").val(),
-                    "Password": $("#textBoxPassword").val(),
+                    "Password": $("#textBoxPassword").val()
                 };
-                db.transaction("tablaUsuarios", "readwrite").objectStore("tablaUsuarios").add(usuario).onsuccess = function () {
-                    alert("Se ha insertado correctamente el usuario" + usuario.Email);
+
+                var usuarioExt = {
+                    "Nombre": $("#textBoxNombre").val(),
+                    "Apellidos": $("#textBoxApellidos").val(),
+                    "NIF": $("#textBoxNIF").val(),
+                    "Email": $("#textBoxEmail").val(),
+                    "Password": $("#textBoxPassword").val(),
+                    "Direccion": $("#textBoxDireccion").val(),
+                    "Localidad": $("#textBoxLocalidad").val(),
+                    "Provincia": $("#textBoxProvincia").val()
                 }
 
+                db.transaction("tablaUsuarios", "readwrite").objectStore("tablaUsuarios").add(usuario).onsuccess = function () {
+                    alert("Se ha insertado correctamente el usuario " + usuario.Email);
+                };
+
+                db.transaction("tablaClientes", "readwrite").objectStore("tablaClientes").add(usuarioExt).onsuccess = function () {
+                    alert("Se ha insertado correctamente el usuario extendido " + usuarioExt.Nombre + " " + usuarioExt.Apellidos);
+                };
             })
-        })
+        });
+
+        $("#buttonLogin").click(function (ev) {
+            window.location.replace("http://localhost:1966/login.html");
+        });
+
 
     </script>
 </body>
