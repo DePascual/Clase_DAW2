@@ -1,15 +1,30 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>CARRITO DE LA COMPRA</title>
-	<meta charset="utf-8" />
+    <meta charset="utf-8" />
     <script src="\Scripts\jquery-2.2.0.min.js"></script>
     <script src="\Scripts\jquery.indexeddb.js"></script>
     <script src="\Scripts\IndexedDBShim.min.js"></script>
 </head>
-<body>    
-    <div id="cabecera"> BIENVENIDO</div>
+<body>
+    <div id="cabecera" style="width:80%; margin:0 auto">
+        <h2>BIENVENIDO</h2>
+    </div>
+
+    <div id="articulos" style="width:80%; margin:0 auto">
+        <h2>ARTICULOS DISPONIBLES:</h2>
+        <table id="tablaArti" border="1">
+            <tr>
+                <th>ARTICULO</th>
+                <th>PRECIO</th>
+                <th>UDS. DISPONIBLES</th>
+                <th></th>
+            </tr>
+        </table>
+        <input id='buttonEntrar' class='buttonEntrar' name='buttonEntrar' type='button' value='Entrar' />
+    </div>
     <script>
         var usu = sessionStorage.getItem("usuarioLogeado");
         var usuario = JSON.parse(usu);
@@ -22,14 +37,44 @@
     </script>
 
     <script>
-        $.indexedDB("miDataBase", {
-            
-        }).done(function (db, even) {
 
+        $(".buttonEntrar").click(function (ev) {
+            alert("ENTRARRRR PULSADO");
+        });
+
+        //Uso on porque sirve para elementos que existe o futuros
+        $("#tablaArti").on('click', '.buttonComprar', function (ev) {
+            var articulo = "";
+            var articulo = ev.target.id;
+            alert("Seleccionado el elemento=>" + quien);
         })
 
+
+        $.indexedDB("miDataBase").done(function (db, even) {
+            cargaTabla("tablaArticulos");
+            //Buscar en la tablaClientes el usuario que se ha logeado, que está en el sessionStorage, y sacar sus datos. Con el fecha+NIF=IDcarrito
+        });
+
+        function cargaTabla(tabla) {
+            //limpiaTabla(tabla);
+            $.indexedDB("miDataBase").objectStore(tabla).each(function (elem) {
+                pintaTabla(tabla, elem.key, elem.value);
+            });
+        };
+
+        //function limpiaTabla(tabla) {
+        //    $.indexedDB("miDataBase").objectStore(tabla).clear();
+        //};
+
+        function pintaTabla(tabla, key, value) {
+            $("#tablaArti").append("<tr>" +
+                                    "<td>" + key + "</td>" +
+                                    "<td>" + value.Precio + "</td>" +
+                                    "<td>" + value.Cantidad + "</td>" +
+                                    "<td><input id='" + key + "' type='button' class='buttonComprar' value='COMPRAR' /></td>" +
+                                    "</tr>");
+        };
+
     </script>
-
-
 </body>
 </html>

@@ -51,12 +51,12 @@
             })
         });
 
-        $.indexedDB("miDataBase", { 
+        $.indexedDB("miDataBase", {
             schema: {
                 "4": function (db) {
-                    var tablaUsuarios = db.createObjectStore("tablaUsuarios",{
-                            'keyPath': 'Email', 'autoIncrement': false
-                        });
+                    var tablaUsuarios = db.createObjectStore("tablaUsuarios", {
+                        'keyPath': 'Email', 'autoIncrement': false
+                    });
 
                     var tablaClientes = db.createObjectStore("tablaClientes",
                         {
@@ -100,6 +100,12 @@
                     "Precio": "0.23"
                 }
             ];
+
+            articulos.forEach(function (el, pos, arg) {
+                db.transaction("tablaArticulos", "readwrite").objectStore("tablaArticulos").add(el).onsuccess = function () {
+                    alert("Se han insertado los articulos en la tablaArticulos");
+                }
+            });
         });
     </script>
 </body>
