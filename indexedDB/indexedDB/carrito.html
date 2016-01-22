@@ -53,6 +53,17 @@
         $.indexedDB("miDataBase").done(function (db, even) {
             cargaTabla("tablaArticulos");
             //Buscar en la tablaClientes el usuario que se ha logeado, que está en el sessionStorage, y sacar sus datos. Con el fecha+NIF=IDcarrito
+            var Email = JSON.parse(sessionStorage.getItem("usuarioLogeado")).Email;
+
+            db.transaction(["tablaClientes"], "readonly").objectStore("tablasClientes").index(Email).get(Email);
+
+            //$.indexedDB("miDataBase").objectStore("tablaClientes").index(Email).get(Email).done(function(even) {
+            //    alert("He abierto el cursor")
+            //    var cursor = event.target.result;
+            //    if (cursor) {
+            //        alert("Nombre: " + cursor.key + "Valor: " + cursor.value);
+            //    }
+            //})
         });
 
         function cargaTabla(tabla) {

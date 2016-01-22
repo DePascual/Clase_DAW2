@@ -53,7 +53,7 @@
 
         $.indexedDB("miDataBase", {
             schema: {
-                "4": function (db) {
+                "5": function (db) {
                     var tablaUsuarios = db.createObjectStore("tablaUsuarios", {
                         'keyPath': 'Email', 'autoIncrement': false
                     });
@@ -63,6 +63,8 @@
                             'keyPath': 'NIF', 'autoIncrement': false
                         });
                     tablaClientes.createIndex("Nombre", "Nombre", { unique: false });
+                    tablaClientes.createIndex("Email", "Email", { unique: false });
+                    tablaClientes.createIndex("Password", "Password", { unique: false });
 
                     var tablaArticulos = db.createObjectStore("tablaArticulos", {
                         'keyPath': 'Nombre', 'autoIncrement': false
