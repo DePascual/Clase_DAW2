@@ -54,7 +54,7 @@
 
         $("#buttonRegistrar").click(function (ev) {
             $.indexedDB("miDataBase").done(function (db, even) {
-                var usuario = {
+                var usuarioLogeado = {
                     "Email": $("#textBoxEmail").val(),
                     "Password": $("#textBoxPassword").val()
                 };
@@ -70,13 +70,16 @@
                     "Provincia": $("#textBoxProvincia").val()
                 }
 
-                db.transaction("tablaUsuarios", "readwrite").objectStore("tablaUsuarios").add(usuario).onsuccess = function () {
-                    alert("Se ha insertado correctamente el usuario " + usuario.Email);
+                db.transaction("tablaUsuarios", "readwrite").objectStore("tablaUsuarios").add(usuarioLogeado).onsuccess = function () {
+                    alert("Se ha insertado correctamente el usuario " + usuarioLogeado.Email);
                 };
 
                 db.transaction("tablaClientes", "readwrite").objectStore("tablaClientes").add(usuarioExt).onsuccess = function () {
                     alert("Se ha insertado correctamente el usuario extendido " + usuarioExt.Nombre + " " + usuarioExt.Apellidos);
                 };
+
+                sessionStorage.setItem("usuarioLogeado", JSON.stringify(usuarioLogeado));
+                window.location.replace("http://localhost:1966/carrito.html");
             })
         });
 

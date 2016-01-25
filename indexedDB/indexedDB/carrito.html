@@ -49,37 +49,28 @@
             alert("Seleccionado el elemento=>" + quien);
         })
 
-        cargaTabla("tablaArticulos");
+        
+        $.indexedDB("miDataBase").done(function (db, even) {
+            cargaTabla("tablaArticulos");
 
-        $.indexedDB("miDataBase").objectStore("tablaClientes").index("Email").each(function (item) {
-            alert("Estoy en el cursor")
+            var Email = JSON.parse(sessionStorage.getItem("usuarioLogeado")).Email;
+
+            $.indexedDB("miDataBase").objectStore("tablaClientes").index("Email").each(function (item) {
+                window.alert("Estoy en el cursor " + item.key + " " + item.value);
+                if (item.key == Email) {
+                    var usuario = item.value;
+                    var fecha = dateFactory();
+                    var IDCarrito = fecha + "$" + usuario.NIF;
+                    window.alert("El id dl carrito=> " + IDCarrito);
+                }
+            })
+            //Buscar en la tablaClientes el usuario que se ha logeado, que está en el sessionStorage, y sacar sus datos. Con el fecha+NIF=IDcarrito
+            //var Email = JSON.parse(sessionStorage.getItem("usuarioLogeado")).Email;
+           // db.objectStore("tablaClientes").index("Email").each(function (item) {
+           //     window.alert("Estoy en el cursor " + item.key + " " + item.value);
+           // });
         })
-
-        //$.indexedDB("miDataBase").done(function (db, even) {
-        //    cargaTabla("tablaArticulos");
-        //    //Buscar en la tablaClientes el usuario que se ha logeado, que está en el sessionStorage, y sacar sus datos. Con el fecha+NIF=IDcarrito
-        //    var Email = JSON.parse(sessionStorage.getItem("usuarioLogeado")).Email;
-
-        //    db.objectStore("tablaClientes").index("Email").each(function(item){
-        //        alert("Estoy en el cursor")
-        //    })
-                
-                                          
-            //db.transaction(["tablaClientes"], "readonly").objectStore("tablaClientes").index("Email").openCursor().onsuccess = function (ev) {
-            //    if (ev.target.result) {
-            //        alert("Estoy en el cursor")
-            //    }
-            //}
-
-            //$.indexedDB("miDataBase").objectStore("tablaClientes").index(Email).get(Email).done(function(even) {
-            //    alert("He abierto el cursor")
-            //    var cursor = event.target.result;
-            //    if (cursor) {
-            //        alert("Nombre: " + cursor.key + "Valor: " + cursor.value);
-            //    }
-            //})
-        //});
-
+                                                         
         function cargaTabla(tabla) {
             //limpiaTabla(tabla);
             $.indexedDB("miDataBase").objectStore(tabla).each(function (elem) {
@@ -99,6 +90,25 @@
                                     "<td><input id='" + key + "' type='button' class='buttonComprar' value='COMPRAR' /></td>" +
                                     "</tr>");
         };
+
+        function dateFactory() {
+            var hoy = new Date();
+            var dd = hoy.getDate();
+            var mm = hoy.getMonth() + 1; //hoy es 0!
+            var yyyy = hoy.getFullYear();
+
+            if (dd < 10) {
+                dd = '0' + dd
+            }
+
+            if (mm < 10) {
+                mm = '0' + mm
+            }
+
+            hoy = dd + '' + mm + '' + yyyy;
+            window.alert(hoy);
+            return hoy;
+        }
 
     </script>
 </body>

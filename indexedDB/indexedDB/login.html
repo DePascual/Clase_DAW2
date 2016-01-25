@@ -26,6 +26,9 @@
         </table>
     </center>
     <script>
+        
+
+
         $("#buttonRegistrar").click(function (ev) {
             window.location.replace("http://localhost:1966/registro.html");
         });
@@ -57,15 +60,15 @@
                     var tablaUsuarios = db.createObjectStore("tablaUsuarios", {
                         'keyPath': 'Email', 'autoIncrement': false
                     });
-                    tablaUsuarios.createIndex("Email", "Email", { unique: true });
+                    tablaUsuarios.createIndex("Email",  { unique: true });
 
                     var tablaClientes = db.createObjectStore("tablaClientes",
                         {
                             'keyPath': 'NIF', 'autoIncrement': false
                         });
-                    tablaClientes.createIndex("Nombre", "Nombre", { unique: false });
-                    tablaClientes.createIndex("Email", "Email", { unique: true });
-                    tablaClientes.createIndex("Password", "Password", { unique: false });
+                    tablaClientes.createIndex("Nombre", { unique: false });
+                    tablaClientes.createIndex("Email",  { unique: true });
+                    tablaClientes.createIndex("Password", { unique: false });
 
                     var tablaArticulos = db.createObjectStore("tablaArticulos", {
                         'keyPath': 'Nombre', 'autoIncrement': false
