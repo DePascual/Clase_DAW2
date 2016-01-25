@@ -24,6 +24,7 @@
             </tr>
         </table>
         <input id='buttonEntrar' class='buttonEntrar' name='buttonEntrar' type='button' value='Entrar' />
+        <input id='buttonRecuCarritos' class='buttonRecuCarritos' name='buttonRecuCarritos' type='button' value='Recupera tus pedidos antiguos' />
     </div>
     <script>
         var usu = sessionStorage.getItem("usuarioLogeado");
@@ -37,17 +38,46 @@
     </script>
 
     <script>
+        var Articulos = [];
 
         $(".buttonEntrar").click(function (ev) {
-            alert("ENTRARRRR PULSADO");
+            var IDCarrito = sessionStorage.getItem("IDCarrito");
+
+            var carrito = {
+                "IDCarrito": IDCarrito,
+                "Articulos": Articulos
+            };
+
+            $.indexedDB("miDataBase").objectStore("tablaPedidos").add(carrito).done(function (even) {
+                window.alert("Se ha insertado correctamente el pedido en la tabla");
+            }).fail(function (even) {
+                window.alert("Error en la inserción");
+            })
         });
+
+        $(".buttonRecuCarritos").click(function (ev) {
+            //Hacer petición Ajax para recuperar los pedidos
+            var nif;
+            sessionStorage.getItem("IDCarrito").toString().split("$", 2).forEach(function (el, pos, arg) {
+                pos == 1 ? nif = el : nif = "nada"
+            })
+            window.alert(nif);            
+        })
 
         //Uso on porque sirve para elementos que existe o futuros
         $("#tablaArti").on('click', '.buttonComprar', function (ev) {
             var articulo = "";
             var articulo = ev.target.id;
-            alert("Seleccionado el elemento=>" + quien);
-        })
+
+            $.indexedDB("miDataBase").objectStore("tablaArticulos").get(articulo).done(function (result, event) {
+                if (result == undefined) {
+                    window.alert("El articulo no existe, hay un error");
+                }
+                else if (result.Nombre == articulo) {
+                    Articulos.push(result);
+                }
+            });
+        });
 
         
         $.indexedDB("miDataBase").done(function (db, even) {
@@ -56,23 +86,18 @@
             var Email = JSON.parse(sessionStorage.getItem("usuarioLogeado")).Email;
 
             $.indexedDB("miDataBase").objectStore("tablaClientes").index("Email").each(function (item) {
-                window.alert("Estoy en el cursor " + item.key + " " + item.value);
                 if (item.key == Email) {
                     var usuario = item.value;
                     var fecha = dateFactory();
                     var IDCarrito = fecha + "$" + usuario.NIF;
-                    window.alert("El id dl carrito=> " + IDCarrito);
+
+                    sessionStorage.setItem("IDCarrito", IDCarrito);
+
                 }
-            })
-            //Buscar en la tablaClientes el usuario que se ha logeado, que está en el sessionStorage, y sacar sus datos. Con el fecha+NIF=IDcarrito
-            //var Email = JSON.parse(sessionStorage.getItem("usuarioLogeado")).Email;
-           // db.objectStore("tablaClientes").index("Email").each(function (item) {
-           //     window.alert("Estoy en el cursor " + item.key + " " + item.value);
-           // });
-        })
+            });
+        });
                                                          
         function cargaTabla(tabla) {
-            //limpiaTabla(tabla);
             $.indexedDB("miDataBase").objectStore(tabla).each(function (elem) {
                 pintaTabla(tabla, elem.key, elem.value);
             });
