@@ -61,7 +61,28 @@
             sessionStorage.getItem("IDCarrito").toString().split("$", 2).forEach(function (el, pos, arg) {
                 pos == 1 ? nif = el : nif = "nada"
             })
-            window.alert(nif);            
+           
+
+            ev.preventDefault();
+            var nifJson = {
+                Nif : nif
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '/Servidor.html/',
+                data: "{'nif':" + JSON.stringify(nifJson) + "}",
+                contentType: 'application/json; utf-8',
+                dataType: 'json',
+                success: function (respuesta) {
+                    var resp = JSON.parse(respuesta.d);
+                    window.alert("Respuesta del servidor => " + respuesta.d);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    window.alert("Uppss!! Ha ocurrido un error");
+                }
+            });
+
         })
 
         //Uso on porque sirve para elementos que existe o futuros

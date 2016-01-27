@@ -84,6 +84,7 @@
     <Content Include="Scripts\jquery-2.2.0.js" />
     <Content Include="Scripts\jquery-2.2.0.min.js" />
     <Content Include="Scripts\jquery.indexeddb.js" />
+    <Content Include="Servidor.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
