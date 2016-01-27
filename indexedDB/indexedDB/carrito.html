@@ -70,8 +70,8 @@
 
             $.ajax({
                 type: 'POST',
-                url: '/Servidor.html/',
-                data: "{'nif':" + JSON.stringify(nifJson) + "}",
+                url: '/Servidor.asmx/respuesta',
+                data: nif,
                 contentType: 'application/json; utf-8',
                 dataType: 'json',
                 success: function (respuesta) {
